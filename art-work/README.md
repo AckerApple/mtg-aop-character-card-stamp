@@ -1,0 +1,1 @@
+# mtg-aop-character-card-stamp
