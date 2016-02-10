@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+
+    <script src="assets/scripts/mtgAotpCharCards.js"></script>
+    <script src="assets/scripts/mtgAotpCharCardCreator.js"></script>
+  </head>
+  <body ng-app="mtgAotpCharCardCreator">
+    <mtg-aotp-char-card-creator></mtg-aotp-char-card-creator>
+  </body>
+</html>
+<script type="text/ng-template" id="mtg-aotp-char-card-creator">
+  <div ng-repeat="card in cardCreator.charCards track by card.name">
+    <div class="pull-left char-card char-card-print char-card-black">
+      <char-card model="card"></char-card>
+    </div>
+
+    <div class="pull-left char-card char-card-third char-card-black">
+      <char-card model="card"></char-card>
+    </div>
+
+    <div class="pull-left char-card char-card-half char-card-black">
+      <char-card model="card"></char-card>
+    </div>
+  </div>
+</script>
+<script type="text/ng-template" id="char-card">
+  <div class="card-title">{{charCard.model.name}}</div>
+  <div style="background-color:black;color:white;">
+    <div>
+      Height:{{charCard.model.height.name}} {{charCard.model.height.value}}
+    </div>
+    <div>
+      Cost:{{charCard.model.cost}}
+    </div>
+    <div>
+      Artist:{{charCard.model.artist.title}}
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-type-title">{{charCard.model.category}} -- {{charCard.model.type}}</div>
+    <div class="stat-box" style="float:left;left:2.3%;width:44.5%;height:26%">
+      <div class="stat-box-body">
+        <div class="stat-label">Figures</div>
+      </div>
+    </div>
+    <div class="stat-box" style="float:left;left:6%;margin-top:10%;">
+      <div class="stat-box-body">
+        <div class="stat-label">Life</div>
+        {{charCard.model.life}}
+      </div>
+    </div>
+    <div class="stat-box move-box" style="display:inline-block;left:7.5%;">
+      <div class="stat-box-body">
+        <div class="stat-label">Move</div>
+        {{charCard.model.move}}
+      </div>
+    </div>
+    <div class="stat-box range-box" style="display:inline-block;left:7.5%;margin-top:1.2%;">
+      <div class="stat-box-body">
+        <div class="stat-label">Range</div>
+        {{charCard.model.range}}
+      </div>
+    </div>
+    <div class="stat-box attack-box">
+      <div class="stat-box-body">
+        <div class="stat-label">Attack</div>
+        {{charCard.model.attack}}
+      </div>
+    </div>
+    <div class="stat-box defense-box">
+      <div class="stat-box-body">
+        <div class="stat-label">Defense</div>
+        {{charCard.model.defense}}
+      </div>
+    </div>
+  </div>
+</script>
+<style>
+html,body{
+  height:100%;width:100%;padding:2px;
+}
+
+  .char-card{
+    border:30px solid black;margin:1em;
+    border-radius:26px;
+  }
+
+  .char-card.char-card-print{
+    font-size:24px;
+  }
+
+  .char-card .card-body{
+    background-size:100% 100%;
+  }
+
+  .char-card .card-title{
+    font-family:Beleren Small Caps;
+    padding-top:1%;padding-left:1%;
+    text-align:center;
+    /*border-bottom:1px solid red;*/
+  }
+
+  .char-card .card-type-title{
+    font-family:Beleren;
+    padding-top:1%;padding-left:1%;
+    color:white;
+    /*border-bottom:1px solid red;*/
+  }
+
+  .char-card .card-type-title{
+    height:49px
+  }
+/*
+  .char-card .stat-box.move-box,
+  .char-card .stat-box.range-box{
+    left:74.4%;margin-bottom:1.2%;
+  }
+*/
+  .char-card .stat-box.defense-box{
+    left:6.1%;margin-top:1.2%;display:inline-block;
+  }
+
+  .char-card .stat-box.attack-box{
+    left:6.2%;margin-top:1.2%;display:inline-block;
+  }
+
+  .char-card .stat-box{
+    position:relative;vertical-align:top;
+    width:22.5%;height:8.3%;
+    border:2px solid red;text-align:center;
+  }
+
+  .char-card .stat-box .stat-label{
+    font-size:80%;
+  }
+
+  .char-card .stat-box .stat-box-body{
+    border-style:solid;border-color:#646859;height:100%;
+    background-color:#d2d3d5;
+  }
+
+
+
+  /* print size */
+  .char-card-print .card-body{
+    width:448px;height:884px
+  }
+
+  .char-card-print .stat-box .stat-box-body{
+    border-width:7px;
+  }
+
+
+
+  /* third size */
+  .char-card.char-card-third{
+    font-size:19px;
+  }
+
+  .char-card-third .card-body{
+    width:346px;height:663px
+  }
+
+  .char-card-third .card-type-title{
+    height:38px
+  }
+
+  .char-card-third .stat-box .stat-box-body{
+    border-width:5px;
+  }
+
+
+  /* half size */
+  .char-card.char-card-half{
+    font-size:12px;
+  }
+
+  .char-card-half .card-body{
+    width:224px;height:442px
+  }
+
+  .char-card-half .card-type-title{
+    height:25px
+  }
+
+  .char-card-half .stat-box{
+    border-width:1px;
+  }
+
+  .char-card-half .stat-box .stat-box-body{
+    border-width:3px;
+  }
+
+
+  /* colors */
+  .char-card-black .card-body{
+    background-image:url(assets/images/black.png);
+  }
+</style>
