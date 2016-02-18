@@ -3,204 +3,118 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=0" />
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="assets/scripts/angular.min.js"></script>
+
+    <!--
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.js"></script>
+    -->
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    -->
+    <script src="assets/scripts/html2canvas.min.js"></script>
+<!--
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-
+-->
     <script src="assets/scripts/mtgAotpCharCards.js"></script>
     <script src="assets/scripts/mtgAotpCharCardCreator.js"></script>
+    <link type="text/css" rel="stylesheet" href="assets/styles/main.css" />
+    <link type="text/css" rel="stylesheet" href="assets/styles/mtg-font/css/magic-font.css" />
+    <link type="text/css" rel="stylesheet" href="assets/styles/mtg-aotp-syms/css/mtg-aotp-syms.css" />
   </head>
   <body ng-app="mtgAotpCharCardCreator">
+    <div style="color:red;padding:10px;font-size:1.5em;font-family:Times New Roman;">
+      defense +1<i class="aotp-defense"></i> attack +1<i class="aotp-attack"></i> <i class="aotp-hexagon"></i> and I tested it
+      defense +1<i class="aotp-defense"></i> attack +1<i class="aotp-attack"></i> <i class="aotp-hexagon"></i> and I tested it
+    </div>
     <mtg-aotp-char-card-creator></mtg-aotp-char-card-creator>
+    <img src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border="0" style="vertical-align:top;width:223px;height:626px" />
+    <img src="assets/images/New-Cards.png" border="0" style="margin:0;padding:0;width:223px;height:626px;" />
+    <img src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards 2.jpg" border="0" style="vertical-align:top;height:626px" />
   </body>
 </html>
 <script type="text/ng-template" id="mtg-aotp-char-card-creator">
-  <div ng-repeat="card in cardCreator.charCards track by card.name">
-    <div class="pull-left char-card char-card-print char-card-black">
-      <char-card model="card"></char-card>
-    </div>
-
-    <div class="pull-left char-card char-card-third char-card-black">
-      <char-card model="card"></char-card>
-    </div>
-
-    <div class="pull-left char-card char-card-half char-card-black">
-      <char-card model="card"></char-card>
-    </div>
+  <div>
+    <input type="button" value="print" ng-click="triggerPrint=false;triggerPrint=true" class="btn btn-default" />
+    triggerPrint:{{triggerPrint}}
+    <a ng-click="cardCreator.selectDemoCard()">new card</a>
+    <a ng-show="printResult" href="{{printResult.url}}" target="_blank">test print</a>
+    <img src="{{printResult.url}}" style="border:1px solid red;" />
   </div>
+  <div>
+    <a ng-click="cardCreator.selectedIndex=cardCreator.selectedIndex==0?cardCreator.charCards.length-1:cardCreator.selectedIndex-1">&lt;</a>
+    &nbsp;{{cardCreator.selectedIndex+1}} of {{(cardCreator.charCards|keys).length}}&nbsp;
+    <a ng-click="cardCreator.selectedIndex=cardCreator.selectedIndex==cardCreator.charCards.length-1?0:cardCreator.selectedIndex+1">&gt;</a>
+  </div>
+  <div style="display:inline-block;">
+    <char-card model="cardCreator.selectedCard||cardCreator.charCards[(cardCreator.charCards|keys)[cardCreator.selectedIndex]]"></char-card>
+  </div>
+  <print-canvas print-trigger="triggerPrint" print-model="printResult" style="vertical-align:top;">
+    <div style="display:inline-block;">
+      <char-card size="'hires'" model="cardCreator.selectedCard||cardCreator.charCards[(cardCreator.charCards|keys)[cardCreator.selectedIndex]]"></char-card>
+    </div>
+  </print-canvas>
 </script>
 <script type="text/ng-template" id="char-card">
-  <div class="card-title">{{charCard.model.name}}</div>
-  <div style="background-color:black;color:white;">
-    <div>
-      Height:{{charCard.model.height.name}} {{charCard.model.height.value}}
-    </div>
-    <div>
-      Cost:{{charCard.model.cost}}
-    </div>
-    <div>
-      Artist:{{charCard.model.artist.title}}
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="card-type-title">{{charCard.model.category}} -- {{charCard.model.type}}</div>
-    <div class="stat-box" style="float:left;left:2.3%;width:44.5%;height:26%">
-      <div class="stat-box-body">
-        <div class="stat-label">Figures</div>
+  <div class="char-card char-card-{{charCard.model.colors[0]||'c'}}" ng-class="{'char-card-print-hires':charCard.size=='hires'}">
+    <div class="char-card-stage">
+      <div class="starting-height"></div>
+      <div style="position:relative;height:4.75%">
+        <div class="card-title">
+          <div class="card-title-top-pad"></div>
+          <div class="card-title-text">{{charCard.model.name}}</div>
+        </div>
       </div>
-    </div>
-    <div class="stat-box" style="float:left;left:6%;margin-top:10%;">
-      <div class="stat-box-body">
-        <div class="stat-label">Life</div>
-        {{charCard.model.life}}
-      </div>
-    </div>
-    <div class="stat-box move-box" style="display:inline-block;left:7.5%;">
-      <div class="stat-box-body">
-        <div class="stat-label">Move</div>
-        {{charCard.model.move}}
-      </div>
-    </div>
-    <div class="stat-box range-box" style="display:inline-block;left:7.5%;margin-top:1.2%;">
-      <div class="stat-box-body">
-        <div class="stat-label">Range</div>
-        {{charCard.model.range}}
-      </div>
-    </div>
-    <div class="stat-box attack-box">
-      <div class="stat-box-body">
-        <div class="stat-label">Attack</div>
-        {{charCard.model.attack}}
-      </div>
-    </div>
-    <div class="stat-box defense-box">
-      <div class="stat-box-body">
-        <div class="stat-label">Defense</div>
-        {{charCard.model.defense}}
+      <div class="card-image"></div>
+      <div class="card-body">
+        <div style="height:.7%"></div>
+        <div style="text-align:left;" class="card-type-wrapper">
+          <i ng-repeat="color in charCard.model.colors" class="aotp-hexagon aotp-hexagon-{{color}}" style="position:relative;font-size:110%;text-align:center;"><span style="left:0;position:absolute;width:100%;color:black;font-size:74%;"><i class="mi mi-{{color}}"></i></span></i>
+          <div class="card-type-title" style="display:inline-block;white-space:nowrap;">
+            {{charCard.model.category}} <span style="width:8%;display:inline-block;padding-top:0%;vertical-align:middle;"><div style="border-top:1px solid white;"></div></span> {{charCard.model.type}}
+          </div>
+        </div>
+        <div class="stat-box" style="float:left;left:2.3%;width:44.5%;height:26%">
+          <!--<div class="stat-label">Figures</div>-->
+        </div>
+        <div class="stat-box" style="float:left;margin-left:6%;margin-top:10.25%;">
+          <div class="stat-label">LIFE</div>
+          {{charCard.model.life||'?'}}
+        </div>
+        <div class="stat-box move-box" style="display:inline-block;left:7.5%;">
+          <div class="stat-label">MOVE</div>
+          <div style="margin-top:.5%;font-size:105%;">{{charCard.model.move||'?'}}</div>
+        </div>
+        <div class="stat-box range-box" style="display:inline-block;left:7.5%;">
+          <div class="stat-label">RANGE</div>
+          <div style="margin-top:.5%;font-size:105%;">{{charCard.model.range||'?'}}</div>
+        </div>
+        <div class="stat-box attack-box">
+          <span style="position:relative;"><span class="attack-box-text" style="position:absolute;padding-top:16%;" ng-class="{'attack-box-text-sm':charCard.model.attack>9}">{{charCard.model.attack||'?'}}</span></span><i class="aotp-attack"></i>
+        </div>
+        <div class="stat-box defense-box">
+          <span style="position:relative;"><span class="defense-box-text" style="position:absolute;padding-top:16%;" ng-class="{'defense-box-text-sm':charCard.model.defense>9}">{{charCard.model.defense||'?'}}</span></span><i class="aotp-defense"></i>
+        </div>
+        <div style="position:relative;height:0;">
+          <div style="position:absolute;margin-top:120.75%;width:97%;text-align:right;">
+            <i class="aotp-hexagon" style="position:relative;color:#333;font-size:100%;text-align:center;"><span style="left:0;margin-top:.3em;position:absolute;width:100%;color:#CCC;font-size:80%;"><i ng-class="charCard.model.symbolClass"></i></span></i>
+          </div>
+        </div>
+        <div class="card-abilities">
+          <div class="card-ability" ng-repeat="ability in charCard.model.abilityArray track by ability.title">
+            <strong class="card-ability-title">{{ability.title|uppercase}}</strong>
+            <div class="card-ability-body" ng-bind-html="ability.body|symbolize|trustAsHtml"></div>
+          </div>
+        </div>
+        <div class="card-attributes">
+          <div style="float:right">COST&nbsp;&nbsp;{{charCard.model.cost}}</div>
+          <div>{{charCard.model.height.name|uppercase}} {{charCard.model.height.value}}</div>
+        </div>
+        <div class="card-footer">
+          <div style="float:right" ng-bind-html="charCard.model.copyRight|trustAsHtml"></div>
+          <div>{{charCard.model.artist.title}}</div>
+        </div>
       </div>
     </div>
   </div>
 </script>
-<style>
-html,body{
-  height:100%;width:100%;padding:2px;
-}
-
-  .char-card{
-    border:30px solid black;margin:1em;
-    border-radius:26px;
-  }
-
-  .char-card.char-card-print{
-    font-size:24px;
-  }
-
-  .char-card .card-body{
-    background-size:100% 100%;
-  }
-
-  .char-card .card-title{
-    font-family:Beleren Small Caps;
-    padding-top:1%;padding-left:1%;
-    text-align:center;
-    /*border-bottom:1px solid red;*/
-  }
-
-  .char-card .card-type-title{
-    font-family:Beleren;
-    padding-top:1%;padding-left:1%;
-    color:white;
-    /*border-bottom:1px solid red;*/
-  }
-
-  .char-card .card-type-title{
-    height:49px
-  }
-/*
-  .char-card .stat-box.move-box,
-  .char-card .stat-box.range-box{
-    left:74.4%;margin-bottom:1.2%;
-  }
-*/
-  .char-card .stat-box.defense-box{
-    left:6.1%;margin-top:1.2%;display:inline-block;
-  }
-
-  .char-card .stat-box.attack-box{
-    left:6.2%;margin-top:1.2%;display:inline-block;
-  }
-
-  .char-card .stat-box{
-    position:relative;vertical-align:top;
-    width:22.5%;height:8.3%;
-    border:2px solid red;text-align:center;
-  }
-
-  .char-card .stat-box .stat-label{
-    font-size:80%;
-  }
-
-  .char-card .stat-box .stat-box-body{
-    border-style:solid;border-color:#646859;height:100%;
-    background-color:#d2d3d5;
-  }
-
-
-
-  /* print size */
-  .char-card-print .card-body{
-    width:448px;height:884px
-  }
-
-  .char-card-print .stat-box .stat-box-body{
-    border-width:7px;
-  }
-
-
-
-  /* third size */
-  .char-card.char-card-third{
-    font-size:19px;
-  }
-
-  .char-card-third .card-body{
-    width:346px;height:663px
-  }
-
-  .char-card-third .card-type-title{
-    height:38px
-  }
-
-  .char-card-third .stat-box .stat-box-body{
-    border-width:5px;
-  }
-
-
-  /* half size */
-  .char-card.char-card-half{
-    font-size:12px;
-  }
-
-  .char-card-half .card-body{
-    width:224px;height:442px
-  }
-
-  .char-card-half .card-type-title{
-    height:25px
-  }
-
-  .char-card-half .stat-box{
-    border-width:1px;
-  }
-
-  .char-card-half .stat-box .stat-box-body{
-    border-width:3px;
-  }
-
-
-  /* colors */
-  .char-card-black .card-body{
-    background-image:url(assets/images/black.png);
-  }
-</style>

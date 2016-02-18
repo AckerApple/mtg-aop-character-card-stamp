@@ -1,0 +1,22 @@
+{
+  "name": "mtg-aotp-character-card-creator",
+  "version": "1.0.0",
+  "description": "make and print with html5",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AckerApple/mtg-aotp-character-card-creator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AckerApple/mtg-aotp-character-card-creator/issues"
+  },
+  "homepage": "https://github.com/AckerApple/mtg-aotp-character-card-creator",
+  "dependencies":{
+    "mtg-font":"https://github.com/AlexandreArpin/mtg-font.git"
+  }
+}
