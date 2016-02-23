@@ -5,58 +5,75 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=0" />
     <script src="assets/scripts/angular.min.js"></script>
 
-    <!--
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.js"></script>
-    -->
-    <!--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-    -->
+    <script src="assets/scripts/ng-file-upload-all.min.js"></script>
+
+    <script src="assets/scripts/ng-sortable/ng-sortable.min.js"></script>
+    <link href="assets/scripts/ng-sortable/ng-sortable.min.css" type="text/css" rel="stylesheet" />
     <script src="assets/scripts/html2canvas.min.js"></script>
-<!--
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
--->
-    <script src="assets/scripts/mtgAotpCharCards.js"></script>
-    <script src="assets/scripts/mtgAotpCharCardCreator.js"></script>
+    <script src="assets/scripts/mtgAotpCards.js"></script>
+    <script src="assets/scripts/mtgAotpCardCreator.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="assets/styles/main.css" />
     <link type="text/css" rel="stylesheet" href="assets/styles/mtg-font/css/magic-font.css" />
     <link type="text/css" rel="stylesheet" href="assets/styles/mtg-aotp-syms/css/mtg-aotp-syms.css" />
   </head>
-  <body ng-app="mtgAotpCharCardCreator">
+  <body ng-app="mtgAotpCardCreator">
     <div style="color:red;padding:10px;font-size:1.5em;font-family:Times New Roman;">
-      defense +1<i class="aotp-defense"></i> attack +1<i class="aotp-attack"></i> <i class="aotp-hexagon"></i> and I tested it
-      defense +1<i class="aotp-defense"></i> attack +1<i class="aotp-attack"></i> <i class="aotp-hexagon"></i> and I tested it
+      defense +1<i class="aotp aotp-defense"></i> attack +1<i class="aotp aotp-attack"></i> <i class="aotp aotp-hexagon"></i> and I tested it
+      defense +1<i class="aotp aotp-defense"></i> attack +1<i class="aotp aotp-attack"></i> <i class="aotp aotp-hexagon"></i> and I tested it
     </div>
-    <mtg-aotp-char-card-creator></mtg-aotp-char-card-creator>
+    <mtg-aotp-card-creator></mtg-aotp-card-creator>
     <img src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border="0" style="vertical-align:top;width:223px;height:626px" />
-    <img src="assets/images/New-Cards.png" border="0" style="margin:0;padding:0;width:223px;height:626px;" />
     <img src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards 2.jpg" border="0" style="vertical-align:top;height:626px" />
   </body>
 </html>
-<script type="text/ng-template" id="mtg-aotp-char-card-creator">
+<script type="text/ng-template" id="mtg-aotp-card-creator">
   <div>
     <input type="button" value="print" ng-click="triggerPrint=false;triggerPrint=true" class="btn btn-default" />
     triggerPrint:{{triggerPrint}}
     <a ng-click="cardCreator.selectDemoCard()">new card</a>
+    <a ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank">export series</a>&nbsp;
+    <a ng-href="{{cardCreator.selectedCard|jsonExportUrl}}" target="blank">export card</a>&nbsp;
+    <a download="{{cardCreator.selectedSeries.name}}.json" ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank">download series</a>&nbsp;
+    <a download="{{cardCreator.selectedCard.name}}.json" ng-href="{{cardCreator.selectedCard|jsonExportUrl}}" target="blank">download card</a>&nbsp;
+    <a ng-click="cardCreator.deleteCard()" target="blank">delete card</a>&nbsp;
     <a ng-show="printResult" href="{{printResult.url}}" target="_blank">test print</a>
     <img src="{{printResult.url}}" style="border:1px solid red;" />
   </div>
   <div>
-    <a ng-click="cardCreator.selectedIndex=cardCreator.selectedIndex==0?cardCreator.charCards.length-1:cardCreator.selectedIndex-1">&lt;</a>
-    &nbsp;{{cardCreator.selectedIndex+1}} of {{(cardCreator.charCards|keys).length}}&nbsp;
-    <a ng-click="cardCreator.selectedIndex=cardCreator.selectedIndex==cardCreator.charCards.length-1?0:cardCreator.selectedIndex+1">&gt;</a>
   </div>
-  <div style="display:inline-block;">
-    <char-card model="cardCreator.selectedCard||cardCreator.charCards[(cardCreator.charCards|keys)[cardCreator.selectedIndex]]"></char-card>
+  <div>
+    <h2>
+      <a ng-click="cardCreator.priorSeries()">&lt;</a>
+      &nbsp;{{cardCreator.seriesIndex+1}} of {{(cardCreator.cards.character|keys).length}}&nbsp;
+      <a ng-click="cardCreator.nextSeries()">&gt;</a>&nbsp;
+      {{cardCreator.selectedSeries.name}}
+    </h2>
+    <p>{{cardCreator.selectedSeries.description}}</p>
+    <h3>
+      <a ng-click="cardCreator.priorCard()">&lt;</a>
+      &nbsp;{{cardCreator.selectedIndex+1}} of {{(cardCreator.selectedSeries.data|keys).length}}&nbsp;
+      <a ng-click="cardCreator.nextCard()">&gt;</a>&nbsp;
+      {{cardCreator.selectedCard.name}}
+
+    </h3>
   </div>
-  <print-canvas print-trigger="triggerPrint" print-model="printResult" style="vertical-align:top;">
-    <div style="display:inline-block;">
-      <char-card size="'hires'" model="cardCreator.selectedCard||cardCreator.charCards[(cardCreator.charCards|keys)[cardCreator.selectedIndex]]"></char-card>
-    </div>
-  </print-canvas>
+  <div style="display:inline-block;vertical-align:top;">
+    <char-card model="cardCreator.selectedCard"></char-card>
+  </div>
+  <div style="display:inline-block;vertical-align:top;" class="char-card-editor">
+    <char-card-editor model="cardCreator.selectedCard"></char-card-editor>
+  </div>
+  <div ng-show="test">
+    <print-canvas before-print="test=true" after-print="test=false" print-trigger="triggerPrint" print-model="printResult" style="vertical-align:top;">
+      <div style="display:inline-block;">
+        <char-card size="'hires'" model="cardCreator.selectedCard"></char-card>
+      </div>
+    </print-canvas>
+  </div>
 </script>
 <script type="text/ng-template" id="char-card">
-  <div class="char-card char-card-{{charCard.model.colors[0]||'c'}}" ng-class="{'char-card-print-hires':charCard.size=='hires'}">
+  <div class="char-card char-card-{{charCard.model.colors.length>1?'m':charCard.model.colors[0]}}" ng-class="{'char-card-print-hires':charCard.size=='hires'}">
     <div class="char-card-stage">
       <div class="starting-height"></div>
       <div style="position:relative;height:4.75%">
@@ -65,39 +82,43 @@
           <div class="card-title-text">{{charCard.model.name}}</div>
         </div>
       </div>
-      <div class="card-image"></div>
+      <div class="card-image" ngf-drop="charCard.uploadAvatarTo($file,charCard.model)" ng-model="file" ngf-drag-over-class="'drop-over'" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="8MB" ngf-fix-orientation="true">
+        <div ng-show="charCard.model.avatar" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.avatar.dataUrl}});"></div>
+        <div ng-hide="charCard.model.avatar" style="color:#999;margin-top:35%;text-align:center;">DROP IMAGE HERE</div>
+      </div>
       <div class="card-body">
         <div style="height:.7%"></div>
         <div style="text-align:left;" class="card-type-wrapper">
-          <i ng-repeat="color in charCard.model.colors" class="aotp-hexagon aotp-hexagon-{{color}}" style="position:relative;font-size:110%;text-align:center;"><span style="left:0;position:absolute;width:100%;color:black;font-size:74%;"><i class="mi mi-{{color}}"></i></span></i>
+          <i ng-repeat="color in charCard.model.colors" class="aotp aotp-hexagon aotp-hexagon-{{color}}" style="position:relative;font-size:110%;text-align:center;"><span style="left:0;position:absolute;width:100%;color:black;font-size:74%;"><i class="mi mi-{{color}}"></i></span></i>
           <div class="card-type-title" style="display:inline-block;white-space:nowrap;">
             {{charCard.model.category}} <span style="width:8%;display:inline-block;padding-top:0%;vertical-align:middle;"><div style="border-top:1px solid white;"></div></span> {{charCard.model.type}}
           </div>
         </div>
-        <div class="stat-box" style="float:left;left:2.3%;width:44.5%;height:26%">
-          <!--<div class="stat-label">Figures</div>-->
+        <div class="figure-wrap" ngf-drop="charCard.uploadFigureTo($file,charCard.model)" ng-model="file" ngf-drag-over-class="'drop-over'" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="8MB" ngf-fix-orientation="true">
+          <div ng-show="charCard.model.figure" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.figure.dataUrl}});"></div>
+          <div ng-hide="charCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;">DROP IMAGE HERE</div>
         </div>
-        <div class="stat-box" style="float:left;margin-left:6%;margin-top:10.25%;">
-          <div class="stat-label">LIFE</div>
-          {{charCard.model.life||'?'}}
+        <div class="stat-box life-box" ng-class="{'life-box-sm':charCard.model.attack>9}">
+          <div class="stat-label" style="line-height:0;">LIFE</div>
+          <div class="life-box-value">{{charCard.model.life||'?'}}</div>
         </div>
         <div class="stat-box move-box" style="display:inline-block;left:7.5%;">
-          <div class="stat-label">MOVE</div>
-          <div style="margin-top:.5%;font-size:105%;">{{charCard.model.move||'?'}}</div>
+          <div class="stat-label move-box-text">MOVE</div>
+          <div class="move-box-value">{{charCard.model.move||'?'}}</div>
         </div>
         <div class="stat-box range-box" style="display:inline-block;left:7.5%;">
-          <div class="stat-label">RANGE</div>
-          <div style="margin-top:.5%;font-size:105%;">{{charCard.model.range||'?'}}</div>
+          <div class="stat-label range-box-text">RANGE</div>
+          <div class="range-box-value">{{charCard.model.range||'?'}}</div>
         </div>
         <div class="stat-box attack-box">
-          <span style="position:relative;"><span class="attack-box-text" style="position:absolute;padding-top:16%;" ng-class="{'attack-box-text-sm':charCard.model.attack>9}">{{charCard.model.attack||'?'}}</span></span><i class="aotp-attack"></i>
+          <span style="position:relative;"><span class="attack-box-text" ng-class="{'attack-box-text-sm':charCard.model.attack>9}">{{charCard.model.attack||'?'}}</span></span><i class="aotp aotp-attack"></i>
         </div>
         <div class="stat-box defense-box">
-          <span style="position:relative;"><span class="defense-box-text" style="position:absolute;padding-top:16%;" ng-class="{'defense-box-text-sm':charCard.model.defense>9}">{{charCard.model.defense||'?'}}</span></span><i class="aotp-defense"></i>
+          <span style="position:relative;"><span class="defense-box-text" ng-class="{'defense-box-text-sm':charCard.model.defense>9}">{{charCard.model.defense||'?'}}</span></span><i class="aotp aotp-defense"></i>
         </div>
         <div style="position:relative;height:0;">
-          <div style="position:absolute;margin-top:120.75%;width:97%;text-align:right;">
-            <i class="aotp-hexagon" style="position:relative;color:#333;font-size:100%;text-align:center;"><span style="left:0;margin-top:.3em;position:absolute;width:100%;color:#CCC;font-size:80%;"><i ng-class="charCard.model.symbolClass"></i></span></i>
+          <div style="position:absolute;margin-top:120.5%;width:97.15%;text-align:right;">
+            <i class="aotp aotp-hexagon" style="position:relative;color:#333;font-size:100%;text-align:center;"><span style="left:0;margin-top:.3em;position:absolute;width:100%;color:#CCC;font-size:80%;"><i ng-class="charCard.model.symbolClass"></i></span></i>
           </div>
         </div>
         <div class="card-abilities">
@@ -111,10 +132,126 @@
           <div>{{charCard.model.height.name|uppercase}} {{charCard.model.height.value}}</div>
         </div>
         <div class="card-footer">
-          <div style="float:right" ng-bind-html="charCard.model.copyRight|trustAsHtml"></div>
-          <div>{{charCard.model.artist.title}}</div>
+          <div style="float:right;margin-right:2.5%;margin-top:1.5%;" ng-bind-html="charCard.model.copyRight|trustAsHtml"></div>
+          <div style="margin-left:2.5%;"><i ng-class="charCard.model.artist.iconClass" style="font-size:220%;vertical-align:-17%"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{charCard.model.artist.title}}</div>
         </div>
       </div>
+    </div>
+  </div>
+</script>
+<script id="char-card-editor" type="text/ng-template">
+  <div class="form-group">
+    <input t{"label":"blue","value":"u","class":"mi mi-u"}ype="text" ng-model="editor.model.name" placeholder="Title" maxLength="125" class="form-control input-sm" />
+  </div>
+
+  <div class="form-group color-picker" id="sortable-container">
+    <div as-sortable="{containment:'element > element'}" ng-model="editor.model.colors">
+      <div ng-repeat="item in editor.model.colors" as-sortable-item>
+        <div as-sortable-item-handle>
+          <i style="font-size:1.5em;" class="mi" ng-class="'mi-'+item"></i>
+        </div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <div style="float:left" ng-repeat="item in editor.colors track by item.value" ng-hide="editor.model.colors.indexOf(item.value)>=0" ng-click="editor.model.colors.push(item.value)">
+      <div class="color-item">
+        <i style="font-size:1.5em;" class="mi" ng-class="'mi-'+item.value"></i>
+      </div>
+    </div>
+
+    <style>
+      .color-picker [as-sortable-item],
+      .color-picker .color-item,
+      .color-picker .as-sortable-placeholder{
+        cursor:pointer;width:30px;height:30px;
+        line-height:0;
+        text-align:center;
+        border:1px solid #CCCCCC;border-radius:16%;
+        float:left;
+      }
+
+      .color-picker [as-sortable-item]{
+        border:1px solid black;
+        background:#CCCCCC;
+      }
+    </style>
+
+<!--
+    <ul dnd-list="editor.coloring">
+      <li ng-repeat="item in editor.colors track by $index"
+        ng-hide="editor.dragging==item"
+        dnd-draggable="item"
+        dnd-dragstart="editor.dragging=item;editor.coloring=(editor.colors|copy);editor.coloring.splice($index,1)"
+        dnd-moved="editor.colors=editor.coloring;editor.dragging=null"
+        dnd-canceled="editor.dragging=null"
+        dnd-effect-allowed="move"
+        class="active"
+      >
+        <i style="font-size:1.5em;" class="mi" ng-class="'mi-'+item.value"></i>
+      </li>
+    </ul>
+    <ul>
+      <li ng-repeat="item in editor.colors track by item.value"
+        ng-hide="editor.model.colors.indexOf(item.value)>=0"
+        ng-click="editor.model.colors.push(item.value)"
+      >
+        <i style="font-size:1.5em;" class="mi" ng-class="'mi-'+item.value"></i>
+      </li>
+    </ul>
+    <div style="clear:both"></div>
+    <style>
+      .color-picker [as-sortable-item]{
+      }
+
+      .color-picker [dnd-list] li{
+        cursor:move;
+      }
+
+      .color-picker li.active{
+      }
+    </style>
+-->
+    <!--
+    <select class="form-control" size="5" ng-model="editor.model.colors" ng-options="color.value as color.label for color in editor.colors" multiple="true"></select>
+    -->
+  </div>
+
+  <div class="form-group" style="width:59%;display:inline-block;">
+    Category
+    <input type="text" ng-model="editor.model.category" placeholder="Category - Planeswalker, Squad Creature, Hero Creature" maxLength="125" class="form-control input-sm" />
+  </div>
+
+  <div class="form-group" style="width:39%;display:inline-block;">
+    Type Name
+    <input type="text" ng-model="editor.model.type" placeholder="Type Name" maxLength="125" class="form-control input-sm" />
+  </div>
+
+  <div class="form-group" style="width:32%;display:inline-block;">
+    Life
+    <input type="text" ng-model="editor.model.life" placeholder="Life" maxLength="125" class="form-control input-sm" />
+  </div>
+
+  <div class="form-group" style="width:32%;display:inline-block;">
+    Move
+    <input type="text" ng-model="editor.model.move" placeholder="Move" maxLength="125" class="form-control input-sm" />
+  </div>
+
+  <div class="form-group" style="width:32%;display:inline-block;">
+    Range
+    <input type="text" ng-model="editor.model.range" placeholder="Range" maxLength="125" class="form-control input-sm" />
+  </div>
+
+  <div class="form-group" style="width:49%;display:inline-block;">
+    <div class="input-group">
+      <div class="input-group-addon"><i class="aotp aotp-attack"></i></div>
+      <input type="text" ng-model="editor.model.attack" placeholder="Attack" maxLength="125" class="form-control input-sm" />
+    </div>
+  </div>
+
+  <div class="form-group" style="width:49%;display:inline-block;">
+    <div class="input-group">
+      <div class="input-group-addon"><i class="aotp aotp-defense"></i></div>
+      <input type="text" ng-model="editor.model.defense" placeholder="Defense" maxLength="125" class="form-control input-sm" />
     </div>
   </div>
 </script>
