@@ -160,7 +160,7 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
       var print = function(){
         $scope.printer.printElm(jElm[0])
         .then(function(){
-          $scope[attrs.printModel] = $scope.printer.printModel
+          $parse(attrs.printModel).assign($scope, $scope.printer.printModel)
           $parse(attrs.afterPrint)($scope)
         })
       }
