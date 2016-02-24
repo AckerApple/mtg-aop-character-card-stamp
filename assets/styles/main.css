@@ -59,8 +59,8 @@ char-card * {
 }
 
 .char-card .card-title-text{
-  opacity:.8;
-  font-family:JaceBeleren;
+  opacity:.8;line-height:1.1em;
+  font-family:Beleren Bold;
 }
 
 .char-card .card-image{
@@ -81,7 +81,7 @@ char-card * {
 .char-card .card-type-title{
   opacity: .8;
   font-size:75%;
-  font-family:Beleren;vertical-align:middle;
+  font-family:Beleren Bold;vertical-align:middle;
   padding-left:.5%;
   color:white;
   margin-bottom:3.5%;
@@ -111,7 +111,7 @@ char-card * {
   width:22.5%;
   text-align:center;
   font-size:220%;
-  font-family:Beleren;
+  font-family:Beleren Bold;
 }
 
 .char-card .stat-box .stat-label{

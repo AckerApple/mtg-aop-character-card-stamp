@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=0" />
     <script src="assets/scripts/angular.min.js"></script>
-
+    <script src="assets/scripts/angular-touch.min.js"></script>
     <script src="assets/scripts/ng-file-upload-all.min.js"></script>
 
     <script src="assets/scripts/ng-sortable/ng-sortable.min.js"></script>
@@ -12,8 +12,13 @@
     <script src="assets/scripts/html2canvas.min.js"></script>
     <script src="assets/scripts/mtgAotpCards.js"></script>
     <script src="assets/scripts/mtgAotpCardCreator.js"></script>
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="assets/styles/main.css" />
+
+    <link type="text/css" rel="stylesheet" href="assets/styles/Beleren-Bold/fonts.css" />
+    <link type="text/css" rel="stylesheet" href="assets/styles/beleren-small-caps/fonts.css" />
+
     <link type="text/css" rel="stylesheet" href="assets/styles/mtg-font/css/magic-font.css" />
     <link type="text/css" rel="stylesheet" href="assets/styles/mtg-aotp-syms/css/mtg-aotp-syms.css" />
   </head>
@@ -62,7 +67,7 @@
     <char-card-editor model="cardCreator.selectedCard"></char-card-editor>
   </div>
   <!-- easy rending stage -->
-  <div ng-show="cardCreator.ezPrint">
+  <div ng-show="cardCreator.ezPrint" style="position:absolute">
     <!-- html2canvas must absolute have the print area on screen, so lets flash it on then off -->
     <print-canvas before-print="cardCreator.ezPrint=true" after-print="cardCreator.ezPrint=false;cardCreator.triggerEzPrint=false" print-trigger="cardCreator.triggerEzPrint" print-model="cardCreator.ezPrintResult" style="vertical-align:top;">
       <div style="display:inline-block;">
@@ -71,7 +76,7 @@
     </print-canvas>
   </div>
   <!-- hi-res rending stage -->
-  <div ng-show="cardCreator.hiResPrint">
+  <div ng-show="cardCreator.hiResPrint" style="position:absolute">
     <!-- html2canvas must absolute have the print area on screen, so lets flash it on then off -->
     <print-canvas before-print="cardCreator.hiResPrint=true" after-print="cardCreator.hiResPrint=false;cardCreator.triggerHiResPrint=false" print-trigger="cardCreator.triggerHiResPrint" print-model="cardCreator.hiResPrintResult" style="vertical-align:top;">
       <div style="display:inline-block;">
@@ -90,7 +95,7 @@
           <div class="card-title-text">{{charCard.model.name}}</div>
         </div>
       </div>
-      <div class="card-image" ngf-drop="charCard.uploadAvatarTo($file,charCard.model)" ng-model="file" ngf-drag-over-class="'drop-over'" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="8MB" ngf-fix-orientation="true">
+      <div class="card-image" ngf-select="charCard.uploadAvatarTo($file,charCard.model)" ngf-drop="charCard.uploadAvatarTo($file,charCard.model)" ng-model="file" ngf-drag-over-class="'drop-over'" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="8MB" ngf-fix-orientation="true">
         <div ng-show="charCard.model.avatar" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.avatar.dataUrl}});"></div>
         <div ng-hide="charCard.model.avatar" style="color:#999;margin-top:35%;text-align:center;">DROP IMAGE HERE</div>
       </div>
@@ -102,7 +107,7 @@
             {{charCard.model.category}} <span style="width:8%;display:inline-block;padding-top:0%;vertical-align:middle;"><div style="border-top:1px solid white;"></div></span> {{charCard.model.type}}
           </div>
         </div>
-        <div class="figure-wrap" ngf-drop="charCard.uploadFigureTo($file,charCard.model)" ng-model="file" ngf-drag-over-class="'drop-over'" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="8MB" ngf-fix-orientation="true">
+        <div class="figure-wrap" ngf-select="charCard.uploadFigureTo($file,charCard.model)" ngf-drop="charCard.uploadFigureTo($file,charCard.model)" ng-model="file" ngf-drag-over-class="'drop-over'" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="8MB" ngf-fix-orientation="true">
           <div ng-show="charCard.model.figure" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.figure.dataUrl}});"></div>
           <div ng-hide="charCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;">DROP IMAGE HERE</div>
         </div>
@@ -154,7 +159,7 @@
 
   <div class="form-group color-picker" id="sortable-container" style="text-align:center;">
     <div as-sortable="{containment:'element > element'}" ng-model="editor.model.colors" style="display:inline-block;">
-      <div ng-repeat="item in editor.model.colors" as-sortable-item>
+      <div ng-repeat="item in editor.model.colors" as-sortable-item ng-click="editor.model.colors.splice($index,1)">
         <div as-sortable-item-handle>
           <i style="font-size:1.5em;" class="mi" ng-class="'mi-'+item"></i>
         </div>
