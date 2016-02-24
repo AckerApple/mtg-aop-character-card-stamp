@@ -18,10 +18,6 @@
     <link type="text/css" rel="stylesheet" href="assets/styles/mtg-aotp-syms/css/mtg-aotp-syms.css" />
   </head>
   <body ng-app="mtgAotpCardCreator">
-    <div style="color:red;padding:10px;font-size:1.5em;font-family:Times New Roman;">
-      defense +1<i class="aotp aotp-defense"></i> attack +1<i class="aotp aotp-attack"></i> <i class="aotp aotp-hexagon"></i> and I tested it
-      defense +1<i class="aotp aotp-defense"></i> attack +1<i class="aotp aotp-attack"></i> <i class="aotp aotp-hexagon"></i> and I tested it
-    </div>
     <mtg-aotp-card-creator></mtg-aotp-card-creator>
     <img src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border="0" style="vertical-align:top;width:223px;height:626px" />
     <img src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards 2.jpg" border="0" style="vertical-align:top;height:626px" />
@@ -141,11 +137,11 @@
 </script>
 <script id="char-card-editor" type="text/ng-template">
   <div class="form-group">
-    <input t{"label":"blue","value":"u","class":"mi mi-u"}ype="text" ng-model="editor.model.name" placeholder="Title" maxLength="125" class="form-control input-sm" />
+    <input type="text" ng-model="editor.model.name" placeholder="Title" maxLength="125" class="form-control input-sm" />
   </div>
 
-  <div class="form-group color-picker" id="sortable-container">
-    <div as-sortable="{containment:'element > element'}" ng-model="editor.model.colors">
+  <div class="form-group color-picker" id="sortable-container" style="text-align:center;">
+    <div as-sortable="{containment:'element > element'}" ng-model="editor.model.colors" style="display:inline-block;">
       <div ng-repeat="item in editor.model.colors" as-sortable-item>
         <div as-sortable-item-handle>
           <i style="font-size:1.5em;" class="mi" ng-class="'mi-'+item"></i>
@@ -153,21 +149,21 @@
       </div>
       <div style="clear:both"></div>
     </div>
-    <div style="float:left" ng-repeat="item in editor.colors track by item.value" ng-hide="editor.model.colors.indexOf(item.value)>=0" ng-click="editor.model.colors.push(item.value)">
+    <div style="display:inline-block;" ng-repeat="item in editor.colors track by item.value" ng-hide="editor.model.colors.indexOf(item.value)>=0" ng-click="editor.model.colors.push(item.value)">
       <div class="color-item">
         <i style="font-size:1.5em;" class="mi" ng-class="'mi-'+item.value"></i>
       </div>
     </div>
-
+    <div class="text-muted" style="font-size:70%;" ng-show="editor.model.colors.length>1">drag/drop to sort</div>
     <style>
       .color-picker [as-sortable-item],
       .color-picker .color-item,
       .color-picker .as-sortable-placeholder{
         cursor:pointer;width:30px;height:30px;
-        line-height:0;
+        line-height:40px;
         text-align:center;
-        border:1px solid #CCCCCC;border-radius:16%;
-        float:left;
+        border:1px solid #CCCCCC;border-radius:50%;
+        float:left;margin:0 4px;
       }
 
       .color-picker [as-sortable-item]{

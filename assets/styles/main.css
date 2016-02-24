@@ -167,8 +167,8 @@ char-card * {
 
 .char-card .stat-box .aotp-attack{
   vertical-align:top;
-  font-size:73%;
-  position:relative;left:76%;
+  font-size:62%;
+  position:relative;left:94%;
 }
 
 .char-card .stat-box.defense-box{
@@ -217,11 +217,8 @@ char-card * {
   font-family:Times New Roman;
 }
 
-.symbolized:not(.aotp-attack) {
+.symbolized {
   font-size:0.72em;vertical-align:8%;padding-left:.105em;
-}
-.symbolized.aotp-attack {
-  font-size:1.1em;
 }
 
 .card-attributes{
