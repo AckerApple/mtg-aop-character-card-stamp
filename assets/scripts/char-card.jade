@@ -1,0 +1,68 @@
+.char-card(style="text-align:left;" class="char-card-{{charCard.model.colors.length>1?'m':charCard.model.colors[0]}}" ng-class="{'char-card-print-hires':charCard.size=='hires'}")
+  .char-card-stage
+    .starting-height
+    div(style="position:relative;height:4.75%")
+      .card-title
+        .card-title-top-pad
+        .card-title-text {{charCard.model.name}}
+    .card-image
+      div(ng-show="charCard.model.avatar" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.avatar.dataUrl}});")
+      div(ng-hide="charCard.model.avatar" style="color:#999;margin-top:35%;text-align:center;") DROP IMAGE HERE
+    .card-body
+      div(style="height:.67%")
+      .card-type-wrapper(style="text-align:left;")
+        //-color symbols
+        span(ng-repeat="color in charCard.model.colors" style="display:inline-block;")
+          div(style="position:relative;font-size:70%;text-align:center;line-height:0;")
+            span(style="position:absolute;width:100%;color:black;left:1.5%;z-index:10;")
+              i.mi(class="mi-{{color}}")
+          i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
+        //-colorless space keeper
+        span(style="font-size:110%;" ng-hide="charCard.model.colors.length") &nbsp;
+        .card-type-title(style="display:inline-block;white-space:nowrap;")
+          |{{charCard.model.category}}
+          |&nbsp;
+          span(style="width:8%;display:inline-block;padding-top:0%;vertical-align:middle;")
+            div(style="border-top:1px solid white;line-height:25%;")&nbsp;
+          |&nbsp;
+          |{{charCard.model.type}}
+      .figure-wrap(style="position:relative;")
+        i(ng-class="charCard.model.symbolClass" style="color:white;left:4%;top:88%;position:absolute;font-size:83%;")
+        div(ng-show="charCard.model.figure" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.figure.dataUrl}});")
+        div(ng-hide="charCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;") DROP IMAGE HERE
+      .stat-box.life-box(ng-class="{'life-box-sm':charCard.model.attack>9}")
+        .stat-label(style="line-height:0;") LIFE
+        .life-box-value {{charCard.model.life||'?'}}
+      .stat-box.move-box(style="display:inline-block;left:7.5%;")
+        .stat-label.move-box-text MOVE
+        .move-box-value {{charCard.model.move||'?'}}
+      .stat-box.range-box(style="display:inline-block;left:7.5%;")
+        .stat-label.range-box-text RANGE
+        .range-box-value {{charCard.model.range||'?'}}
+      .stat-box.attack-box
+        span(style="position:relative;")
+          span.attack-box-text(ng-class="{'attack-box-text-sm':charCard.model.attack>9}") {{charCard.model.attack||'?'}}
+        i.aotp.aotp-attack
+      .stat-box.defense-box
+        span(style="position:relative;")
+          span.defense-box-text(ng-class="{'defense-box-text-sm':charCard.model.defense>9}") {{charCard.model.defense||'?'}}
+          i.aotp.aotp-defense
+      div(style="position:relative;height:0;")
+        div(style="position:absolute;margin-top:120.5%;width:97.15%;text-align:right;")
+          i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
+            span(style="left:0;margin-top:.3em;position:absolute;width:100%;color:#CCC;font-size:80%;")
+              i(ng-class="charCard.series.symbolClass")
+      .card-abilities
+        .card-ability(ng-repeat="ability in charCard.model.abilityArray track by ability.title")
+          strong.card-ability-title {{ability.title|uppercase}}
+          .card-ability-body(ng-bind-html="ability.body|symbolize|trustAsHtml")
+      .card-attributes
+        div(style="float:right") COST&nbsp;&nbsp;{{charCard.model.cost.value}}
+        div {{charCard.model.height.name|uppercase}} {{charCard.model.height.value}}
+      .card-footer
+        div(style="float:right;margin-right:2.5%;margin-top:1.5%;" ng-bind-html="charCard.series.copyRight|trustAsHtml")
+        div(style="margin-left:2.5%;")
+          i(ng-class="charCard.model.artist.iconClass" style="font-size:220%;vertical-align:-17%")
+          |&nbsp;&nbsp;&nbsp;&nbsp;
+          |{{charCard.model.artist.title}}
+          |{{charCard.model.artist.title}}

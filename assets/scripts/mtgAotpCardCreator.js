@@ -10,8 +10,8 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
   return {
     restrict:'E'
     ,scope:{model:'='}
-    ,templateUrl:'char-card-editor'
-    ,controller:function(){
+    ,template:require('./char-card-editor.jade')
+    ,controller:function(Upload){
       this.selectedColors=[]
       this.colors=[
         {label:'black',value:'b'},
@@ -20,6 +20,34 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
         {label:'red',value:'r'},
         {label:'white',value:'w'}
       ]
+
+      this.uploadAvatarTo = function($file,model){
+        Upload.base64DataUrl($file)
+        .then(function(res){
+          model.avatar = {dataUrl:res}
+        })
+      }
+
+      this.uploadFigureTo = function($file,model){
+        Upload.base64DataUrl($file)
+        .then(function(res){
+          model.figure = {dataUrl:res}
+        })
+      }
+
+      this.addAbility = function(){
+        this.model.abilityArray.push({})
+      }
+
+      this.cycleSymbolClass = function(){
+        var newClass = 'aotp aotp-squad'
+        switch(this.model.symbolClass){
+          case 'aotp aotp-squad':
+            newClass = ''
+            break;
+        }
+        this.model.symbolClass = newClass
+      }
     }
     ,bindToController:true
     ,controllerAs:'editor'
@@ -31,10 +59,20 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
     ,scope:{}
     ,bindToController:true
     ,controllerAs:'cardCreator'
-    ,templateUrl:'mtg-aotp-card-creator'
+    ,template:require('./mtg-aotp-card-creator.jade')
     ,controller:function(AotpCards, AotpDemoCharCard){
       this.seriesIndex=0
       this.selectedIndex = 0
+
+      this.cycleSeriesSymbol = function(){
+        var newClass = 'mi mi-planeswalk'
+        switch(this.selectedSeries.symbolClass){
+          case 'mi mi-planeswalk':
+            newClass = 'aotp aotp-zendikar'
+            break;
+        }
+        this.selectedSeries.symbolClass = newClass
+      }
 
       this.priorSeries = function(){
         this.seriesIndex=this.seriesIndex==0?Object.keys(this.cards.character).length-1:this.seriesIndex-1
@@ -81,6 +119,7 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
       this.selectFirstCard = function(){
         this.selectedSeries = this.selectedSeries || this.cards.character[ Object.keys(this.cards.character)[0] ]
         this.selectedCard = this.selectedSeries.data[ Object.keys(this.selectedSeries.data)[0] ]
+        this.selectedSeries.symbolClass = this.selectedSeries.symbolClass||'mi mi-planeswalk'
       }
 
       this.selectDemoCard = function(){
@@ -100,22 +139,9 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
 .directive('charCard',function(){
   return {
     restrict:'E'
-    ,scope:{model:'=', size:'='}
-    ,templateUrl:'char-card'
-    ,controller:function(Upload){
-      this.uploadAvatarTo = function($file,model){
-        Upload.base64DataUrl($file)
-        .then(function(res){
-          model.avatar = {dataUrl:res}
-        })
-      }
-
-      this.uploadFigureTo = function($file,model){
-        Upload.base64DataUrl($file)
-        .then(function(res){
-          model.figure = {dataUrl:res}
-        })
-      }
+    ,scope:{model:'=', size:'=', series:'='}
+    ,template:require('./char-card.jade')
+    ,controller:function(){
     }
     ,bindToController:true
     ,controllerAs:'charCard'
@@ -126,7 +152,6 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
 		restrict:'EA',
 		transclude:true,
     scope:false,
-		//template:'<ng-transclude style="display:inline-block;" ng-style="{width:printer.printWidth+\'px\',height:printer.printHeight+\'px\'}"></ng-transclude></div>',
 		bindToController:{
       printTrigger:'=', printModel:'=',
       printWidth:'=', printHeight:'=',
@@ -183,6 +208,7 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
 })
 .filter('symbolize',function($sce){
   return function(string){
+    if(!string||!string.replace)return string;
     string = string.replace(/\#\{([^\}]*)\}/g, '<span class="symbolized $1"></span>')
     return string;
   }
@@ -194,7 +220,7 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
 })
 .filter('keys',function(){
   return function(val){
-    return Object.keys(val)
+    return val ? Object.keys(val) : [];
   }
 })
 .filter('jsonExportUrl',function(){

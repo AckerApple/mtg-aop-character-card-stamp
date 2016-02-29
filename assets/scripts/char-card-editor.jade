@@ -1,0 +1,179 @@
+div(style="padding:1em .8em;background-color:black;border-radius:1.1em;height:100%;color:white;")
+  input.form-control.input-xs(type="text" ng-model="editor.model.name" placeholder="Title" maxLength=125)
+
+  -attrs={}
+  -attrs['style']="height:160px;border:1px dashed white;background-color:black;cursor:pointer;"
+  -attrs['ng-mouseover']="editor.mouseOverImage=true"
+  -attrs['ng-mouseout']="editor.mouseOverImage=false"
+  div&attributes(attrs)
+    -ngStyle="{'background-image':editor.model.avatar && !editor.mouseOverImageurl ? 'url('+editor.model.avatar.dataUrl+')':null}"
+    div(style="height:100%;background-size:cover;background-position:center center;" ng-style=ngStyle)
+      -attrs={}
+      -attrs['ngf-drop']="editor.uploadAvatarTo($file,editor.model)"
+      -attrs['ng-model']="file"
+      -attrs['ngf-pattern']="'image/*'"
+      -attrs['ngf-accept']="'image/*'"
+      -attrs['ngf-max-size']="8MB"
+      -attrs['ngf-fix-orientation']="true"
+      -attrs['ngf-drag-over-class']="'drop-over'"
+      -attrs['ngf-select']="editor.uploadAvatarTo($file,editor.model)"
+      div(style="height:80%;")&attributes(attrs)
+        //-ng-hide="editor.model.avatar && !editor.mouseOverImage"
+        div(style="position:relative;text-align:center;")
+          div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:25%;width:100%") DROP IMAGE HERE
+
+      .color-picker(id="sortable-container" style="text-align:center;padding:0;")
+        div(style="position:relative;")
+          -style="color:white;text-shadow:1px 1px 0 #000;top:-14px;left:10px;position:absolute;font-size:70%;"
+          .text-muted(style=style)
+            |Mana Types
+            span(ng-show="editor.model.colors.length>1") &nbsp;(drag to sort)
+        div(as-sortable="{containment:'#sortable-container'}" ng-model="editor.model.colors" style="display:inline-block;color:black;")
+          div(ng-repeat="item in editor.model.colors" ng-class="'bg-'+item" as-sortable-item ng-click="editor.model.colors.splice($index,1)")
+            div(as-sortable-item-handle)
+              i.mi(style="font-size:1.5em;" ng-class="'mi-'+item")
+
+        -ngRepeat="item in editor.colors track by item.value"
+        -ngHide="editor.model.colors.indexOf(item.value)>=0"
+        -ngClick="editor.model.colors.push(item.value)"
+        .text-muted(style="display:inline-block;" ng-repeat=ngRepeat ng-hide=ngHide ng-click=ngClick)
+          .color-item(style="background-color:white;opacity:.8;")
+            i.mi(style="font-size:1.5em;" ng-class="'mi-'+item.value")
+
+
+  .text-left(style="margin-bottom:2%;")
+    div(style="height:4px;")
+    table
+      tr
+        td(style="width:60%;padding-right:3px;")
+          .form-group(style="margin-bottom:.6em")
+            .text-xs Category
+            -placeHolder="Category - Planeswalker, Squad Creature, Hero Creature"
+            -attrs={type:"text", "ng-model":"editor.model.category", placeholder:placeHolder, maxLength:125}
+            input.form-control.input-xs&attributes(attrs)
+        td(style="width:40%;")
+          .form-group(style="margin-bottom:.6em")
+            .text-xs Type Name
+            input.form-control.input-xs(type="text" ng-model="editor.model.type" placeholder="Type Name" maxLength=125)
+    table
+      tr
+        td(style="width:45%;padding-right:1%;cursor:pointer;border:1px dashed white;" valign="top")
+          -attrs={}
+          -attrs['ngf-select']="charCard.uploadFigureTo($file,editor.model)"
+          -attrs['ngf-drop']="charCard.uploadFigureTo($file,editor.model)"
+          -attrs['ng-model']="file"
+          -attrs['ngf-drag-over-class']="'drop-over'"
+          -attrs['ngf-pattern']="'image/*'"
+          -attrs['ngf-accept']="'image/*'"
+          -attrs['ngf-max-size']="8MB"
+          -attrs['ngf-fix-orientation']="true"
+          div&attributes(attrs)
+            div(style="position:relative;text-align:center;")
+              div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%;font-size:70%;") DROP IMAGE HERE
+            div(ng-show="editor.model.figure" style="height:100px;background-size:cover;background-position:center center;background-image:url({{editor.model.figure.dataUrl}});")
+
+        td(style="width:55%;padding-left:3px;" valign="top")
+          table(cellPadding=0 cellSpacing=0 border=0)
+            tr
+              td(style="width:33%;padding-right:3px;")
+                .form-group(style="margin-bottom:8%;")
+                  .text-xs Life
+                  input.form-control.input-xs(type="text" ng-model="editor.model.life" placeholder="Life" maxLength=2 style="padding-right:0;")
+              td(style="width:33%;padding-right:3px;")
+                .form-group(style="margin-bottom:8%;")
+                  .text-xs Move
+                  input.form-control.input-xs(type="text" ng-model="editor.model.move" placeholder="Move" maxLength=2 style="padding-right:0;")
+              td(style="width:33%")
+                .form-group(style="margin-bottom:8%;")
+                  .text-xs Range
+                  input.form-control.input-xs(type="text" ng-model="editor.model.range" placeholder="Range" maxLength=2 style="padding-right:0;")
+          table(cellPadding=0 cellSpacing=0 border=0)
+            tr
+              td(style="width:50%;padding-right:3px;")
+                .form-group(style="margin-bottom:.5em;")
+                  div(style="position:relative")
+                    i.aotp.aotp-attack(style="position:absolute;margin-top:4%;left:8%;color:black;")
+                  input.form-control.input-xs(type="text" ng-model="editor.model.attack" placeholder="Attack" maxLength=2 style="padding-left:1.75em;padding-right:0;")
+              td(style="width:50%;")
+                .form-group(style="margin-bottom:.5em;")
+                  div(style="position:relative")
+                    i.aotp.aotp-defense(style="position:absolute;margin-top:4%;left:6%;color:black;")
+                  input.form-control.input-xs(type="text" ng-model="editor.model.defense" placeholder="Defense" maxLength=2 style="padding-left:1.75em;padding-right:0;")
+          .input-group
+            .input-group-addon.text-xs(style="height:25.5px;padding:2.5% 4%;" ng-click="editor.cycleSymbolClass()")
+              i(ng-class="editor.model.symbolClass||'mi mi-planeswalk'" style="font-size:1.5em;")
+            input.input-xs.form-control(type="text" ng-model="editor.model.symbolClass" placeholder="Symbol Class" style="font-size:65%;")
+
+
+  div(style="overflow:auto;background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;" ng-style="{height:editCardAbs?'42%':false}")
+    div(ng-click="editCardAbs=editCardAbs?false:true")
+      a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Abilities
+      sup(style="font-size:60%;") &nbsp;{{editor.model.abilityArray.length}}
+    div(ng-show="editCardAbs")
+      .form-group(ng-repeat="ability in editor.model.abilityArray track by ability.title")
+        input.input-xs.form-control(type="text" ng-model="ability.title" placeholder="Ability Title")
+        textarea.input-xs.form-control(ng-model="ability.body" style="font-size:70%;height:65px" placeholder="Ability Body Description")
+      .text-center(style="margin-bottom:3%;")
+        .btn.btn-success.btn-xs(ng-click="editor.addAbility()") + add ability
+  div(ng-hide="editCardAbs" style="margin-top:4%;")
+    table(cellPadding=0 cellSpacing=0 border=0 style="color:white;")
+      tr
+        td(style="width:25%;padding-right:3px;")
+          .form-group
+            .text-left.text-xs Height
+            select.form-control.input-xs(ng-options="each for each in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]" ng-model="editor.model.height.value")
+        td(style="width:25%;padding-right:3px;")
+          .form-group
+            .text-left.text-xs Size
+            input.form-control.input-xs(type="text" ng-model="editor.model.height.name" placeholder="height name")
+        td(style="width:25%;padding-right:3px;")
+          .form-group
+            .text-left.text-xs Cost
+            input.form-control.input-xs(type="text" ng-model="editor.model.cost.value" placeholder="value")
+        td(style="width:25%;")
+          .form-group
+            .text-left.text-xs Per
+            input.form-control.input-xs(type="text" ng-model="editor.model.cost.per" placeholder="each")
+
+    table(cellPadding=0 cellSpacing=0 border=0 style="color:white;")
+      tr
+        td(style="width:50%;padding-right:3px;")
+          .form-group.text-left
+            .text-xs
+              i(ng-class="editor.model.artist.iconClass")
+              |&nbsp;Artist Icon
+            input.form-control.input-xs(ng-model="editor.model.artist.iconClass" style="font-size:65%;")
+        td(style="width:50%;")
+          .form-group.text-left
+            .text-xs Artist Title
+            input.form-control.input-xs(ng-model="editor.model.artist.title" style="font-size:65%;")
+
+
+
+style.
+  .color-picker .as-sortable-dragging{
+    top:-90px;
+  }
+
+  .color-picker [as-sortable-item],
+  .color-picker .color-item,
+  .color-picker .as-sortable-placeholder{
+    cursor:pointer;width:30px;height:30px;
+    line-height:40px;
+    text-align:center;
+    border:1px solid #444444;
+    border-radius:50%;
+    float:left;margin:0 4px;
+  }
+
+  .color-picker [as-sortable-item]{
+    border:1px solid black;
+  }
+
+  .input-xs, .form-horizontal .form-group-xs .form-control {
+      border-radius: 3px;
+      font-size: 11px;
+      height: 25px;
+      line-height: 1.2;
+      padding: 3px 6px;
+  }

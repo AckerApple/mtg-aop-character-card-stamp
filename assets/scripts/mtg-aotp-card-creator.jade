@@ -1,0 +1,91 @@
+div(style="text-align:center;")
+  div(style="display:inline-block;")
+    div(style="text-align:center;padding-top:1em;")
+      div(style="display:inline-block;margin:0 1em 1em 1em;vertical-align:middle")
+        //-Series & card labels
+        -title="{{cardCreator.seriesIndex+1}} of {{(cardCreator.cards.character|keys).length}}"
+        h3(style="margin:0;" title=title)
+          i(ng-class="cardCreator.selectedSeries.symbolClass" ng-click="cardCreator.cycleSeriesSymbol()")
+          |&nbsp;
+          span(style="vertical-align:top;display:inline-block;")
+            span(ng-hide="editSeriesName" ng-click="editSeriesName=editSeriesName?false:true") {{cardCreator.selectedSeries.name}}
+            div(style="width:200px" ng-show="editSeriesName")
+              input.input-xs.form-control(type="text" ng-model="cardCreator.selectedSeries.name" ng-blur="editSeriesName=false")
+        div
+          .text-muted(style="font-size:0.9em;line-height:2;margin-bottom:.2em;")
+            div(style="display:inline-block;" ng-hide="editSeriesDesc" ng-click="editSeriesDesc=editSeriesDesc?false:true") {{cardCreator.selectedSeries.description}}
+          .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesDesc")
+            -ngModel="cardCreator.selectedSeries.description"
+            input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesDesc=false")
+        div
+          .text-muted(style="font-size:0.6em;line-height:1;margin-bottom:.5em;")
+            div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.selectedSeries.copyRight|trustAsHtml")
+          .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesCopyRight")
+            -ngModel="cardCreator.selectedSeries.copyRight"
+            input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesCopyRight=false")
+
+      //-Series & card selectors
+      div(style="display:inline-block;margin:0 1em 1em 1em;")
+        .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:0;") series selector
+        a.btn.btn-default(style="width:60px;" ng-click="cardCreator.priorSeries()") &lt;&lt;
+
+        div(style="display:inline-block;padding:0 .5em;")
+          .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:.6;padding-bottom:4px;") card selector
+          a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.priorCard()") &lt;
+          span(style="font-size:.8em;")
+            |&nbsp;&nbsp;
+            |{{cardCreator.selectedIndex+1}} of {{(cardCreator.selectedSeries.data|keys).length}}
+            |&nbsp;&nbsp;
+          a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.nextCard()") &gt;
+
+        a.btn.btn-default(style="width:60px;" ng-click="cardCreator.nextSeries()") &gt;&gt;
+
+    div
+      div(style="display:inline-block;vertical-align:top;margin:1px;")
+        h6.text-muted Card Preview
+        char-card(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
+
+      .char-card-editor(style="display:inline-block;vertical-align:top;margin:1px;")
+        h6.text-muted Card Editor
+        char-card-editor(model="cardCreator.selectedCard")
+
+      div(style="width:223px;overflow:auto;display:inline-block;margin:1px;")
+        h6.text-muted Comparison Cards
+        img(src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border=0 style="vertical-align:top;height:626px")
+
+div(style="text-align:center;")
+  a.btn.btn-danger(ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank") import series
+  |&nbsp;
+  a.btn.btn-default(ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank") export series
+  |&nbsp;
+  a.btn.btn-default(ng-href="{{cardCreator.selectedCard|jsonExportUrl}}" target="blank") export card
+  |&nbsp;
+  a.btn.btn-default(download="{{cardCreator.selectedSeries.name}}.json" ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank") download series
+  |&nbsp;
+  a.btn.btn-default(download="{{cardCreator.selectedCard.name}}.json" ng-href="{{cardCreator.selectedCard|jsonExportUrl}}" target="blank") download card
+  |&nbsp;
+  a.btn.btn-default(ng-click="cardCreator.deleteCard()" target="blank") delete card
+  |&nbsp;
+  hr
+  a.btn.btn-default(ng-click="cardCreator.triggerEzPrint=false;cardCreator.triggerEzPrint=true") render easy-print
+  a.btn.btn-default(ng-show="cardCreator.ezPrintResult" href="{{cardCreator.ezPrintResult.url}}" target="_blank") open easy-print
+  a.btn.btn-default(ng-click="cardCreator.triggerHiResPrint=false;cardCreator.triggerHiResPrint=true") render hi-res
+  a.btn.btn-default(ng-show="cardCreator.hiResPrintResult" href="{{cardCreator.hiResPrintResult.url}}" target="_blank") open hi-res
+  hr
+  a.btn.btn-success(ng-click="cardCreator.selectDemoCard()") + new card
+
+//- rendered prints !always at bottom
+
+//- easy rending stage
+div(ng-show="cardCreator.ezPrint" style="position:absolute")
+  //-html2canvas must absolute have the print area on screen, so lets flash it on then off
+  print-canvas(before-print="cardCreator.ezPrint=true" after-print="cardCreator.ezPrint=false;cardCreator.triggerEzPrint=false" print-trigger="cardCreator.triggerEzPrint" print-model="cardCreator.ezPrintResult" style="vertical-align:top;")
+    div(style="display:inline-block;")
+      char-card(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
+
+//-hi-res rending stage
+div(ng-show="cardCreator.hiResPrint" style="position:absolute")
+  //- html2canvas must absolute have the print area on screen, so lets flash it on then off
+  print-canvas(before-print="cardCreator.hiResPrint=true" after-print="cardCreator.hiResPrint=false;cardCreator.triggerHiResPrint=false" print-trigger="cardCreator.triggerHiResPrint" print-model="cardCreator.hiResPrintResult" style="vertical-align:top;")
+    div(style="display:inline-block;")
+      char-card(size="'hires'" model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
