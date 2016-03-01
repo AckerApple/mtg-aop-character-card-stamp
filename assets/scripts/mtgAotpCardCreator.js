@@ -117,6 +117,7 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
       }
 
       this.selectFirstCard = function(){
+        this.selectedIndex = 0;
         this.selectedSeries = this.selectedSeries || this.cards.character[ Object.keys(this.cards.character)[0] ]
         this.selectedCard = this.selectedSeries.data[ Object.keys(this.selectedSeries.data)[0] ]
         this.selectedSeries.symbolClass = this.selectedSeries.symbolClass||'mi mi-planeswalk'
@@ -148,40 +149,40 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
   }
 })
 .directive('printCanvas',function($q,$parse){
-	return {
-		restrict:'EA',
-		transclude:true,
+  return {
+    restrict:'EA',
+    transclude:true,
     scope:false,
-		bindToController:{
+    bindToController:{
       printTrigger:'=', printModel:'=',
       printWidth:'=', printHeight:'=',
       beforePrint:'&', afterPrint:'&'
     },
-		controllerAs:'printer',
-		controller:function(){
-			this.printCanvas = function(canvas){
-			  this.printModel = {
-			  	canvas:canvas,
-			  	url:canvas.toDataURL("image/png",1)
-			  }
-			}
+    controllerAs:'printer',
+    controller:function(){
+      this.printCanvas = function(canvas){
+        this.printModel = {
+          canvas:canvas,
+          url:canvas.toDataURL("image/png",1)
+        }
+      }
 
-			this.printElm = function(elm){
-				var defer = $q.defer()
-				var options = {
-			  	allowTaint:true
-			    ,useCORS:true
-			    ,letterRendering:true
-			    ,onrendered:defer.resolve.bind(defer)//this.printCanvas.bind(this)
-			    ,width:this.printWidth
-			    ,height:this.printHeight
-			  }
-				html2canvas(elm,options)
+      this.printElm = function(elm){
+        var defer = $q.defer()
+        var options = {
+          allowTaint:true
+          ,useCORS:true
+          ,letterRendering:true
+          ,onrendered:defer.resolve.bind(defer)//this.printCanvas.bind(this)
+          ,width:this.printWidth
+          ,height:this.printHeight
+        }
+        html2canvas(elm,options)
 
-				return defer.promise.then( this.printCanvas.bind(this) )
-			}
-		},
-		link:function($scope, jElm, attrs, a, transclude){
+        return defer.promise.then( this.printCanvas.bind(this) )
+      }
+    },
+    link:function($scope, jElm, attrs, a, transclude){
       var print = function(){
         $scope.printer.printElm(jElm[0])
         .then(function(){
@@ -189,22 +190,22 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
           $parse(attrs.afterPrint)($scope)
         })
       }
-			$scope.$watch(attrs.printTrigger, function(value){
-				if(value){
+      $scope.$watch(attrs.printTrigger, function(value){
+        if(value){
           $scope.printer.printWidth = $parse(attrs.printWidth)($scope)
           $scope.printer.printHeight = $parse(attrs.printHeight)($scope)
 
           $parse(attrs.beforePrint)($scope)
           setTimeout(print, 100)
-				}
-			})
+        }
+      })
 
-			transclude($scope, function(clone){
-				jElm.html('')
-				jElm.append(clone)
-			})
-		}
-	}
+      transclude($scope, function(clone){
+        jElm.html('')
+        jElm.append(clone)
+      })
+    }
+  }
 })
 .filter('symbolize',function($sce){
   return function(string){

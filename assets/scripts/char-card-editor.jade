@@ -100,8 +100,8 @@ div(style="padding:1em .8em;background-color:black;border-radius:1.1em;height:10
                     i.aotp.aotp-defense(style="position:absolute;margin-top:4%;left:6%;color:black;")
                   input.form-control.input-xs(type="text" ng-model="editor.model.defense" placeholder="Defense" maxLength=2 style="padding-left:1.75em;padding-right:0;")
           .input-group
-            .input-group-addon.text-xs(style="height:25.5px;padding:2.5% 4%;" ng-click="editor.cycleSymbolClass()")
-              i(ng-class="editor.model.symbolClass||'mi mi-planeswalk'" style="font-size:1.5em;")
+            .input-group-addon(style="line-height:0;padding:2.5% 4%;" ng-click="editor.cycleSymbolClass()")
+              i(ng-class="editor.model.symbolClass||'mi mi-planeswalk'" style="font-size:1.2em;")
             input.input-xs.form-control(type="text" ng-model="editor.model.symbolClass" placeholder="Symbol Class" style="font-size:65%;")
 
 
@@ -109,7 +109,7 @@ div(style="padding:1em .8em;background-color:black;border-radius:1.1em;height:10
     div(ng-click="editCardAbs=editCardAbs?false:true")
       a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Abilities
       sup(style="font-size:60%;") &nbsp;{{editor.model.abilityArray.length}}
-    div(ng-show="editCardAbs")
+    div(ng-show="editCardAbs" style="height:90%;overflow:auto;")
       .form-group(ng-repeat="ability in editor.model.abilityArray track by ability.title")
         input.input-xs.form-control(type="text" ng-model="ability.title" placeholder="Ability Title")
         textarea.input-xs.form-control(ng-model="ability.body" style="font-size:70%;height:65px" placeholder="Ability Body Description")

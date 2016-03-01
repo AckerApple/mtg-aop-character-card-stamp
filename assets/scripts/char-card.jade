@@ -17,15 +17,20 @@
             span(style="position:absolute;width:100%;color:black;left:1.5%;z-index:10;")
               i.mi(class="mi-{{color}}")
           i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
-        //-colorless space keeper
-        span(style="font-size:110%;" ng-hide="charCard.model.colors.length") &nbsp;
         .card-type-title(style="display:inline-block;white-space:nowrap;")
+          span(ng-hide="charCard.model.colors.length") &nbsp;&nbsp;
           |{{charCard.model.category}}
           |&nbsp;
           span(style="width:8%;display:inline-block;padding-top:0%;vertical-align:middle;")
-            div(style="border-top:1px solid white;line-height:25%;")&nbsp;
+            div(style="border-top:1px solid white;line-height:25%;") &nbsp;
           |&nbsp;
           |{{charCard.model.type}}
+        //-colorless space keeper
+        span(ng-hide="charCard.model.colors.length" style="display:inline-block;visibility:hidden")
+          div(style="position:relative;font-size:70%;text-align:center;line-height:0;")
+            span(style="position:absolute;width:100%;color:black;left:1.5%;z-index:10;")
+              i.mi(class="mi-b")
+          i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
       .figure-wrap(style="position:relative;")
         i(ng-class="charCard.model.symbolClass" style="color:white;left:4%;top:88%;position:absolute;font-size:83%;")
         div(ng-show="charCard.model.figure" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.figure.dataUrl}});")
