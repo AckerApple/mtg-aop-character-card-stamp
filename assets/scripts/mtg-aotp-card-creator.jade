@@ -54,15 +54,18 @@ div(style="text-align:center;")
         img(src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border=0 style="vertical-align:top;height:626px")
 
 div(style="text-align:center;")
-  a.btn.btn-danger(ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank") import series
+  div(ng-show="cardCreator.export")
+    a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank") View {{cardCreator.export.name}}
+    |&nbsp;
+    a.btn.btn-default(download="{{cardCreator.export.name}}.json" ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank") Download {{cardCreator.export.name}}
+
+  a.btn.btn-danger(onclick="alert('not done')" target="blank") import series
   |&nbsp;
-  a.btn.btn-default(ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank") export series
+  a.btn.btn-default(ng-click="cardCreator.exportAll()" target="blank") export all series
   |&nbsp;
-  a.btn.btn-default(ng-href="{{cardCreator.selectedCard|jsonExportUrl}}" target="blank") export card
+  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedSeries,name:cardCreator.selectedSeries.name}" target="blank") export series
   |&nbsp;
-  a.btn.btn-default(download="{{cardCreator.selectedSeries.name}}.json" ng-href="{{cardCreator.selectedSeries|jsonExportUrl}}" target="blank") download series
-  |&nbsp;
-  a.btn.btn-default(download="{{cardCreator.selectedCard.name}}.json" ng-href="{{cardCreator.selectedCard|jsonExportUrl}}" target="blank") download card
+  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedCard, name:cardCreator.selectedCard.name}" target="blank") export card
   |&nbsp;
   a.btn.btn-default(ng-click="cardCreator.deleteCard()" target="blank") delete card
   |&nbsp;

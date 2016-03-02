@@ -57,20 +57,20 @@ div(style="padding:1em .8em;background-color:black;border-radius:1.1em;height:10
             input.form-control.input-xs(type="text" ng-model="editor.model.type" placeholder="Type Name" maxLength=125)
     table
       tr
-        td(style="width:45%;padding-right:1%;cursor:pointer;border:1px dashed white;" valign="top")
+        td(style="width:45%;padding-right:1%;" valign="top")
           -attrs={}
-          -attrs['ngf-select']="charCard.uploadFigureTo($file,editor.model)"
-          -attrs['ngf-drop']="charCard.uploadFigureTo($file,editor.model)"
+          -attrs['ngf-select']="editor.uploadFigureTo($file,editor.model)"
+          -attrs['ngf-drop']="editor.uploadFigureTo($file,editor.model)"
           -attrs['ng-model']="file"
           -attrs['ngf-drag-over-class']="'drop-over'"
           -attrs['ngf-pattern']="'image/*'"
           -attrs['ngf-accept']="'image/*'"
           -attrs['ngf-max-size']="8MB"
           -attrs['ngf-fix-orientation']="true"
-          div&attributes(attrs)
-            div(style="position:relative;text-align:center;")
-              div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%;font-size:70%;") DROP IMAGE HERE
-            div(ng-show="editor.model.figure" style="height:100px;background-size:cover;background-position:center center;background-image:url({{editor.model.figure.dataUrl}});")
+          div(style="cursor:pointer;border:1px dashed white;height:100px;background-size:cover;background-position:center center;" ng-style="{'background-image':'url('+editor.model.figure.dataUrl+')'}")
+            div(style="height:100%")&attributes(attrs)
+              div(style="position:relative;text-align:center;")
+                div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%;font-size:70%;") DROP IMAGE HERE
 
         td(style="width:55%;padding-left:3px;" valign="top")
           table(cellPadding=0 cellSpacing=0 border=0)

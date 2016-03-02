@@ -1,5 +1,5 @@
 "use strict";
-angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'])
+angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload','as.sortable'])
 .config( [
     '$compileProvider',
     function( $compileProvider ){
@@ -36,6 +36,7 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
       }
 
       this.addAbility = function(){
+        this.model.abilityArray = this.model.abilityArray || []
         this.model.abilityArray.push({})
       }
 
@@ -93,7 +94,6 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
         this.selectedSeries = this.selectedSeries[ Object.keys(this.selectedSeries)[this.seriesIndex] ]
       }
 
-
       this.priorCard = function(){
         this.selectedIndex=this.selectedIndex==0?Object.keys(this.selectedSeries.data).length-1:this.selectedIndex-1
         this.selectedCard = this.selectedSeries.data[ Object.keys(this.selectedSeries.data)[this.selectedIndex] ]
@@ -132,6 +132,8 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
         this.selectedCard = res.data
       }
 
+      this.exportAll = () => {this.export={name:'mtg-aotp-cards', data:this.cards}}
+
       AotpCards.list()
       .then(this.setFetchResult.bind(this))
     }
@@ -146,6 +148,17 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
     }
     ,bindToController:true
     ,controllerAs:'charCard'
+  }
+})
+.directive('mtgSymbolize',function($sanitize){
+  return {
+    scope:{mtgSymbolize:'='}
+    ,restrict:'A'
+    ,link:function($scope, jElm, $attrs){
+      $scope.$watch('mtgSymbolize',function(string){
+        jElm[0].innerHTML = symbolize( $sanitize(string) )
+      })
+    }
   }
 })
 .directive('printCanvas',function($q,$parse){
@@ -207,12 +220,8 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
     }
   }
 })
-.filter('symbolize',function($sce){
-  return function(string){
-    if(!string||!string.replace)return string;
-    string = string.replace(/\#\{([^\}]*)\}/g, '<span class="symbolized $1"></span>')
-    return string;
-  }
+.filter('symbolize',function(){
+  return symbolize
 })
 .filter('trustAsHtml', function($sce){
   return function(text) {
@@ -238,3 +247,9 @@ angular.module('mtgAotpCardCreator',['mtgAotpCards','ngFileUpload','as.sortable'
     return angular.copy(val)
   }
 })
+
+function symbolize(string){
+  if(!string||!string.replace)return string;
+  string = string.replace(/\#\{([^\}'"]*)\}/g, '<span class="symbolized $1"></span>')
+  return string;
+}

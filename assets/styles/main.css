@@ -157,7 +157,13 @@ char-card * {
   line-height:110%;
   text-align:left;
   width:10%;
-  margin-left:8%;display:inline-block;
+  margin-left:7.75%;display:inline-block;
+}
+.char-card .stat-box.defense-box{
+  line-height:110%;
+  text-align:left;
+  padding-left:14%;
+  display:inline-block;
 }
 
 .char-card .stat-box .attack-box-text{
@@ -165,39 +171,34 @@ char-card * {
   width:1%;overflow:visible;
   position:absolute;padding-top:10%;
 }
+.char-card .stat-box .defense-box-text{
+  font-size:83%;
+  position:absolute;padding-top:16%;
+  padding-left:20%;
+}
+
 .char-card .stat-box .attack-box-text.attack-box-text-sm{
   padding-left:3.75%;
   font-size:65%;
   line-height:180%;
 }
+.char-card .stat-box .defense-box-text.defense-box-text-sm{
+  font-size:65%;
+  line-height:180%;
+  padding-left:0;
+}
 
 .char-card .stat-box .aotp-attack{
   vertical-align:top;
-  font-size:62%;
-  position:relative;left:94%;
+  font-size:58%;
+  position:relative;left:98%;
 }
-
-.char-card .stat-box.defense-box{
-  line-height:105%;
-  text-align:left;
-  padding-left:14.5%;
-  display:inline-block;
-}
-.char-card .stat-box .defense-box-text{
-  font-size:83%;
-  position:absolute;padding-top:16%;
-}
-.char-card .stat-box .defense-box-text.defense-box-text-sm{
-  right:-0.82em;
-  font-size:65%;
-  line-height:155%;
-}
-
 .char-card .stat-box .aotp-defense{
   vertical-align:top;
-  font-size:62%;
-  position:relative;left:90%;
+  font-size:58%;
+  position:relative;left:110%;
 }
+
 
 .card-abilities{
   /*border:1px solid red;*/

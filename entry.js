@@ -1,5 +1,6 @@
 require('angular');
 require('angular-touch');
+require('angular-sanitize');
 
 require('ng-file-upload');
 

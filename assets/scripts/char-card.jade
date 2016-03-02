@@ -45,13 +45,13 @@
         .stat-label.range-box-text RANGE
         .range-box-value {{charCard.model.range||'?'}}
       .stat-box.attack-box
-        span(style="position:relative;")
+        span(style="position:relative;vertical-align:top")
           span.attack-box-text(ng-class="{'attack-box-text-sm':charCard.model.attack>9}") {{charCard.model.attack||'?'}}
         i.aotp.aotp-attack
       .stat-box.defense-box
-        span(style="position:relative;")
+        span(style="position:relative;vertical-align:top")
           span.defense-box-text(ng-class="{'defense-box-text-sm':charCard.model.defense>9}") {{charCard.model.defense||'?'}}
-          i.aotp.aotp-defense
+        i.aotp.aotp-defense
       div(style="position:relative;height:0;")
         div(style="position:absolute;margin-top:120.5%;width:97.15%;text-align:right;")
           i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
@@ -60,7 +60,7 @@
       .card-abilities
         .card-ability(ng-repeat="ability in charCard.model.abilityArray track by ability.title")
           strong.card-ability-title {{ability.title|uppercase}}
-          .card-ability-body(ng-bind-html="ability.body|symbolize|trustAsHtml")
+          .card-ability-body(mtg-symbolize="ability.body")
       .card-attributes
         div(style="float:right") COST&nbsp;&nbsp;{{charCard.model.cost.value}}
         div {{charCard.model.height.name|uppercase}} {{charCard.model.height.value}}
