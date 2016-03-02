@@ -130,6 +130,8 @@ angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload',
 
       this.setDemoCardResult = function(res){
         this.selectedCard = res.data
+console.log(Object.keys(this.selectedSeries))
+        this.selectedSeries.push( this.selectedCard )
       }
 
       this.exportAll = () => {this.export={name:'mtg-aotp-cards', data:this.cards}}

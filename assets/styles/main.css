@@ -70,7 +70,7 @@ char-card * {
 }
 
 .char-card .card-title-text{
-  opacity:.8;line-height:1.1em;
+  opacity:.8;line-height:1.25em;
   font-family:Beleren Bold;
 }
 
@@ -127,7 +127,7 @@ char-card * {
 }
 
 .char-card .stat-box.life-box{
-  float:left;margin-left:6%;margin-top:12%;
+  float:left;margin-left:6%;margin-top:12.5%;
 }
 .char-card .stat-box.life-box.life-box-sm .life-box-value{
   font-size:85%;
@@ -229,12 +229,11 @@ char-card * {
 }
 
 .card-attributes{
-  font-size:80%;
+  font-size:86%;
   font-family:Times New Roman;
-  height:4.5%;
+  height:4.5%;line-height:1.75em;
   margin:0 2.5% 0% 2%;
-  color:white;
-  opacity:.8;
+  color:white;opacity:.8;
 }
 
 .card-footer{
@@ -244,7 +243,15 @@ char-card * {
   font-family:Times New Roman;
 }
 
+.char-card .seriesIcon{
+  left:0;margin-top:.3em;position:absolute;
+  width:100%;color:#CCC;font-size:75%;
+}
 
+.char-card .cardTypeSep{
+  line-height:0;
+  transform:scale(1.5,.15);
+}
 
 
 /* third size */

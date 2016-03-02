@@ -21,8 +21,8 @@
           span(ng-hide="charCard.model.colors.length") &nbsp;&nbsp;
           |{{charCard.model.category}}
           |&nbsp;
-          span(style="width:8%;display:inline-block;padding-top:0%;vertical-align:middle;")
-            div(style="border-top:1px solid white;line-height:25%;") &nbsp;
+          span(style="display:inline-block;padding-top:0;vertical-align:middle;width:6%;text-align:center")
+            div(class="cardTypeSep") -
           |&nbsp;
           |{{charCard.model.type}}
         //-colorless space keeper
@@ -55,7 +55,7 @@
       div(style="position:relative;height:0;")
         div(style="position:absolute;margin-top:120.5%;width:97.15%;text-align:right;")
           i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
-            span(style="left:0;margin-top:.3em;position:absolute;width:100%;color:#CCC;font-size:80%;")
+            span(class="seriesIcon")
               i(ng-class="charCard.series.symbolClass")
       .card-abilities
         .card-ability(ng-repeat="ability in charCard.model.abilityArray track by ability.title")
