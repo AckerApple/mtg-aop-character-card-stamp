@@ -25,7 +25,8 @@ mtg-aotp-card-creator a{
 }
 
 .char-card-editor{
-  width:223px;height:626px;
+  width:223px;
+  max-height:626px;overflow:auto;
 }
 
 

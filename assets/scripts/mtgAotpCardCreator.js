@@ -9,8 +9,12 @@ angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload',
 .directive('charCardEditor',function(){
   return {
     restrict:'E'
-    ,scope:{model:'='}
+    ,scope:{
+      model:'=', series:'='
+    }
     ,template:require('./char-card-editor.jade')
+    ,bindToController:true
+    ,controllerAs:'editor'
     ,controller:function(Upload){
       this.selectedColors=[]
       this.colors=[
@@ -50,8 +54,6 @@ angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload',
         this.model.symbolClass = newClass
       }
     }
-    ,bindToController:true
-    ,controllerAs:'editor'
   }
 })
 .directive('mtgAotpCardCreator',function(){
@@ -116,28 +118,60 @@ angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload',
         this.selectFirstCard()
       }
 
-      this.selectFirstCard = function(){
-        this.selectedIndex = 0;
-        this.selectedSeries = this.selectedSeries || this.cards.character[ Object.keys(this.cards.character)[0] ]
-        this.selectedCard = this.selectedSeries.data[ Object.keys(this.selectedSeries.data)[0] ]
-        this.selectedSeries.symbolClass = this.selectedSeries.symbolClass||'mi mi-planeswalk'
+
+      this.getFirstSeries = function(){
+        var firstSeriesName = Object.keys(this.cards.character)[0];
+        return this.cards.character[ firstSeriesName ]
       }
 
-      this.selectDemoCard = function(){
+      this.selectFirstCard = function(){
+        this.selectedIndex = 0;
+        this.selectedSeries = this.selectedSeries || this.getFirstSeries()
+        var firstCardName = Object.keys(this.selectedSeries.data)[0];
+        this.selectedCard = this.selectedSeries.data[ firstCardName ]
+      }
+
+      this.addSeries = function(){
+        var key = 'New Custom Series'
+        while(this.cards.character[key]){
+          key = key+'_c'
+        }
+
+        this.selectedSeries = {
+          name:key,data:{}
+        }
+        this.cards.character[key] = this.selectedSeries
+
+        this.addCard()
+      }
+
+      this.addCard = function(){
         AotpDemoCharCard.get()
         .then( this.setDemoCardResult.bind(this))
       }
 
       this.setDemoCardResult = function(res){
+        var key = res.data.name
+
+        //unique name
+        while(this.selectedSeries.data[key]){//?card exists
+          key = key +'_c'
+          res.data.name = key
+        }
+
         this.selectedCard = res.data
-console.log(Object.keys(this.selectedSeries))
-        this.selectedSeries.push( this.selectedCard )
+        this.selectedSeries.data[key] = res.data
       }
 
-      this.exportAll = () => {this.export={name:'mtg-aotp-cards', data:this.cards}}
+      this.exportAll = function(){
+        this.export={name:'mtg-aotp-cards', data:this.cards}
+      }
 
-      AotpCards.list()
-      .then(this.setFetchResult.bind(this))
+      this.fetchCards = function(){
+        AotpCards.list().then(this.setFetchResult.bind(this))
+      }
+
+      this.fetchCards()
     }
   }
 })

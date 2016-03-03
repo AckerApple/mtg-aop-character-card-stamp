@@ -39,8 +39,8 @@ angular.module('mtgAotpCards',[])
 .service('AotpCards',function($q,$http){
 	return {
 		list:function(){
-			return $http.get('cards.json')//.then(r=>console.log(r))
-			//return $q.resolve({data:cards})
+			//return $http.get('cards.json')
+			return $q.resolve({data:require('./cards.json')})
 		}
 	}
 })

@@ -9,6 +9,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.jade$/, loader: "jade-loader" },
+      { test: /\.json$/, loader: "json-loader" },
 
       { test: /\.png$/, loader: "url-loader?limit=300000"},
       { test: /\.jpg$/, loader: "file-loader" },

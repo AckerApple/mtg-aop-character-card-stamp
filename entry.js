@@ -7,8 +7,10 @@ require('ng-file-upload');
 require('ng-sortable');
 require('ng-sortable/dist/ng-sortable.min.css')
 
-require('./assets/styles/mtg-font/css/magic-font.css')
+require('font-awesome/css/font-awesome.min.css')
 require('mtg-aotp-syms/css/mtg-aotp-syms.css')
+
+require('./assets/styles/mtg-font/css/magic-font.css')
 
 require('./assets/styles/Beleren-Bold/fonts.css')
 require('./assets/styles/beleren-small-caps/fonts.css')

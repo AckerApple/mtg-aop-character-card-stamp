@@ -1,11 +1,27 @@
-div(style="text-align:center;")
+.text-center
+  h1.text-sm Mtg Aotp Card Manager
+  p.text-muted
+    |&nbsp;&nbsp;&nbsp;
+    |Who's down with MTG? Aotp!
+
+  div.text-muted(style="font-size:80%;")
+    .fa.fa-chrome
+    span(style="font-size:80%;")
+      |&nbsp;This was all confirmed, pixel perfect, in Google Chrome. Hope your using it.
+    br
+    .fa.fa-safari
+    span(style="font-size:80%;")
+      |&nbsp;Safari iOS is good for this. Not so much on the desktop.
+
+  hr
+
   div(style="display:inline-block;")
     div(style="text-align:center;padding-top:1em;")
       div(style="display:inline-block;margin:0 1em 1em 1em;vertical-align:middle")
         //-Series & card labels
         -title="{{cardCreator.seriesIndex+1}} of {{(cardCreator.cards.character|keys).length}}"
-        h3(style="margin:0;" title=title)
-          i(ng-class="cardCreator.selectedSeries.symbolClass" ng-click="cardCreator.cycleSeriesSymbol()")
+        h3(style="margin:0;" title=title id="seriesTitle")
+          i(ng-class="cardCreator.selectedSeries.symbolClass||'mi mi-planeswalk'" ng-click="cardCreator.cycleSeriesSymbol()")
           |&nbsp;
           span(style="vertical-align:top;display:inline-block;")
             span(ng-hide="editSeriesName" ng-click="editSeriesName=editSeriesName?false:true") {{cardCreator.selectedSeries.name}}
@@ -13,13 +29,13 @@ div(style="text-align:center;")
               input.input-xs.form-control(type="text" ng-model="cardCreator.selectedSeries.name" ng-blur="editSeriesName=false")
         div
           .text-muted(style="font-size:0.9em;line-height:2;margin-bottom:.2em;")
-            div(style="display:inline-block;" ng-hide="editSeriesDesc" ng-click="editSeriesDesc=editSeriesDesc?false:true") {{cardCreator.selectedSeries.description}}
+            div(style="display:inline-block;" ng-hide="editSeriesDesc" ng-click="editSeriesDesc=editSeriesDesc?false:true") {{cardCreator.selectedSeries.description||'Get ready to describe your awesomeness'}}
           .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesDesc")
             -ngModel="cardCreator.selectedSeries.description"
             input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesDesc=false")
         div
           .text-muted(style="font-size:0.6em;line-height:1;margin-bottom:.5em;")
-            div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.selectedSeries.copyRight|trustAsHtml")
+            div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.selectedSeries.copyRight||'&copy; copyrights are holding us back 2016'|trustAsHtml")
           .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesCopyRight")
             -ngModel="cardCreator.selectedSeries.copyRight"
             input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesCopyRight=false")
@@ -47,48 +63,49 @@ div(style="text-align:center;")
 
       .char-card-editor(style="display:inline-block;vertical-align:top;margin:1px;")
         h6.text-muted Card Editor
-        char-card-editor(model="cardCreator.selectedCard")
+        char-card-editor(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
 
       div(style="width:223px;overflow:auto;display:inline-block;margin:1px;")
         h6.text-muted Comparison Cards
         img(src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border=0 style="vertical-align:top;height:626px")
 
 div(style="text-align:center;")
-  div(ng-show="cardCreator.export")
-    a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank") View {{cardCreator.export.name}}
+  div(ng-show="cardCreator.export" style="margin:2% 0;")
+    a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
+      i.fa.fa-eye
+      |&nbsp;View {{cardCreator.export.name}}
     |&nbsp;
-    a.btn.btn-default(download="{{cardCreator.export.name}}.json" ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank") Download {{cardCreator.export.name}}
+    a.btn.btn-default(download="{{cardCreator.export.name}}.json" ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
+      i.fa.fa-download
+      |&nbsp;Download {{cardCreator.export.name}}
 
-  a.btn.btn-danger(onclick="alert('not done')" target="blank") import series
+  a.btn.btn-danger(onclick="alert('not done')" target="blank" style="margin:1% 0;width:125px")
+    i.fa.fa-upload
+    |&nbsp;import series
   |&nbsp;
-  a.btn.btn-default(ng-click="cardCreator.exportAll()" target="blank") export all series
+  a.btn.btn-default(ng-click="cardCreator.exportAll()" target="blank" style="margin:1% 0;width:125px")
+    i.fa.fa-folder-open-o
+    |&nbsp;export all
   |&nbsp;
-  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedSeries,name:cardCreator.selectedSeries.name}" target="blank") export series
+  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedSeries,name:cardCreator.selectedSeries.name}" target="blank" style="margin:1% 0;width:125px")
+    i.fa.fa-files-o
+    |&nbsp;export series
   |&nbsp;
-  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedCard, name:cardCreator.selectedCard.name}" target="blank") export card
+  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedCard, name:cardCreator.selectedCard.name}" target="blank" style="margin:1% 0;width:125px")
+    i.fa.fa-file-o
+    |&nbsp;export card
   |&nbsp;
-  a.btn.btn-default(ng-click="cardCreator.deleteCard()" target="blank") delete card
+  a.btn.btn-default.btn-danger(ng-click="cardCreator.deleteCard()" target="blank" style="margin:1% 0;width:125px")
+    .fa.fa-fire
+    |delete card
   |&nbsp;
   hr
-  a.btn.btn-default(ng-click="cardCreator.triggerEzPrint=false;cardCreator.triggerEzPrint=true") render easy-print
-  a.btn.btn-default(ng-show="cardCreator.ezPrintResult" href="{{cardCreator.ezPrintResult.url}}" target="_blank") open easy-print
-  a.btn.btn-default(ng-click="cardCreator.triggerHiResPrint=false;cardCreator.triggerHiResPrint=true") render hi-res
-  a.btn.btn-default(ng-show="cardCreator.hiResPrintResult" href="{{cardCreator.hiResPrintResult.url}}" target="_blank") open hi-res
-  hr
-  a.btn.btn-success(ng-click="cardCreator.selectDemoCard()") + new card
-
-//- rendered prints !always at bottom
-
-//- easy rending stage
-div(ng-show="cardCreator.ezPrint" style="position:absolute")
-  //-html2canvas must absolute have the print area on screen, so lets flash it on then off
-  print-canvas(before-print="cardCreator.ezPrint=true" after-print="cardCreator.ezPrint=false;cardCreator.triggerEzPrint=false" print-trigger="cardCreator.triggerEzPrint" print-model="cardCreator.ezPrintResult" style="vertical-align:top;")
-    div(style="display:inline-block;")
-      char-card(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
-
-//-hi-res rending stage
-div(ng-show="cardCreator.hiResPrint" style="position:absolute")
-  //- html2canvas must absolute have the print area on screen, so lets flash it on then off
-  print-canvas(before-print="cardCreator.hiResPrint=true" after-print="cardCreator.hiResPrint=false;cardCreator.triggerHiResPrint=false" print-trigger="cardCreator.triggerHiResPrint" print-model="cardCreator.hiResPrintResult" style="vertical-align:top;")
-    div(style="display:inline-block;")
-      char-card(size="'hires'" model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
+  .alert.alert-info(ng-show="cardCreator.showAddInfo")
+    |Are you making a card just for you? Yes, start a new series and then add cards.
+    br
+    |Otherwise, you maybe adding your cards into the core card series, unless that is what you want todo.
+  a.btn.btn-success(href="#seriesTitle" ng-click="cardCreator.addSeries()" style="margin:1% 0;width:125px;") ++ new series
+  |&nbsp;
+  .fa.fa-info-circle.text-danger(ng-click="cardCreator.showAddInfo=cardCreator.showAddInfo?false:true")
+  |&nbsp;
+  a.btn.btn-warning(ng-click="cardCreator.addCard()" style="margin:1% 0;width:125px;") + new card

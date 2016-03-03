@@ -56,7 +56,7 @@
         div(style="position:absolute;margin-top:120.5%;width:97.15%;text-align:right;")
           i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
             span(class="seriesIcon")
-              i(ng-class="charCard.series.symbolClass")
+              i(ng-class="charCard.series.symbolClass||'mi mi-planeswalk'")
       .card-abilities
         .card-ability(ng-repeat="ability in charCard.model.abilityArray track by ability.title")
           strong.card-ability-title {{ability.title|uppercase}}
