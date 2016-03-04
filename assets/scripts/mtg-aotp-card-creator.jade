@@ -15,59 +15,75 @@
 
   hr
 
-  div(style="display:inline-block;")
-    div(style="text-align:center;padding-top:1em;")
-      div(style="display:inline-block;margin:0 1em 1em 1em;vertical-align:middle")
-        //-Series & card labels
-        -title="{{cardCreator.seriesIndex+1}} of {{(cardCreator.cards.character|keys).length}}"
-        h3(style="margin:0;" title=title id="seriesTitle")
-          i(ng-class="cardCreator.selectedSeries.symbolClass||'mi mi-planeswalk'" ng-click="cardCreator.cycleSeriesSymbol()")
-          |&nbsp;
-          span(style="vertical-align:top;display:inline-block;")
-            span(ng-hide="editSeriesName" ng-click="editSeriesName=editSeriesName?false:true") {{cardCreator.selectedSeries.name}}
-            div(style="width:200px" ng-show="editSeriesName")
-              input.input-xs.form-control(type="text" ng-model="cardCreator.selectedSeries.name" ng-blur="editSeriesName=false")
-        div
-          .text-muted(style="font-size:0.9em;line-height:2;margin-bottom:.2em;")
-            div(style="display:inline-block;" ng-hide="editSeriesDesc" ng-click="editSeriesDesc=editSeriesDesc?false:true") {{cardCreator.selectedSeries.description||'Get ready to describe your awesomeness'}}
-          .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesDesc")
-            -ngModel="cardCreator.selectedSeries.description"
-            input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesDesc=false")
-        div
-          .text-muted(style="font-size:0.6em;line-height:1;margin-bottom:.5em;")
-            div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.selectedSeries.copyRight||'&copy; copyrights are holding us back 2016'|trustAsHtml")
-          .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesCopyRight")
-            -ngModel="cardCreator.selectedSeries.copyRight"
-            input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesCopyRight=false")
+  div(style="display:inline-block;text-align:center;padding-top:1em;")
+    div(style="display:inline-block;margin:0 1em 1em 1em;vertical-align:middle")
+      //-Series & card labels
+      -title="{{cardCreator.seriesIndex+1}} of {{(cardCreator.cardSeries|keys).length}}"
+      h3(style="margin:0;" title=title id="seriesTitle")
+        i(ng-class="cardCreator.selectedSeries.symbolClass||'mi mi-planeswalk'" ng-click="cardCreator.cycleSeriesSymbol()")
+        |&nbsp;
+        span(style="vertical-align:top;display:inline-block;")
+          span(ng-hide="editSeriesName" ng-click="editSeriesName=editSeriesName?false:true") {{cardCreator.selectedSeries.name}}
+          div(style="width:200px" ng-show="editSeriesName")
+            input.input-xs.form-control(type="text" ng-model="cardCreator.selectedSeries.name" ng-blur="editSeriesName=false")
+      div
+        .text-muted(style="font-size:0.9em;line-height:2;margin-bottom:.2em;")
+          div(style="display:inline-block;" ng-hide="editSeriesDesc" ng-click="editSeriesDesc=editSeriesDesc?false:true") {{cardCreator.selectedSeries.description||'Get ready to describe your awesomeness'}}
+        .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesDesc")
+          -ngModel="cardCreator.selectedSeries.description"
+          input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesDesc=false")
+      div
+        .text-muted(style="font-size:0.6em;line-height:1;margin-bottom:.5em;")
+          div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.selectedSeries.copyRight||'&copy; copyrights are holding us back 2016'|trustAsHtml")
+        .form-group(style="display:inline-block;width:300px;" ng-show="editSeriesCopyRight")
+          -ngModel="cardCreator.selectedSeries.copyRight"
+          input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesCopyRight=false")
 
-      //-Series & card selectors
-      div(style="display:inline-block;margin:0 1em 1em 1em;")
-        .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:0;") series selector
-        a.btn.btn-default(style="width:60px;" ng-click="cardCreator.priorSeries()") &lt;&lt;
+    //-Series & card selectors
+    div(style="display:inline-block;margin:0 1em 1em 1em;vertical-align:middle" ng-init="cardCreator.mode='selector'")
+      div
+        .btn-default.btn.btn-sm(ng-click="cardCreator.mode='selector'" ng-class="{active:cardCreator.mode=='selector'}")
+          i.fa.fa-hand-pointer-o
+          |&nbsp;selector mode
+        |&nbsp;
+        .btn-default.btn.btn-sm(ng-click="cardCreator.mode='splash';cardCreator.selectedCard=null" ng-class="{active:cardCreator.mode=='splash'}")
+          i.fa.fa-diamond
+          |&nbsp;splash mode
 
-        div(style="display:inline-block;padding:0 .5em;")
-          .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:.6;padding-bottom:4px;") card selector
-          a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.priorCard()") &lt;
-          span(style="font-size:.8em;")
-            |&nbsp;&nbsp;
-            |{{cardCreator.selectedIndex+1}} of {{(cardCreator.selectedSeries.data|keys).length}}
-            |&nbsp;&nbsp;
-          a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.nextCard()") &gt;
+      div(style="margin-top:4%;")
+        div(style="display:inline-block;")
+          .text-muted(style="font-weight:normal;font-size:65%;text-align:{{cardCreator.mode=='selector'?'left;line-height:0;':'center;'}}") series selector
+          a.btn.btn-default(style="width:60px;margin-right:.5em;" ng-click="cardCreator.priorSeries()") &lt;&lt;
+          div(style="display:inline-block;" ng-show="cardCreator.mode=='selector'")
+            .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:.6;padding-bottom:4px;") card selector
+            a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.priorCard()") &lt;
+            span(style="font-size:.8em;")
+              |&nbsp;&nbsp;
+              |{{cardCreator.selectedIndex+1}} of {{(cardCreator.selectedSeries.data|keys).length}}
+              |&nbsp;&nbsp;
+            a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.nextCard()") &gt;
 
-        a.btn.btn-default(style="width:60px;" ng-click="cardCreator.nextSeries()") &gt;&gt;
+          a.btn.btn-default(style="width:60px;margin-left:.5em;" ng-click="cardCreator.nextSeries()") &gt;&gt;
 
-    div
-      div(style="display:inline-block;vertical-align:top;margin:1px;")
-        h6.text-muted Card Preview
-        char-card(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
+  div(ng-show="cardCreator.mode=='selector'")
+    div(style="display:inline-block;vertical-align:top;margin:1px;")
+      h6.text-muted Card Preview
+      char-card(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
 
-      .char-card-editor(style="display:inline-block;vertical-align:top;margin:1px;")
-        h6.text-muted Card Editor
+    div(style="display:inline-block;vertical-align:top;margin:1px;")
+      h6.text-muted Card Editor
+      .char-card-editor
         char-card-editor(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
 
-      div(style="width:223px;overflow:auto;display:inline-block;margin:1px;")
-        h6.text-muted Comparison Cards
-        img(src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border=0 style="vertical-align:top;height:626px")
+    //-div(style="width:223px;overflow:auto;display:inline-block;margin:1px;")
+      h6.text-muted Comparison Cards
+      img(src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border=0 style="vertical-align:top;height:626px")
+
+  div(ng-show="cardCreator.mode=='splash'")
+    -ngRepeat="card in cardCreator.selectedSeries.data track by card.name"
+    span(style="cursor:pointer;padding:.25%;display:inline-block" ng-repeat=ngRepeat)
+      char-card(model="card" series="cardCreator.selectedSeries" ng-click="cardCreator.selectedIndex=$index;cardCreator.selectedCard=card;cardCreator.mode='selector'")
+
 
 div(style="text-align:center;")
   div(ng-show="cardCreator.export" style="margin:2% 0;")
@@ -91,21 +107,20 @@ div(style="text-align:center;")
     i.fa.fa-files-o
     |&nbsp;export series
   |&nbsp;
-  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedCard, name:cardCreator.selectedCard.name}" target="blank" style="margin:1% 0;width:125px")
+  a.btn.btn-default(ng-show="cardCreator.selectedCard" ng-click="cardCreator.export={data:cardCreator.selectedCard, name:cardCreator.selectedCard.name}" target="blank" style="margin:1% 0;width:125px")
     i.fa.fa-file-o
     |&nbsp;export card
   |&nbsp;
   a.btn.btn-default.btn-danger(ng-click="cardCreator.deleteCard()" target="blank" style="margin:1% 0;width:125px")
     .fa.fa-fire
     |delete card
-  |&nbsp;
-  hr
-  .alert.alert-info(ng-show="cardCreator.showAddInfo")
-    |Are you making a card just for you? Yes, start a new series and then add cards.
-    br
-    |Otherwise, you maybe adding your cards into the core card series, unless that is what you want todo.
-  a.btn.btn-success(href="#seriesTitle" ng-click="cardCreator.addSeries()" style="margin:1% 0;width:125px;") ++ new series
-  |&nbsp;
-  .fa.fa-info-circle.text-danger(ng-click="cardCreator.showAddInfo=cardCreator.showAddInfo?false:true")
-  |&nbsp;
-  a.btn.btn-warning(ng-click="cardCreator.addCard()" style="margin:1% 0;width:125px;") + new card
+  div
+    .alert.alert-info(ng-show="cardCreator.showAddInfo")
+      |Are you making a card just for you? Yes, start a new series and then add cards.
+      br
+      |Otherwise, you maybe adding your cards into the core card series, unless that is what you want todo.
+    a.btn.btn-success(href="#seriesTitle" ng-click="cardCreator.addSeries()" style="margin:1% 0;width:125px;") ++ new series
+    |&nbsp;
+    .fa.fa-info-circle.text-danger(ng-click="cardCreator.showAddInfo=cardCreator.showAddInfo?false:true")
+    |&nbsp;
+    a.btn.btn-warning(ng-click="cardCreator.addCard()" style="margin:1% 0;width:125px;") + new card

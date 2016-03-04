@@ -28,6 +28,7 @@
     "font-awesome-webpack": "0.0.4",
     "jade": "^1.11.0",
     "jade-loader": "^0.8.0",
+    "json-loader": "^0.5.4",
     "mtg-aotp-syms": "https://github.com/AckerApple/mtg-aotp-syms",
     "ng-file-upload": "^12.0.1",
     "ng-sortable": "^1.3.2",

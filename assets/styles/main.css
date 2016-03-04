@@ -27,6 +27,7 @@ mtg-aotp-card-creator a{
 .char-card-editor{
   width:223px;
   max-height:626px;overflow:auto;
+  padding:1em .8em;background-color:black;border-radius:1.1em;color:white;
 }
 
 
