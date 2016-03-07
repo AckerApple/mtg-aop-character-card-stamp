@@ -1,1 +1,1 @@
-# mtg-aop-character-card-stamp
+# mtg-aotp-card-manager
