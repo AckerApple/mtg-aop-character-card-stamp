@@ -16,7 +16,7 @@ div&attributes(attrs)
     -attrs['ngf-fix-orientation']="true"
     -attrs['ngf-drag-over-class']="'drop-over'"
     -attrs['ngf-select']="editor.uploadAvatarTo($file,editor.model)"
-    div(style="height:80%;")&attributes(attrs)
+    div(style="height:100%;")&attributes(attrs)
       //-ng-hide="editor.model.avatar && !editor.mouseOverImage"
       div(style="position:relative;text-align:center;")
         div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%") DROP IMAGE HERE
@@ -31,15 +31,35 @@ div&attributes(attrs)
   input(type="radio" ng-model="editor.model.cardType" id="editor.model.cardType-spell" value="spell")
   label(for="editor.model.cardType-spell") &nbsp;Spell
 
+.animate-fade.alert.alert-warning(ng-show="editor.model.cardType=='spell'")
+  i.fa.fa-exclamation-triangle
+  |&nbsp;Editing spell cards, is not completed. Coming soon!
+
+.text-left.animate-fade(ng-show="['planeswalker','squad'].indexOf(editor.model.cardType)>=0")
+
+  div(style="width:70%;display:inline-block;padding-right:3px;")
+    .form-group
+      .text-left.text-xs Member Count
+      input.form-control.input-xs(type="text" ng-model="editor.model.members" placeholder="Squad Count or Multi-Planeswalker")
+
+  div(style="width:30%;display:inline-block;")
+    .form-group
+      .text-left.text-xs Cost Per
+      input.form-control.input-xs(type="text" ng-model="editor.model.cost.per" placeholder="each")
+
+
 .text-left.color-picker(id="sortable-container" style="padding:0;")
   -style="color:white;text-shadow:1px 1px 0 #000;"
   .text-xs.text-muted(style=style)
     |Mana Types
+
+  //-selected colors
   div(as-sortable="{containment:'#sortable-container'}" ng-model="editor.model.colors" style="display:inline-block;color:black;")
     div(ng-repeat="item in editor.model.colors" ng-class="'bg-'+item" as-sortable-item ng-click="editor.model.colors.splice($index,1)")
       div(as-sortable-item-handle)
         i.mi(style="font-size:1.5em;" ng-class="'mi-'+item")
 
+  //-selectable colors
   -ngRepeat="item in editor.colors track by item.value"
   -ngHide="editor.model.colors.indexOf(item.value)>=0"
   -ngClick="editor.model.colors.push(item.value)"
@@ -47,14 +67,14 @@ div&attributes(attrs)
     .color-item(style="background-color:white;opacity:.8;")
       i.mi(style="font-size:1.5em;" ng-class="'mi-'+item.value")
 
-  .text-center.text-muted(style="font-size:0.7em;" ng-show="editor.model.colors.length>1") &nbsp;(drag to sort)
+  .text-center.text-muted.animate-h(style="font-size:0.7em;" ng-show="editor.model.colors.length>1") &nbsp;(drag to sort)
 
 
 div(style="margin:2% 0;")
   div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")
     div(ng-click="editor.view=editor.view=='dets'?false:'dets'")
       a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Details
-  .text-left(ng-show="editor.view=='dets'" style="margin:4% 0;")
+  .text-left.animate-v(ng-show="editor.view=='dets'" style="margin:4% 0;")
     table
       tr
         td(style="width:60%;padding-right:3px;")
@@ -122,8 +142,8 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
   div(ng-click="editor.view=editor.view=='abs'?false:'abs'")
     a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Abilities
     sup(style="font-size:60%;") &nbsp;{{editor.model.abilityArray.length}}
-div(ng-show="editor.view=='abs'" style="margin:4% 0;")
-  .form-group(ng-repeat="ability in editor.model.abilityArray track by ability.title")
+.animate-v(ng-show="editor.view=='abs'" style="margin:4% 0;")
+  .form-group(ng-repeat="ability in editor.model.abilityArray")
     input.input-xs.form-control(type="text" ng-model="ability.title" placeholder="Ability Title")
     textarea.input-xs.form-control(ng-model="ability.body" style="font-size:70%;height:65px" placeholder="Ability Body Description")
   .text-center(style="margin-bottom:3%;")
@@ -133,25 +153,21 @@ div(ng-show="editor.view=='abs'" style="margin:4% 0;")
 div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")
   div(ng-click="editor.view=editor.view=='attrs'?false:'attrs'")
     a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Attributes
-div(ng-show="editor.view=='attrs'" style="margin:4% 0;")
+.animate-v(ng-show="editor.view=='attrs'" style="margin:4% 0;")
   table(cellPadding=0 cellSpacing=0 border=0 style="color:white;")
     tr
-      td(style="width:25%;padding-right:3px;")
+      td(style="width:33%;padding-right:3px;")
         .form-group
           .text-left.text-xs Size
           input.form-control.input-xs(type="text" ng-model="editor.model.height.name" placeholder="height name")
-      td(style="width:25%;padding-right:3px;")
+      td(style="width:33%;padding-right:3px;")
         .form-group
           .text-left.text-xs Height
           select.form-control.input-xs(ng-options="each for each in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]" ng-model="editor.model.height.value")
-      td(style="width:25%;padding-right:3px;")
+      td(style="width:33%;padding-right:3px;")
         .form-group
           .text-left.text-xs Cost
           input.form-control.input-xs(type="text" ng-model="editor.model.cost.value" placeholder="value")
-      td(style="width:25%;")
-        .form-group
-          .text-left.text-xs Per
-          input.form-control.input-xs(type="text" ng-model="editor.model.cost.per" placeholder="each")
 
   .form-group.text-left
     .text-xs
@@ -162,54 +178,3 @@ div(ng-show="editor.view=='attrs'" style="margin:4% 0;")
   .form-group.text-left
     .text-xs Artist Title
     input.form-control.input-xs(ng-model="editor.model.artist.title" style="font-size:65%;")
-hr
-a.btn-xs.btn.btn-default(ng-click="editor.triggerEzPrint=false;editor.triggerEzPrint=true") render ez-print
-|&nbsp;
-a.btn-xs.btn.btn-default(ng-click="editor.triggerHiResPrint=false;editor.triggerHiResPrint=true") render hi-res
-br
-a.btn-xs.btn.btn-default(ng-show="editor.ezPrintResult" href="{{editor.ezPrintResult.url}}" target="_blank") open ez-print
-|&nbsp;
-a.btn-xs.btn.btn-default(ng-show="editor.hiResPrintResult" href="{{editor.hiResPrintResult.url}}" target="_blank") open hi-res
-
-//- easy rending stage
-div(ng-show="editor.ezPrint" style="position:absolute")
-  //-html2canvas must absolute have the print area on screen, so lets flash it on then off
-  print-canvas(before-print="editor.ezPrint=true" after-print="editor.ezPrint=false;editor.triggerEzPrint=false" print-trigger="editor.triggerEzPrint" print-model="editor.ezPrintResult" style="vertical-align:top;")
-    div(style="display:inline-block;")
-      char-card(model="editor.model" series="editor.series")
-
-//-hi-res rending stage
-div(ng-show="editor.hiResPrint" style="position:absolute")
-  //- html2canvas must absolute have the print area on screen, so lets flash it on then off
-  print-canvas(before-print="editor.hiResPrint=true" after-print="editor.hiResPrint=false;editor.triggerHiResPrint=false" print-trigger="editor.triggerHiResPrint" print-model="editor.hiResPrintResult" style="vertical-align:top;")
-    div(style="display:inline-block;")
-      char-card(size="'hires'" model="editor.model" series="editor.series")
-
-
-style.
-  .color-picker .as-sortable-dragging{
-    top:-90px;
-  }
-
-  .color-picker [as-sortable-item],
-  .color-picker .color-item,
-  .color-picker .as-sortable-placeholder{
-    cursor:pointer;width:30px;height:30px;
-    line-height:40px;
-    text-align:center;
-    border:1px solid #444444;
-    border-radius:50%;
-    float:left;margin:0 4px;
-  }
-
-  .color-picker [as-sortable-item]{
-    border:1px solid black;
-  }
-
-  .input-xs, .form-horizontal .form-group-xs .form-control {
-      border-radius: 3px;
-      font-size: 11px;
-      height: 25px;
-      line-height: 1.2;
-      padding: 3px 6px;
-  }

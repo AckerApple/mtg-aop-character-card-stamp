@@ -7,7 +7,7 @@
         .card-title-text {{charCard.model.name}}
     .card-image
       div(ng-show="charCard.model.avatar" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.avatar.dataUrl}});")
-      div(ng-hide="charCard.model.avatar" style="color:#999;margin-top:35%;text-align:center;") DROP IMAGE HERE
+      //-div(ng-hide="charCard.model.avatar" style="color:#999;margin-top:35%;text-align:center;") DROP IMAGE HERE
     .card-body
       div(style="height:.67%")
       .card-type-wrapper(style="text-align:left;")
@@ -34,7 +34,7 @@
       .figure-wrap(style="position:relative;")
         i(ng-class="charCard.model.symbolClass" style="color:white;left:4%;top:88%;position:absolute;font-size:83%;")
         div(ng-show="charCard.model.figure" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.figure.dataUrl}});")
-        div(ng-hide="charCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;") DROP IMAGE HERE
+        //-div(ng-hide="charCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;") DROP IMAGE HERE
       .stat-box.life-box(ng-class="{'life-box-sm':charCard.model.attack>9}")
         .stat-label(style="line-height:0;") LIFE
         .life-box-value {{charCard.model.life||'?'}}
@@ -58,16 +58,17 @@
             span(class="seriesIcon")
               i(ng-class="charCard.series.symbolClass||'mi mi-planeswalk'")
       .card-abilities
-        .card-ability(ng-repeat="ability in charCard.model.abilityArray track by ability.title")
+        .card-ability(ng-repeat="ability in charCard.model.abilityArray")
           strong.card-ability-title {{ability.title|uppercase}}
           .card-ability-body(mtg-symbolize="ability.body")
       .card-attributes
-        div(style="float:right") COST&nbsp;&nbsp;{{charCard.model.cost.value}}
+        div(style="float:right")
+          |COST&nbsp;&nbsp;{{charCard.model.cost.value}}
+          span(ng-show="charCard.model.cost.per" style="font-size:.77em;") &nbsp;{{charCard.model.cost.per}}
         div {{charCard.model.height.name|uppercase}} {{charCard.model.height.value}}
       .card-footer
         div(style="float:right;margin-right:2.5%;margin-top:1.5%;" ng-bind-html="charCard.series.copyRight|trustAsHtml")
         div(style="margin-left:2.5%;")
           i(ng-class="charCard.model.artist.iconClass" style="font-size:220%;vertical-align:-17%")
           |&nbsp;&nbsp;&nbsp;&nbsp;
-          |{{charCard.model.artist.title}}
           |{{charCard.model.artist.title}}

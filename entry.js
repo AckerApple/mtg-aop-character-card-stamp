@@ -1,4 +1,5 @@
 require('angular');
+require('angular-animate');
 require('angular-touch');
 require('angular-sanitize');
 
@@ -8,6 +9,9 @@ require('ng-sortable');
 require('ng-sortable/dist/ng-sortable.min.css')
 
 require('font-awesome/css/font-awesome.min.css')
+
+require('ack-angular');
+require('ack-angular/ack-angular.css');
 require('mtg-aotp-syms/css/mtg-aotp-syms.css')
 
 require('./assets/styles/mtg-font/css/magic-font.css')

@@ -26,7 +26,7 @@ mtg-aotp-card-creator a{
 
 .char-card-editor{
   width:223px;
-  max-height:626px;overflow:auto;
+  height:626px;overflow:auto;
   padding:1em .8em;background-color:black;border-radius:1.1em;color:white;
 }
 
@@ -364,10 +364,10 @@ char-card * {
 .aotp-hexagon-m{
   color:#94c4aa;
 }
-.bg-m{
-  background-color:#94c4aa;
-}
 */
+.bg-m{
+  background-color:#ddb024;
+}
 
 
 
@@ -404,4 +404,53 @@ char-card * {
   top: 100%;
   width: 0;
   border-top: 86.60px solid #64C7CC;
+}
+
+
+
+
+mtg-aotp-card-creator #rosterArea .roster-pick,
+mtg-aotp-card-creator #rosterArea .as-sortable-placeholder{
+  float:none;
+  display:inline-block !important;/*a must for inline drag/drop */
+  cursor:pointer;
+  width:145px;
+  height:195px;
+  text-overflow:ellipsis;
+  white-space:nowrap;overflow:hidden;
+}
+
+mtg-aotp-card-creator .member-count-wrap{
+  line-height:7px;font-size:0.3em;height:7px;
+}
+
+
+
+
+
+char-card-editor .color-picker .as-sortable-dragging{
+  top:-90px;
+}
+
+char-card-editor .color-picker [as-sortable-item],
+char-card-editor .color-picker .color-item,
+char-card-editor .color-picker .as-sortable-placeholder{
+  cursor:pointer;width:30px;height:30px;
+  line-height:40px;
+  text-align:center;
+  border:1px solid #444444;
+  border-radius:50%;
+  float:left;margin:0 4px;
+}
+
+char-card-editor .color-picker [as-sortable-item]{
+  border:1px solid black;
+}
+
+char-card-editor .input-xs, .form-horizontal .form-group-xs .form-control {
+    border-radius: 3px;
+    font-size: 11px;
+    height: 25px;
+    line-height: 1.2;
+    padding: 3px 6px;
 }

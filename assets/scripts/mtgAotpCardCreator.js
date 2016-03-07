@@ -1,5 +1,5 @@
 "use strict";
-angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload','as.sortable'])
+angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgAotpCards','ngFileUpload','as.sortable'])
 .config( [
     '$compileProvider',
     function( $compileProvider ){
@@ -77,87 +77,70 @@ angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload',
         this.selectedSeries.symbolClass = newClass
       }
 
-      this.selectSeriesByName = function(name){
-        if(this.cardSeries[name] && this.cardSeries[name].data){//already loaded?
-          this.selectedSeries = this.cardSeries[name]
+      this.paramSeries = function(series){
+        if(series && series.data){//already loaded?
+          this.selectedSeries = series
           return this.selectFirstCard()
         }
 
-        var setter = function(res){
-          this.selectedSeries = this.cardSeries[name]
-        }
+        this.selectedSeries = series
+        return this.fetchSeries(series)
+        //.then( this.selectFirstCard.bind(this) )
+      }
 
-        return this.fetchSeriesByName(name)
-        .then( setter.bind(this) )
-        .then( this.selectFirstCard.bind(this) )
+      this.selectSeriesByIndex = function(index){
+        this.paramSeries(this.cardSeries[index])
       }
 
       this.priorSeries = function(){
-        this.seriesIndex=this.seriesIndex==0?Object.keys(this.cardSeries).length-1:this.seriesIndex-1
+        this.seriesIndex=this.seriesIndex==0?this.cardSeries.length-1:this.seriesIndex-1
 
-        var selectedSeriesName = Object.keys(this.cardSeries)[this.seriesIndex]
-        this.selectSeriesByName(selectedSeriesName)
+        this.selectSeriesByIndex(this.seriesIndex)
       }
 
       this.nextSeries = function(){
-        this.seriesIndex=this.seriesIndex==Object.keys(this.cardSeries).length-1?0:this.seriesIndex+1
-        var selectedSeriesName = Object.keys(this.cardSeries)[this.seriesIndex]
-        this.selectSeriesByName(selectedSeriesName)
+        this.seriesIndex=this.seriesIndex==this.cardSeries.length-1?0:this.seriesIndex+1
+        this.selectSeriesByIndex(this.seriesIndex)
       }
 
       this.deleteSeries = function(){
-        delete this.cardSeries[res.data.name]
+        delete this.cardSeries[this.seriesIndex]
         delete this.selectedSeries
         this.priorSeries()
       }
 
       this.priorCard = function(){
-        this.selectedIndex=this.selectedIndex==0?Object.keys(this.selectedSeries.data).length-1:this.selectedIndex-1
-        var selectedCardName = Object.keys(this.selectedSeries.data)[this.selectedIndex]
-        this.selectedCard = this.selectedSeries.data[ selectedCardName ]
+        this.selectedIndex=this.selectedIndex==0?this.selectedSeries.data.length-1:this.selectedIndex-1
+        this.selectedCard = this.selectedSeries.data[this.selectedIndex]
       }
 
       this.nextCard = function(){
-        this.selectedIndex=this.selectedIndex==Object.keys(this.selectedSeries.data).length-1?0:this.selectedIndex+1
-        var selectedCardName = Object.keys(this.selectedSeries.data)[this.selectedIndex]
-        this.selectedCard = this.selectedSeries.data[ selectedCardName ]
+        this.selectedIndex=this.selectedIndex==this.selectedSeries.data.length-1?0:this.selectedIndex+1
+        this.selectedCard = this.selectedSeries.data[this.selectedIndex]
       }
 
       this.deleteCard = function(){
-        delete this.selectedSeries.data[this.selectedCard.name]
-        var sLen = Object.keys(this.selectedSeries.data).length
+        delete this.selectedSeries.data[this.selectedIndex]
+        var sLen = this.selectedSeries.data.length
         this.selectedIndex = this.selectedIndex >= sLen ? sLen-1 : this.selectedIndex
-        this.selectedCard = this.selectedSeries.data[ Object.keys(this.selectedSeries.data)[this.selectedIndex] ]
-      }
-
-      this.getFirstSeries = function(){
-        var firstSeriesName = Object.keys(this.cardSeries)[0];
-        return this.cardSeries[ firstSeriesName ]
+        this.selectedCard = this.selectedSeries.data[ this.selectedSeries.data[this.selectedIndex] ]
       }
 
       this.selectFirstCard = function(){
         this.selectedIndex = 0;
-        this.selectedSeries = this.selectedSeries || this.getFirstSeries()
-
+        this.selectedSeries = this.selectedSeries || this.cardSeries[0]
         if(this.selectedSeries.data){
-          var firstCardName = Object.keys(this.selectedSeries.data)[0];
-          this.selectedCard = this.selectedSeries.data[ firstCardName ]
+          this.selectedCard = this.selectedSeries.data[0]
           return;
         }
-        return this.selectSeriesByName(this.selectedSeries.name)
+        return this.selectSeriesByIndex(this.seriesIndex)
       }
 
       this.addSeries = function(){
-        var key = 'New Custom Series'
-        while(this.cardSeries[key]){
-          key = key+'_c'
-        }
-
         this.selectedSeries = {
-          name:key,data:{}
+          name:'Hot New Card Series',data:[]
         }
-        this.cardSeries[key] = this.selectedSeries
-
+        this.cardSeries.push(this.selectedSeries)
         this.addCard()
       }
 
@@ -167,33 +150,34 @@ angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload',
       }
 
       this.setDemoCardResult = function(res){
-        var key = res.data.name
-
-        //unique name
-        while(this.selectedSeries.data[key]){//?card exists
-          key = key +'_c'
-          res.data.name = key
-        }
-
         this.selectedCard = res.data
-        this.selectedSeries.data[key] = res.data
+        this.selectedSeries.data.push(res.data)
       }
 
-      this.fetchSeriesByName = function(name){
-        return AotpSeries.get(name).then(this.setSeriesFetchRes.bind(this))
+      this.fetchSeries = function(series){
+        return AotpSeries.get(series.name).then(this.setSeriesFetchRes.bind(this, series))
       }
 
-      this.setSeriesFetchRes = function(res){
-        this.cardSeries[res.data.name] = res.data
-        return res.data
+      this.setSeriesFetchRes = function(series, res){
+        /* card upgrade loop */
+          if(res.data.data && res.data.data.constructor!=Array){
+            var newArray = []
+            for(var x in res.data.data){
+              newArray.push(res.data.data[x])
+            }
+            res.data.data = newArray
+          }
+        /* end */
+        for(var x in series)delete series[x];
+        for(x in res.data)series[x] = res.data[x];
       }
 
       this.fetchAll = function(){
         var all = [], promise=$q.resolve()
 
-        for(var x in this.cardSeries){
+        for(var x=0; x < this.cardSeries.length; ++x){
           if(this.cardSeries[x].data)continue;
-          promise = promise.then( this.fetchSeriesByName(x) )
+          promise = promise.then( this.fetchSeriesByIndex(x) )
         }
 
         return promise
@@ -209,7 +193,8 @@ angular.module('mtgAotpCardCreator',['ngSanitize','mtgAotpCards','ngFileUpload',
 
       this.setFetchResult = function(res){
         this.cardSeries = res.data
-        this.selectFirstCard()
+        this.paramSeries( this.cardSeries[0] )
+        //this.selectFirstCard()
       }
 
       this.fetchCards = function(){
