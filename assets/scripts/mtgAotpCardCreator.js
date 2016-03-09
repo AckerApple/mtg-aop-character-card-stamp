@@ -1,4 +1,11 @@
 "use strict";
+
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+        FastClick.attach(document.body);
+    }, false);
+}
+
 angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgAotpCards','ngFileUpload','as.sortable'])
 .config( [
     '$compileProvider',
@@ -136,6 +143,15 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
     }
     ,template:require('./char-card.jade')
     ,controller:function(){
+      this.getAbilitiesLength=function(){
+        if(!this.model || !this.model.abilityArray)return 0;
+        var len = 0
+        for(var x=this.model.abilityArray.length-1; x >= 0; --x){
+          var ab = this.model.abilityArray[x]
+          len = len + ab.body.length + ab.title.length
+        }
+        return len
+      }
     }
     ,bindToController:true
     ,controllerAs:'charCard'
@@ -235,9 +251,7 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
       card:'=', series:'=', onEdit:'&'
     }
     ,controllerAs:'iCardModal'
-    ,controller:function(){
-      console.log(this.series)
-    }
+    ,controller:function(){}
   }
 })
 
@@ -281,6 +295,12 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
 .filter('copy',function(){
   return function(val){
     return angular.copy(val)
+  }
+})
+.filter('lineReturnAsBr',function(){
+  return function(val){
+    if(!val || !val.replace)return val
+    return val.replace(/\r|\n/gi,'<br />')
   }
 })
 

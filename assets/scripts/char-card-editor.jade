@@ -70,7 +70,7 @@ div&attributes(attrs)
   .text-center.text-muted.animate-h(style="font-size:0.7em;" ng-show="editor.model.colors.length>1") &nbsp;(drag to sort)
 
 
-div(style="margin:2% 0;")
+div(style="margin:2% 0;" ng-init="editor.view='dets'")
   div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")
     div(ng-click="editor.view=editor.view=='dets'?false:'dets'")
       a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Details
@@ -131,13 +131,14 @@ div(style="margin:2% 0;")
                   div(style="position:relative")
                     i.aotp.aotp-defense(style="position:absolute;margin-top:8%;left:6%;color:black;")
                   input.form-control.input-sm(type="text" ng-model="editor.model.defense" placeholder="Defense" maxLength=2 style="padding-left:1.75em;padding-right:0;")
-    .input-group
-      .input-group-addon(style="line-height:0;padding-top:1%;padding-bottom:1%;" ng-click="editor.cycleSymbolClass()")
-        i(ng-class="editor.model.symbolClass||'mi mi-planeswalk'" style="font-size:1.2em;")
-      input.input-xs.form-control(type="text" ng-model="editor.model.symbolClass" placeholder="Symbol Class" style="font-size:65%;")
-    .animate-v.text-xs(ng-show="editor.model.symbolClass")
-      input(type="checkbox" ng-model="editor.model.putSymbolOnFigure" id="editor.model.putSymbolOnFigure")
-      label(for="editor.model.putSymbolOnFigure") &nbsp;place symbol on figure
+    .animate-v(ng-show="editor.model.cardType=='squad'")
+      .input-group
+        .input-group-addon(style="line-height:0;padding-top:1%;padding-bottom:1%;" ng-click="editor.cycleSymbolClass()")
+          i(ng-class="editor.model.symbolClass||'mi mi-planeswalk'" style="font-size:1.2em;")
+        input.input-xs.form-control(type="text" ng-model="editor.model.symbolClass" placeholder="Symbol Class" style="font-size:65%;")
+      .animate-v.text-xs(ng-show="editor.model.symbolClass")
+        input(type="checkbox" ng-model="editor.model.putSymbolOnFigure" id="editor.model.putSymbolOnFigure")
+        label(for="editor.model.putSymbolOnFigure") &nbsp;place symbol on figure
 
 
 //-abs

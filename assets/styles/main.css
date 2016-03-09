@@ -2,6 +2,7 @@
 
 html,body{
   height:100%;width:100%;padding:0;margin:0;
+  font-size:1.15em;
 }
 
 print-canvas{
@@ -109,9 +110,14 @@ char-card * {
 }
 
 .char-card .figure-wrap{
-  float:left;margin-top:1.7%;margin-left:3.7%;width:41%;height:24.15%;overflow:hidden;
+  float:left;
+  margin-top:2.7%;
+  margin-left:3.7%;width:41%;height:24.15%;overflow:hidden;
 }
 
+char-card .figure-wrap .symbolClass{
+  color:white;left:4%;top:87%;position:absolute;font-size:83%;
+}
 
 .char-card .stat-box{
   white-space:nowrap;vertical-align:top;
@@ -202,10 +208,10 @@ char-card * {
 }
 
 
-.card-abilities{
+char-card .card-abilities{
   /*border:1px solid red;*/
   height:62%;overflow:auto;
-  line-height:117%;
+  line-height:109%;
   word-spacing:-.025em;
   clear:both;
 
@@ -213,21 +219,33 @@ char-card * {
   margin:5.25% 7.2% 0.75% 5%;
 }
 
-.card-abilities.aotp-original{
+char-card .card-abilities.card-abilities-sm{
+  margin:5.25% 7.2% 0 5%;
+}
+
+char-card .card-abilities.aotp-original{
   font-size:98%;
   margin:5.25% 8.5% 0.75% 5%;
 }
 
-.card-ability{
+char-card .card-abilities .card-ability{
   margin-bottom:8.5%;
 }
 
-.card-ability-title{
+char-card .card-abilities.card-abilities-sm .card-ability{
+  margin-bottom:4%;
+  line-height:1.071em;
+  word-spacing:.025em;
+  font-size:89%;
+}
+
+
+char-card .card-ability-title{
   font-family:Times New Roman;
   font-weight:bold;
 }
 
-.card-ability-body{
+char-card .card-ability-body{
   font-family:Times New Roman;
 }
 
@@ -419,14 +437,13 @@ mtg-aotp-card-creator #rosterArea .as-sortable-placeholder{
   float:none;
   display:inline-block !important;/*a must for inline drag/drop */
   cursor:pointer;
-  width:145px;
-  height:195px;
+  width:190px;height:260px;
   text-overflow:ellipsis;
   white-space:nowrap;overflow:hidden;
 }
 
 mtg-aotp-card-creator .member-count-wrap{
-  line-height:7px;font-size:0.3em;height:7px;
+  line-height:0.1em;font-size:6px;height:7px;
 }
 
 

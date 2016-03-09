@@ -1,6 +1,7 @@
 require('angular');
 require('angular-animate');
-require('angular-touch');
+//require('angular-touch');
+FastClick = require('fastclick');
 require('angular-sanitize');
 
 require('ng-file-upload');
@@ -9,6 +10,7 @@ require('ng-sortable');
 require('ng-sortable/dist/ng-sortable.min.css')
 
 require('font-awesome/css/font-awesome.min.css')
+require('bootstrap/dist/css/bootstrap.min.css')
 
 require('ack-angular');
 require('ack-angular/ack-angular.css');

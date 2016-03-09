@@ -1,10 +1,11 @@
+-size='175px'
 -ngRepeat="card in iRoster.cardArray"
 .roster-pick.animate-v(as-sortable-item ng-repeat=ngRepeat ng-click="iRoster.cardClick({card:card})")
   div(style="display:inline-block;" as-sortable-item-handle)
     .member-count-wrap
       div(ng-show="card.members && card.members>1")
         .fa.fa-circle-o(ng-repeat="item in [0,1,2,3,4,5,6,7,8,9].splice(0,card.members)" style="margin:0 .3em;")
-    div(style="width:130px;height:130px;border-radius:50%;" ng-class="[{'bg-c':!card.colors.length},'bg-'+(card.colors.length==1?card.colors[0]:'m')]")
+    div(style="width:#{size};height:#{size};border-radius:50%;" ng-class="[{'bg-c':!card.colors.length},'bg-'+(card.colors.length==1?card.colors[0]:'m')]")
       div(style="position:relative;height:100%")
         .text-center(style="position:absolute;top:85%;left:85%;" ng-show="card.cardType=='squad'")
           i(ng-class="card.symbolClass||'aotp aotp-squad'" style="color:#AAA;")
@@ -14,7 +15,7 @@
             span(ng-repeat="color in card.colors")
               i.mi(ng-class="'mi-'+color" style="margin:0 .2em;text-shadow:1px 1px 0 #000;")
         -bg = "url({{card.avatar.dataUrl||card.figure.dataUrl}}) center center no-repeat;background-size:cover;"
-        div(style="height:130px;border-radius:50%;background:"+bg)
+        div(style="height:#{size};border-radius:50%;background:"+bg)
     .text-xs
       div(style="font-size:88%") {{card.name}}
       .text-xs.text-muted
@@ -36,11 +37,11 @@
 
 .roster-pick
   div(style="display:inline-block;")
-    div(style="width:130px;height:130px;border-radius:50%;" ng-click="iRoster.onAdd()")
+    div(style="width:#{size};height:#{size};border-radius:50%;" ng-click="iRoster.onAdd()")
       div(style="position:relative;height:100%")
         .text-center.text-sm.text-muted(style="position:absolute;top:45%;width:100%;")
           |+ add card
-        div(style="height:130px;border-radius:50%;background-color:#CCC")
+        div(style="height:#{size};border-radius:50%;background-color:#CCC")
     .text-xs
       div(style="font-size:88%") &nbsp;
       .text-xs.text-muted &nbsp;
