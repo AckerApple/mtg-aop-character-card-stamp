@@ -1,0 +1,59 @@
+.animate-h.animate-fade(ng-hide="iEditor.selectedCard")
+  .alert.alert-warning(style="display:inline-block;")
+    i.fa.fa-exclamation-triangle
+    |&nbsp;Please select a card using the above series and card selectors
+
+.animate-h(ng-show="iEditor.selectedCard")
+  div(style="display:inline-block;vertical-align:top;margin:1px;")
+    h6.text-muted Card Editor
+    .char-card-editor
+      char-card-editor(model="iEditor.selectedCard" series="iEditor.selectedSeries")
+  div(style="display:inline-block;vertical-align:top;margin:1px;")
+    h6.text-muted Card Preview
+    char-card(model="iEditor.selectedCard" series="iEditor.selectedSeries")
+
+.animate-v(ng-show="iEditor.editorOps=='rendering'" style="margin:1%;")
+  a.btn-sm.btn.btn-default(ng-click="iEditor.triggerEzPrint=false;iEditor.triggerEzPrint=true") render ez-print
+  |&nbsp;
+  a.btn-sm.btn.btn-default(ng-click="iEditor.triggerHiResPrint=false;iEditor.triggerHiResPrint=true") render hi-res
+  |&nbsp;
+  a.animate-fade.btn-sm.btn.btn-default(ng-show="iEditor.ezPrintResult" href="{{iEditor.ezPrintResult.url}}" target="_blank") open ez-print
+  |&nbsp;
+  a.animate-fade.btn-sm.btn.btn-default(ng-show="iEditor.hiResPrintResult" href="{{iEditor.hiResPrintResult.url}}" target="_blank") open hi-res
+
+
+div
+  a.btn.btn-success(href="#seriesTitle" ng-click="iEditor.addSeries()" style="margin:1% 0;width:125px;")
+    |++ new series
+  |&nbsp;
+  a.btn.btn-success(ng-click="iEditor.addCard()" style="margin:1% 0;width:125px;")
+    |+ new card
+  span.animate-h(ng-show="iEditor.selectedCard")
+    |&nbsp;
+    a.btn.btn-info(ng-click="iEditor.editorOps='rendering'" style="margin:1% 0;width:125px")
+      .fa.fa-print
+      |&nbsp;rendering
+    |&nbsp;
+    a.btn.btn-danger(ng-click="iEditor.deleteCard()" style="margin:1% 0;width:125px")
+      .fa.fa-fire
+      |&nbsp;delete card
+  |&nbsp;
+  a.btn.btn-danger(ng-click="iEditor.deleteSeries()" style="margin:1% 0;width:125px")
+    .fa.fa-fire
+    .fa.fa-fire
+    |&nbsp;delete series
+
+
+//- easy rending stage
+div(ng-show="iEditor.ezPrint" style="position:absolute")
+  //-html2canvas must absolute have the print area on screen, so lets flash it on then off
+  print-canvas(before-print="iEditor.ezPrint=true" after-print="iEditor.ezPrint=false;iEditor.triggerEzPrint=false" print-trigger="iEditor.triggerEzPrint" print-model="iEditor.ezPrintResult" style="vertical-align:top;")
+    div(style="display:inline-block;")
+      char-card(model="iEditor.selectedCard" series="iEditor.series")
+
+//-hi-res rending stage
+div(ng-show="iEditor.hiResPrint" style="position:absolute")
+  //- html2canvas must absolute have the print area on screen, so lets flash it on then off
+  print-canvas(before-print="iEditor.hiResPrint=true" after-print="iEditor.hiResPrint=false;iEditor.triggerHiResPrint=false" print-trigger="iEditor.triggerHiResPrint" print-model="iEditor.hiResPrintResult" style="vertical-align:top;")
+    div(style="display:inline-block;")
+      char-card(size="'hires'" model="iEditor.selectedCard" series="iEditor.series")

@@ -32,7 +32,7 @@
               i.mi(class="mi-b")
           i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
       .figure-wrap(style="position:relative;")
-        i(ng-class="charCard.model.symbolClass" style="color:white;left:4%;top:88%;position:absolute;font-size:83%;")
+        i(ng-show="charCard.model.putSymbolOnFigure" ng-class="charCard.model.symbolClass" style="color:white;left:4%;top:88%;position:absolute;font-size:83%;")
         div(ng-show="charCard.model.figure" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.figure.dataUrl}});")
         //-div(ng-hide="charCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;") DROP IMAGE HERE
       .stat-box.life-box(ng-class="{'life-box-sm':charCard.model.attack>9}")
@@ -57,7 +57,7 @@
           i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
             span(class="seriesIcon")
               i(ng-class="charCard.series.symbolClass||'mi mi-planeswalk'")
-      .card-abilities
+      .card-abilities(ng-class="charCard.series.abilitiesClass")
         .card-ability(ng-repeat="ability in charCard.model.abilityArray")
           strong.card-ability-title {{ability.title|uppercase}}
           .card-ability-body(mtg-symbolize="ability.body")

@@ -1,6 +1,5 @@
-white-out-modal(show="cardCreator.preview")
-  char-card(model="cardCreator.previewCard" series="cardCreator.selectedSeries")
-  .btn.btn-default(ng-click="cardCreator.mode='editor';cardCreator.selectedCard=cardCreator.previewCard;cardCreator.preview=null") edit
+aotp-card-white-out-modal(card="cardCreator.previewCard" series="cardCreator.selectedSeries" on-edit="cardCreator.mode='editor';cardCreator.selectedCard=cardCreator.previewCard;cardCreator.previewCard=null")
+
   //-
 .text-center
   h1.text-sm Mtg Aotp Card Manager
@@ -21,30 +20,43 @@ white-out-modal(show="cardCreator.preview")
     div(style="max-width:675px;margin-left:auto;margin-right:auto;")
       .row(style="margin:0 0 1em 0;")
         .animate-all.col-xs-12.col-sm-6(style="vertical-align:middle;padding:0;margin:0;")
-          .text-center
-            .text-center(style="display:inline-block;")
+          .text-center.text-xs
+            .text-center(style="display:inline-block;margin:1%;")
+              //-edit series display & labels
               .animate-v.text-left(ng-show="cardCreator.editSeriesInfo")
                 .pull-right
                   .fa.fa-times(style="cursor:pointer" ng-click="cardCreator.editSeriesInfo=false")
+
                 .form-group
                   label Series Title
                   input.form-control(type="text" ng-model="cardCreator.selectedSeries.name")
+
                 .form-group
                   label Series Icon Class
                   .input-group
                     .input-group-addon
                       i(ng-class="cardCreator.selectedSeries.symbolClass||'mi mi-planeswalk'" ng-click="cardCreator.cycleSeriesSymbol()")
                     input.form-control(type="text" ng-model="cardCreator.selectedSeries.symbolClass")
-                .form-group.pull-left(style="width:50%")
+
+                .form-group.pull-left(style="width:50%;padding-right:3px;")
                   label Description
                   -ngModel="cardCreator.selectedSeries.description"
                   input.input-xs.form-control(type="text" ng-model=ngModel)
 
-                .form-group.pull-left(style="width:50%")
+                .form-group.pull-left(style="width:50%;")
                   label Small Origin Text #[sup &copy;]
                   -ngModel="cardCreator.selectedSeries.copyRight"
-                  input.input-xs.form-control(type="text" ng-model=ngModel ng-blur="editSeriesCopyRight=false")
-              //-Series & card labels
+                  input.text-xs.input-xs.form-control(type="text" ng-model=ngModel)
+
+                .form-group
+                  label
+                    |Abilities Class&nbsp;
+                    i.fa.fa-info-circle(onclick="alert('The original AOTP abilities font sizing, varies from Battle of Zendakar and later series. This is a control for that font variance.')")
+                  -ngModel="cardCreator.selectedSeries.abilitiesClass"
+                  input.text-xs.input-xs.form-control(type="text" ng-model=ngModel placeholder="none or aotp-original")
+
+
+              //-Series display & labels
               div(ng-hide="cardCreator.editSeriesInfo" ng-click="cardCreator.editSeriesInfo=true" style="cursor:pointer;")
                 h3(style="margin:0;" title=title id="seriesTitle")
                   i(ng-class="cardCreator.selectedSeries.symbolClass||'mi mi-planeswalk'")
@@ -63,7 +75,7 @@ white-out-modal(show="cardCreator.preview")
             .text-center(style="display:inline-block;")
               //-Series & card editors
               div
-                .btn-default.btn.btn-sm(style="width:80px" ng-click="cardCreator.mode='roster';cardCreator.selectedCard=null;" ng-class="{active:cardCreator.mode=='roster'}")
+                .btn-default.btn.btn-sm(style="width:80px" ng-click="cardCreator.mode='roster';" ng-class="{active:cardCreator.mode=='roster'}")
                   i.fa.fa-venus-mars
                   |&nbsp;roster
                 |&nbsp;
@@ -71,15 +83,17 @@ white-out-modal(show="cardCreator.preview")
                   i.fa.fa-diamond
                   |&nbsp;editor
                 |&nbsp;
-                .btn-default.btn.btn-sm(style="width:80px" ng-click="cardCreator.mode='browse';cardCreator.selectedCard=null" ng-class="{active:cardCreator.mode=='browse'}")
+                .btn-default.btn.btn-sm(style="width:80px" ng-click="cardCreator.mode='browse';" ng-class="{active:cardCreator.mode=='browse'}")
                   i.fa.fa-hand-pointer-o
                   |&nbsp;browse
 
               div(style="margin-top:4%;")
-                .text-muted(style="font-weight:normal;font-size:65%;text-align:{{cardCreator.mode=='editor'?'left;line-height:0;':'center;'}}") series editor
+                .text-muted(style="font-weight:normal;font-size:65%;text-align:{{cardCreator.mode=='editor'?'left;line-height:0;':'center;'}}")
+                  |series selector
                 a.btn.btn-default(style="width:60px;margin-right:.5em;" ng-click="cardCreator.priorSeries()") &lt;&lt;
                 .animate-h(style="display:inline-block;" ng-show="cardCreator.mode=='editor'")
-                  .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:.6;padding-bottom:4px;") card editor
+                  .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:.6;padding-bottom:4px;")
+                    |card selector
                   a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.priorCard()") &lt;
                   span(style="font-size:.8em;")
                     |&nbsp;&nbsp;
@@ -90,104 +104,16 @@ white-out-modal(show="cardCreator.preview")
                 a.btn.btn-default(style="width:60px;margin-left:.5em;" ng-click="cardCreator.nextSeries()") &gt;&gt;
 
   .animate-v(ng-show="cardCreator.mode=='editor'")
-    .animate-h(ng-show="cardCreator.selectedCard")
-      div(style="display:inline-block;vertical-align:top;margin:1px;")
-        h6.text-muted Card Editor
-        .char-card-editor
-          char-card-editor(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
-      div(style="display:inline-block;vertical-align:top;margin:1px;")
-        h6.text-muted Card Preview
-        char-card(model="cardCreator.selectedCard" series="cardCreator.selectedSeries")
-
-    //-div(style="width:223px;overflow:auto;display:inline-block;margin:1px;")
-      h6.text-muted Comparison Cards
-      img(src="assets/images/MTG-Arena-of-the-Planeswalkers-game-Planeswalkers-cards.jpg" border=0 style="vertical-align:top;height:626px")
-
-    .animate-v(ng-show="cardCreator.editorOps=='rendering'" style="margin:1%;")
-      a.btn-sm.btn.btn-default(ng-click="cardCreator.triggerEzPrint=false;cardCreator.triggerEzPrint=true") render ez-print
-      |&nbsp;
-      a.btn-sm.btn.btn-default(ng-click="cardCreator.triggerHiResPrint=false;cardCreator.triggerHiResPrint=true") render hi-res
-      |&nbsp;
-      a.animate-h.btn-sm.btn.btn-default(ng-show="cardCreator.ezPrintResult" href="{{cardCreator.ezPrintResult.url}}" target="_blank") open ez-print
-      |&nbsp;
-      a.animate-h.btn-sm.btn.btn-default(ng-show="cardCreator.hiResPrintResult" href="{{cardCreator.hiResPrintResult.url}}" target="_blank") open hi-res
-
-    div
-      a.btn.btn-success(href="#seriesTitle" ng-click="cardCreator.addSeries()" style="margin:1% 0;width:125px;")
-        |++ new series
-      |&nbsp;
-      a.btn.btn-success(ng-click="cardCreator.addCard()" style="margin:1% 0;width:125px;")
-        |+ new card
-      span.animate-h(ng-show="cardCreator.selectedCard")
-        |&nbsp;
-        a.btn.btn-info(ng-click="cardCreator.editorOps='rendering'" style="margin:1% 0;width:125px")
-          .fa.fa-print
-          |&nbsp;rendering
-        |&nbsp;
-        a.btn.btn-danger(ng-click="cardCreator.deleteCard()" style="margin:1% 0;width:125px")
-          .fa.fa-fire
-          |&nbsp;delete card
-      |&nbsp;
-      a.btn.btn-danger(ng-click="cardCreator.deleteSeries()" style="margin:1% 0;width:125px")
-        .fa.fa-fire
-        .fa.fa-fire
-        |&nbsp;delete series
+    mtg-editor-view(selected-series="cardCreator.selectedSeries" selected-card="cardCreator.selectedCard")
 
   .animate-v(ng-show="cardCreator.mode=='browse'")
     -ngRepeat="card in cardCreator.selectedSeries.data"
-    span(style="cursor:pointer;padding:.25%;display:inline-block" ng-repeat=ngRepeat)
+    span.animate-v(style="cursor:pointer;margin:.5% .25%;display:inline-block" ng-repeat=ngRepeat)
       char-card(model="card" series="cardCreator.selectedSeries" ng-click="cardCreator.preview=true;cardCreator.previewCard=card")
 
-  .animate-v.text-center(ng-show="cardCreator.mode=='roster'" id="rosterArea" as-sortable="{containment:'#rosterArea'}" ng-model="cardCreator.selectedSeries.data")
-    -ngRepeat="card in cardCreator.selectedSeries.data"
-    .roster-pick.animate-v(as-sortable-item style=rosterItemStyle ng-repeat=ngRepeat ng-click="cardCreator.preview=true;cardCreator.previewCard=card")
-      div(style="display:inline-block;" as-sortable-item-handle)
-        .member-count-wrap
-          div(ng-show="card.members && card.members>1")
-            .fa.fa-circle-o(ng-repeat="item in [0,1,2,3,4,5,6,7,8,9].splice(0,card.members)" style="margin:0 .3em;")
-        div(style="width:130px;height:130px;border-radius:50%;" ng-class="[{'bg-c':!card.colors.length},'bg-'+(card.colors.length==1?card.colors[0]:'m')]")
-          div(style="position:relative;height:100%")
-            .text-center(style="position:absolute;top:85%;left:85%;" ng-show="card.cardType=='squad'")
-              i(ng-class="card.symbolClass||'aotp aotp-squad'" style="color:#AAA;")
-
-            .text-center(style="position:absolute;top:83%;width:100%;")
-              div(style="font-size:90%;height:14px;margin-top:2%;color:white;")
-                span(ng-repeat="color in card.colors")
-                  i.mi(ng-class="'mi-'+color" style="margin:0 .2em;text-shadow:1px 1px 0 #000;")
-            -bg = "url({{card.avatar.dataUrl||card.figure.dataUrl}}) center center no-repeat;background-size:cover;"
-            div(style="height:130px;border-radius:50%;background:"+bg)
-        .text-xs
-          div(style="font-size:88%") {{card.name}}
-          .text-xs.text-muted
-            i.aotp.aotp-attack
-            |&nbsp;{{card.attack}}
-            |&nbsp;&nbsp;
-            i.aotp.aotp-defense
-            |&nbsp;{{card.defense}}
-            |&nbsp;&nbsp;
-            i.fa.fa-heart
-            |&nbsp;{{card.life}}
-            |&nbsp;&nbsp;
-            i.fa.fa-arrows
-            |&nbsp;{{card.move}}
-            |&nbsp;&nbsp;
-            i.fa.fa-rss
-            |&nbsp;{{card.range}}
-
-    .roster-pick
-      div(style="display:inline-block;")
-        div(style="width:130px;height:130px;border-radius:50%;")
-          div(style="position:relative;height:100%")
-            .text-center.text-sm.text-muted(style="position:absolute;top:45%;width:100%;" ng-click="cardCreator.addCard()")
-              |+ add card
-            div(style="height:130px;border-radius:50%;background-color:#CCC")
-        .text-xs
-          div(style="font-size:88%") &nbsp;
-          .text-xs.text-muted &nbsp;
-    p.text-xs.text-muted(style="line-height:0;")
-      i.fa.fa-arrow-up
-      |&nbsp;drag/drop to sort
-
+  .animate-v.text-center(ng-show="cardCreator.mode=='roster'")
+    div(id="rosterArea" as-sortable="{containment:'#rosterArea'}" ng-model="cardCreator.selectedSeries.data")
+      mtg-roster-view(card-array="cardCreator.selectedSeries.data" card-click="cardCreator.preview=true;cardCreator.previewCard=card" on-add="cardCreator.addCard()")
 
 div(style="text-align:center;margin:1% 0;")
   .animate-v(ng-show="cardCreator.export" style="margin:2% 0;")
@@ -214,18 +140,3 @@ div(style="text-align:center;margin:1% 0;")
   a.animate-h.btn.btn-default(ng-show="cardCreator.selectedCard" ng-click="cardCreator.export={data:cardCreator.selectedCard, name:cardCreator.selectedCard.name}" target="blank" style="margin:1% 0;width:125px")
     i.fa.fa-file-o
     |&nbsp;export card
-
-
-//- easy rending stage
-.animate-v(ng-show="editor.ezPrint" style="position:absolute")
-  //-html2canvas must absolute have the print area on screen, so lets flash it on then off
-  print-canvas(before-print="editor.ezPrint=true" after-print="editor.ezPrint=false;editor.triggerEzPrint=false" print-trigger="editor.triggerEzPrint" print-model="editor.ezPrintResult" style="vertical-align:top;")
-    div(style="display:inline-block;")
-      char-card(model="editor.model" series="editor.series")
-
-//-hi-res rending stage
-.animate-v(ng-show="editor.hiResPrint" style="position:absolute")
-  //- html2canvas must absolute have the print area on screen, so lets flash it on then off
-  print-canvas(before-print="editor.hiResPrint=true" after-print="editor.hiResPrint=false;editor.triggerHiResPrint=false" print-trigger="editor.triggerHiResPrint" print-model="editor.hiResPrintResult" style="vertical-align:top;")
-    div(style="display:inline-block;")
-      char-card(size="'hires'" model="editor.model" series="editor.series")

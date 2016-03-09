@@ -1,0 +1,38 @@
+white-out-modal(show="iCardModal.card")
+  .text-center(style="margin:8% 0;")
+    .animate-v(style="margin:8% 0;" ng-show="iCardModal.editorOps=='rendering'")
+      a.animate-fade.btn-sm.btn.btn-default(ng-show="iCardModal.ezPrintResult" href="{{iCardModal.ezPrintResult.url}}" target="_blank")
+        |open ez-print
+      |&nbsp;
+      a.animate-fade.btn-sm.btn.btn-default(ng-show="iCardModal.hiResPrint2Result" href="{{iCardModal.hiResPrint2Result.url}}" target="_blank")
+        |open hi-res
+      .text-center
+        h6 rendering options
+        a.btn-sm.btn.btn-default(ng-click="iCardModal.triggerEzPrint=false;iCardModal.triggerEzPrint=true")
+          |render ez-print
+        |&nbsp;
+        a.btn-sm.btn.btn-default(ng-click="iCardModal.triggerHiResPrint=false;iCardModal.triggerHiResPrint=true")
+          |render hi-res
+    .btn.btn-sm.btn-default(ng-click="iCardModal.onEdit()" style="width:75px")
+      i.fa.fa-diamond
+      |&nbsp;edit
+    |&nbsp;
+    .btn.btn-sm.btn-info(ng-click="iCardModal.editorOps='rendering'" style="width:75px")
+      i.fa.fa-print
+      |&nbsp;render
+
+  char-card(model="iCardModal.card" series="iCardModal.series")
+div(style="position:absolute;")
+  //- easy rending stage
+  div(ng-show="iCardModal.ezPrint")
+    //-html2canvas must absolute have the print area on screen, so lets flash it on then off
+    print-canvas(before-print="iCardModal.ezPrint=true" after-print="iCardModal.ezPrint=false;iCardModal.triggerEzPrint=false" print-trigger="iCardModal.triggerEzPrint" print-model="iCardModal.ezPrintResult" style="vertical-align:top;")
+      div(style="display:inline-block;")
+        char-card(model="iCardModal.card" series="iCardModal.series")
+
+  //-hi-res rending stage
+  div(ng-show="iCardModal.hiResPrint2")
+    //- html2canvas must absolute have the print area on screen, so lets flash it on then off
+    print-canvas(before-print="iCardModal.hiResPrint2=true" after-print="iCardModal.hiResPrint2=false;iCardModal.triggerHiResPrint=false" print-trigger="iCardModal.triggerHiResPrint" print-model="iCardModal.hiResPrint2Result" style="vertical-align:top;")
+      div(style="display:inline-block;")
+        char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")

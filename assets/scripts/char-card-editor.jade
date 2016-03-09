@@ -135,6 +135,9 @@ div(style="margin:2% 0;")
       .input-group-addon(style="line-height:0;padding-top:1%;padding-bottom:1%;" ng-click="editor.cycleSymbolClass()")
         i(ng-class="editor.model.symbolClass||'mi mi-planeswalk'" style="font-size:1.2em;")
       input.input-xs.form-control(type="text" ng-model="editor.model.symbolClass" placeholder="Symbol Class" style="font-size:65%;")
+    .animate-v.text-xs(ng-show="editor.model.symbolClass")
+      input(type="checkbox" ng-model="editor.model.putSymbolOnFigure" id="editor.model.putSymbolOnFigure")
+      label(for="editor.model.putSymbolOnFigure") &nbsp;place symbol on figure
 
 
 //-abs
@@ -146,8 +149,15 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
   .form-group(ng-repeat="ability in editor.model.abilityArray")
     input.input-xs.form-control(type="text" ng-model="ability.title" placeholder="Ability Title")
     textarea.input-xs.form-control(ng-model="ability.body" style="font-size:70%;height:65px" placeholder="Ability Body Description")
+    .text-center
+      a.text-xs.text-danger(ng-click="editor.model.abilityArray.splice($index,1)") - drop ability
   .text-center(style="margin-bottom:3%;")
-    .btn.btn-success.btn-xs(ng-click="editor.addAbility()") + add ability
+    .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbility()") + add ability
+    div
+      .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('trample')") + trample
+      .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('flying')") + flying
+      .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('lifelink')") + lifelink
+      .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('haste')") + haste
 
 //-attrs
 div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")

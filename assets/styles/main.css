@@ -204,13 +204,18 @@ char-card * {
 
 .card-abilities{
   /*border:1px solid red;*/
-  height:62%;
-  margin:5.25% 8% 0.75% 5%;
+  height:62%;overflow:auto;
   line-height:117%;
   word-spacing:-.025em;
   clear:both;
+
+  font-size:91%;
+  margin:5.25% 7.2% 0.75% 5%;
+}
+
+.card-abilities.aotp-original{
   font-size:98%;
-  overflow:hidden;
+  margin:5.25% 8.5% 0.75% 5%;
 }
 
 .card-ability{
