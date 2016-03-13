@@ -21,15 +21,15 @@ div&attributes(attrs)
       div(style="position:relative;text-align:center;")
         div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%") DROP IMAGE HERE
 
-.text-center.text-xs
+.text-center.text-xs(style="margin-bottom:2%;")
   input(type="radio" ng-model="editor.model.cardType" id="editor.model.cardType-planeswalker" value="planeswalker")
-  label(for="editor.model.cardType-planeswalker") &nbsp;Planeswalker
+  label(for="editor.model.cardType-planeswalker" style="font-weight:normal;") &nbsp;Planeswalker
   |&nbsp;&nbsp;&nbsp;
   input(type="radio" ng-model="editor.model.cardType" id="editor.model.cardType-squad" value="squad")
-  label(for="editor.model.cardType-squad") &nbsp;Squad
+  label(for="editor.model.cardType-squad" style="ifont-weight:normal;") &nbsp;Squad
   |&nbsp;&nbsp;&nbsp;
   input(type="radio" ng-model="editor.model.cardType" id="editor.model.cardType-spell" value="spell")
-  label(for="editor.model.cardType-spell") &nbsp;Spell
+  label(for="editor.model.cardType-spell" style="font-weight:normal;") &nbsp;Spell
 
 .animate-fade.alert.alert-warning(ng-show="editor.model.cardType=='spell'")
   i.fa.fa-exclamation-triangle
@@ -53,21 +53,21 @@ div&attributes(attrs)
   .text-xs.text-muted(style=style)
     |Mana Types
 
-  //-selected colors
-  div(as-sortable="{containment:'#sortable-container'}" ng-model="editor.model.colors" style="display:inline-block;color:black;")
-    div(ng-repeat="item in editor.model.colors" ng-class="'bg-'+item" as-sortable-item ng-click="editor.model.colors.splice($index,1)")
-      div(as-sortable-item-handle)
-        i.mi(style="font-size:1.5em;" ng-class="'mi-'+item")
+  .text-center(style="padding-top:2%;")
+    //-selected colors
+    div(as-sortable="{containment:'#sortable-container'}" ng-model="editor.model.colors" style="display:inline-block;color:black;")
+      div(ng-repeat="item in editor.model.colors" ng-class="'bg-'+item" as-sortable-item ng-click="editor.model.colors.splice($index,1)")
+        div(as-sortable-item-handle)
+          i.mi(style="font-size:1.5em;" ng-class="'mi-'+item")
 
-  //-selectable colors
-  -ngRepeat="item in editor.colors track by item.value"
-  -ngHide="editor.model.colors.indexOf(item.value)>=0"
-  -ngClick="editor.model.colors.push(item.value)"
-  .text-muted(style="display:inline-block;" ng-repeat=ngRepeat ng-hide=ngHide ng-click=ngClick)
-    .color-item(style="background-color:white;opacity:.8;")
-      i.mi(style="font-size:1.5em;" ng-class="'mi-'+item.value")
-
-  .text-center.text-muted.animate-h(style="font-size:0.7em;" ng-show="editor.model.colors.length>1") &nbsp;(drag to sort)
+    //-selectable colors
+    -ngRepeat="item in editor.colors track by item.value"
+    -ngHide="editor.model.colors.indexOf(item.value)>=0||(editor.resortColors&&editor.model.colors.length)"
+    -ngClick="editor.model.colors.push(item.value)"
+    .text-muted(style="display:inline-block;" ng-repeat=ngRepeat ng-hide=ngHide ng-click=ngClick)
+      .color-item(style="background-color:white;opacity:.8;")
+        i.mi(style="font-size:1.5em;" ng-class="'mi-'+item.value")
+    .animate-v(ng-show="editor.resortColors" style="padding:2% 0;color:#CCC;font-size:0.7em;") (drag/drop to sort)
 
 
 div(style="margin:2% 0;" ng-init="editor.view='dets'")

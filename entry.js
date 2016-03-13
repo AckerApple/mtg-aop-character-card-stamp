@@ -1,7 +1,7 @@
 require('angular');
 require('angular-animate');
 //require('angular-touch');
-FastClick = require('fastclick');
+//FastClick = require('fastclick');
 require('angular-sanitize');
 
 require('ng-file-upload');

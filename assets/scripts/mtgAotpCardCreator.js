@@ -1,11 +1,11 @@
 "use strict";
-
+/*
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function() {
         FastClick.attach(document.body);
     }, false);
 }
-
+*/
 angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgAotpCards','ngFileUpload','as.sortable'])
 .config( [
     '$compileProvider',
@@ -31,6 +31,10 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
         {label:'red',value:'r'},
         {label:'white',value:'w'}
       ]
+
+      this.dropColorByIndex = function(i){
+        this.model.colors.splice(i,1)
+      }
 
       this.addAbByType = function(type){
         var singular = this.model.name.replace(/s$/i,'')
@@ -232,8 +236,8 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
   return {
     restrict:'E'
     ,scope:{
-      selectedCard:'=',
-      selectedSeries:'='
+      card:'=',
+      series:'='
     }
     ,bindToController:true
     ,controllerAs:'iEditor'
@@ -245,16 +249,15 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
 .directive('aotpCardWhiteOutModal',function(){
   return {
     restrict:'E'
-    ,scope:{}
-    ,template:require('./aotp-card-white-out-modal.jade')
-    ,bindToController:{
+    ,scope:{
       card:'=', series:'=', onEdit:'&'
     }
+    ,template:require('./aotp-card-white-out-modal.jade')
     ,controllerAs:'iCardModal'
-    ,controller:function(){}
+    ,bindToController:true
+    ,controller:seriesNav
   }
 })
-
 
 .directive('mtgRosterView',function(){//mtg-roster-view
   return {
@@ -262,12 +265,14 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
     ,scope:{
       cardArray:'=',
       cardClick:'&',
-      onAdd:'&'
+      onAdd:'&', sortDisabled:'=?'
     }
     ,template:require('./mtg-roster-view.jade')
     ,bindToController:true
     ,controllerAs:'iRoster'
-    ,controller:function(){}
+    ,controller:function($scope){
+      this.sortDisabled = this.sortDisabled==null?true:this.sortDisabled
+    }
   }
 })
 .filter('symbolize',function(){
@@ -322,11 +327,11 @@ function seriesNav(AotpSeries, AotpDemoCharCard, $q){
 
 seriesNav.prototype.paramSeries = function(series){
   if(series && series.data){//already loaded?
-    this.selectedSeries = series
+    this.series = series
     return this.selectFirstCard()
   }
 
-  this.selectedSeries = series
+  this.series = series
   return this.fetchSeries(series)
   //.then( this.selectFirstCard.bind(this) )
 }
@@ -337,12 +342,12 @@ seriesNav.prototype.selectSeriesByIndex = function(index){
 
 seriesNav.prototype.cycleSeriesSymbol = function(){
   var newClass = 'mi mi-planeswalk'
-  switch(this.selectedSeries.symbolClass){
+  switch(this.series.symbolClass){
     case 'mi mi-planeswalk':
       newClass = 'aotp aotp-zendikar'
       break;
   }
-  this.selectedSeries.symbolClass = newClass
+  this.series.symbolClass = newClass
 }
 
 seriesNav.prototype.priorSeries = function(){
@@ -357,54 +362,64 @@ seriesNav.prototype.nextSeries = function(){
 }
 
 seriesNav.prototype.deleteSeries = function(){
-  delete this.cardSeries[this.seriesIndex]
-  delete this.selectedSeries
+  this.cardSeries.splice(this.seriesIndex,1)
+  delete this.series
   this.priorSeries()
 }
 
 seriesNav.prototype.priorCard = function(){
-  this.selectedIndex=this.selectedIndex<=0?this.selectedSeries.data.length-1:this.selectedIndex-1
-  this.selectedCard = this.selectedSeries.data[this.selectedIndex]
+  this.selectedIndex=this.selectedIndex<=0?this.series.data.length-1:this.selectedIndex-1
+  this.card = this.series.data[this.selectedIndex]
 }
 
 seriesNav.prototype.nextCard = function(){
-  this.selectedIndex=this.selectedIndex==this.selectedSeries.data.length-1?0:this.selectedIndex+1
-  this.selectedCard = this.selectedSeries.data[this.selectedIndex]
+  this.selectedIndex=this.selectedIndex==this.series.data.length-1?0:this.selectedIndex+1
+  this.card = this.series.data[this.selectedIndex]
 }
 
-seriesNav.prototype.deleteCard = function(){
-  delete this.selectedSeries.data[this.selectedIndex]
-  var sLen = this.selectedSeries.data.length
+seriesNav.prototype.deleteCard = function(card){
+  var index = card ? this.getCardIndex(card) : this.selectedIndex;
+  this.series.data.splice(index,1)
+
+  var sLen = this.series.data.length
   this.selectedIndex = this.selectedIndex >= sLen ? sLen-1 : this.selectedIndex
-  this.selectedCard = this.selectedSeries.data[ this.selectedSeries.data[this.selectedIndex] ]
+  this.card = this.series.data[ this.series.data[this.selectedIndex] ]
 }
 
 seriesNav.prototype.selectFirstCard = function(){
   this.selectedIndex = 0;
-  this.selectedSeries = this.selectedSeries || this.cardSeries[0]
-  if(this.selectedSeries.data){
-    this.selectedCard = this.selectedSeries.data[0]
+  this.series = this.series || this.cardSeries[0]
+  if(this.series.data){
+    this.card = this.series.data[0]
     return;
   }
   return this.selectSeriesByIndex(this.seriesIndex)
 }
 
 seriesNav.prototype.addSeries = function(){
-  this.selectedSeries = {
+  this.series = {
     name:'Hot New Card Series',data:[]
   }
-  this.cardSeries.push(this.selectedSeries)
+  this.cardSeries.push(this.series)
   this.addCard()
 }
 
 seriesNav.prototype.addCard = function(){
-  this.selectedCard = this.AotpDemoCharCard.get()
-  this.selectedSeries.data.push(this.selectedCard)
+  this.card = this.AotpDemoCharCard.get()
+  this.series.data.push(this.card)
   this.mode='editor'
 }
 
 seriesNav.prototype.fetchSeries = function(series){
   return this.AotpSeries.get(series.name).then(this.setSeriesFetchRes.bind(this, series))
+}
+
+seriesNav.prototype.getCardIndex = function(card){
+  for(var x=this.series.data.length-1; x >= 0; --x){
+    if(this.series.data[x].name==card.name){
+      return x
+    }
+  }
 }
 
 seriesNav.prototype.setSeriesFetchRes = function(series, res){

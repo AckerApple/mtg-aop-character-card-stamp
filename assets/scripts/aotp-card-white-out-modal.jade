@@ -1,27 +1,37 @@
 white-out-modal(show="iCardModal.card")
   .text-center(style="margin:8% 0;")
     .animate-v(style="margin:8% 0;" ng-show="iCardModal.editorOps=='rendering'")
-      a.animate-fade.btn-sm.btn.btn-default(ng-show="iCardModal.ezPrintResult" href="{{iCardModal.ezPrintResult.url}}" target="_blank")
+      a.animate-fade.btn.btn-default(ng-show="iCardModal.ezPrintResult" href="{{iCardModal.ezPrintResult.url}}" target="_blank")
         |open ez-print
       |&nbsp;
-      a.animate-fade.btn-sm.btn.btn-default(ng-show="iCardModal.hiResPrint2Result" href="{{iCardModal.hiResPrint2Result.url}}" target="_blank")
+      a.animate-fade.btn.btn-default(ng-show="iCardModal.hiResPrint2Result" href="{{iCardModal.hiResPrint2Result.url}}" target="_blank")
         |open hi-res
       .text-center
         h6 rendering options
-        a.btn-sm.btn.btn-default(ng-click="iCardModal.triggerEzPrint=false;iCardModal.triggerEzPrint=true")
+        a.btn.btn-default(ng-click="iCardModal.triggerEzPrint=false;iCardModal.triggerEzPrint=true")
           |render ez-print
         |&nbsp;
-        a.btn-sm.btn.btn-default(ng-click="iCardModal.triggerHiResPrint=false;iCardModal.triggerHiResPrint=true")
+        a.btn.btn-default(ng-click="iCardModal.triggerHiResPrint=false;iCardModal.triggerHiResPrint=true")
           |render hi-res
-    .btn.btn-sm.btn-default(ng-click="iCardModal.onEdit()" style="width:75px")
+    .btn.btn-default(ng-click="iCardModal.onEdit()" style="width:100px")
       i.fa.fa-diamond
       |&nbsp;edit
     |&nbsp;
-    .btn.btn-sm.btn-info(ng-click="iCardModal.editorOps='rendering'" style="width:75px")
+    .btn.btn-info(ng-click="iCardModal.editorOps='rendering'" style="width:100px")
       i.fa.fa-print
       |&nbsp;render
 
-  char-card(model="iCardModal.card" series="iCardModal.series")
+  .visible-xs
+    char-card(model="iCardModal.card" series="iCardModal.series")
+  .hidden-xs
+    char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
+
+  .text-center(style="margin:8% 0;")
+    a.btn.btn-danger(ng-click="iCardModal.deleteCard(iCardModal.card);iCardModal.card=null" style="margin:1% 0;width:125px")
+      .fa.fa-fire
+      |&nbsp;delete card
+
+
 div(style="position:absolute;")
   //- easy rending stage
   div(ng-show="iCardModal.ezPrint")

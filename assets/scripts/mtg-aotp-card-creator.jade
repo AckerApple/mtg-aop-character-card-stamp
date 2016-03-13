@@ -1,4 +1,9 @@
-aotp-card-white-out-modal(card="cardCreator.previewCard" series="cardCreator.selectedSeries" on-edit="cardCreator.mode='editor';cardCreator.selectedCard=cardCreator.previewCard;cardCreator.previewCard=null")
+-attrs={}
+-attrs.card="cardCreator.previewCard"
+-attrs.series="cardCreator.series"
+-attrs['on-edit']="cardCreator.mode='editor';cardCreator.card=cardCreator.previewCard;cardCreator.previewCard=null"
+aotp-card-white-out-modal&attributes(attrs)
+
 
 .text-center
   h1.text-sm Mtg Aotp Card Manager
@@ -28,52 +33,52 @@ aotp-card-white-out-modal(card="cardCreator.previewCard" series="cardCreator.sel
 
                 .form-group
                   label Series Title
-                  input.form-control(type="text" ng-model="cardCreator.selectedSeries.name")
+                  input.form-control(type="text" ng-model="cardCreator.series.name")
 
                 .form-group
                   label Series Icon Class
                   .input-group
                     .input-group-addon
-                      i(ng-class="cardCreator.selectedSeries.symbolClass||'mi mi-planeswalk'" ng-click="cardCreator.cycleSeriesSymbol()")
-                    input.form-control(type="text" ng-model="cardCreator.selectedSeries.symbolClass")
+                      i(ng-class="cardCreator.series.symbolClass||'mi mi-planeswalk'" ng-click="cardCreator.cycleSeriesSymbol()")
+                    input.form-control(type="text" ng-model="cardCreator.series.symbolClass")
 
                 .form-group.pull-left(style="width:50%;padding-right:3px;")
                   label Description
-                  -ngModel="cardCreator.selectedSeries.description"
+                  -ngModel="cardCreator.series.description"
                   input.input-xs.form-control(type="text" ng-model=ngModel)
 
                 .form-group.pull-left(style="width:50%;")
                   label Small Origin Text #[sup &copy;]
-                  -ngModel="cardCreator.selectedSeries.copyRight"
+                  -ngModel="cardCreator.series.copyRight"
                   input.text-xs.input-xs.form-control(type="text" ng-model=ngModel)
 
                 .form-group
                   label
                     |Abilities Class&nbsp;
                     i.fa.fa-info-circle(onclick="alert('The original AOTP abilities font sizing, varies from Battle of Zendakar and later series. This is a control for that font variance.')")
-                  -ngModel="cardCreator.selectedSeries.abilitiesClass"
+                  -ngModel="cardCreator.series.abilitiesClass"
                   input.text-xs.input-xs.form-control(type="text" ng-model=ngModel placeholder="none or aotp-original")
 
 
               //-Series display & labels
               div(ng-hide="cardCreator.editSeriesInfo" ng-click="cardCreator.editSeriesInfo=true" style="cursor:pointer;")
                 h3(style="margin:0;" title=title id="seriesTitle")
-                  i(ng-class="cardCreator.selectedSeries.symbolClass||'mi mi-planeswalk'")
+                  i(ng-class="cardCreator.series.symbolClass||'mi mi-planeswalk'")
                   |&nbsp;
                   span(style="vertical-align:top;display:inline-block;")
-                    span(ng-hide="editSeriesName") {{cardCreator.selectedSeries.name}}
+                    span(ng-hide="editSeriesName") {{cardCreator.series.name}}
                 div
                   .text-muted(style="font-size:0.9em;line-height:2;margin-bottom:.2em;")
-                    div(style="display:inline-block;") {{cardCreator.selectedSeries.description||'Get ready to describe your awesomeness'}}
+                    div(style="display:inline-block;") {{cardCreator.series.description||'Get ready to describe your awesomeness'}}
                 div
                   .text-muted(style="font-size:0.6em;line-height:1;margin-bottom:.5em;")
-                    div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.selectedSeries.copyRight||'&copy; copyrights are holding us back 2016'|trustAsHtml")
+                    div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.series.copyRight||'&copy; copyrights are holding us back 2016'|trustAsHtml")
 
         .col-xs-12.col-sm-6(style="vertical-align:middle;padding:0;margin:0;")
           .text-center(ng-init="cardCreator.mode='roster'")
             .text-center(style="display:inline-block;")
               //-Series & card editors
-              div
+              div(style="margin-bottom:4%;")
                 .btn-default.btn.btn-sm(style="width:80px" ng-click="cardCreator.mode='roster';" ng-class="{active:cardCreator.mode=='roster'}")
                   i.fa.fa-venus-mars
                   |&nbsp;roster
@@ -86,56 +91,71 @@ aotp-card-white-out-modal(card="cardCreator.previewCard" series="cardCreator.sel
                   i.fa.fa-hand-pointer-o
                   |&nbsp;browse
 
-              div(style="margin-top:4%;")
-                .text-muted(style="font-weight:normal;font-size:65%;text-align:{{cardCreator.mode=='editor'?'left;line-height:0;':'center;'}}")
+              div
+                .text-muted(style="font-weight:normal;font-size:65%;text-align:{{cardCreator.mode=='editor'?'left;':'center;'}}")
                   |series selector
-                a.btn.btn-default(style="width:60px;margin-right:.5em;" ng-click="cardCreator.priorSeries()") &lt;&lt;
+                a.btn.btn-default(style="vertical-align:top;width:60px;margin-right:.5em;" ng-click="cardCreator.priorSeries()") &lt;&lt;
                 .animate-h(style="display:inline-block;" ng-show="cardCreator.mode=='editor'")
-                  .text-muted.text-left(style="font-weight:normal;font-size:65%;line-height:.6;padding-bottom:4px;")
-                    |card selector
                   a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.priorCard()") &lt;
                   span(style="font-size:.8em;")
                     |&nbsp;&nbsp;
-                    |{{cardCreator.selectedIndex+1}} of {{(cardCreator.selectedSeries.data|keys).length}}
+                    |{{cardCreator.selectedIndex+1}} of {{(cardCreator.series.data|keys).length}}
                     |&nbsp;&nbsp;
                   a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.nextCard()") &gt;
+                  .text-muted.text-center(style="font-weight:normal;font-size:55%;padding-bottom:4px;")
+                    |card selector
 
-                a.btn.btn-default(style="width:60px;margin-left:.5em;" ng-click="cardCreator.nextSeries()") &gt;&gt;
+                a.btn.btn-default(style="vertical-align:top;width:60px;margin-left:.5em;" ng-click="cardCreator.nextSeries()") &gt;&gt;
 
   .animate-v(ng-show="cardCreator.mode=='editor'")
-    mtg-editor-view(selected-series="cardCreator.selectedSeries" selected-card="cardCreator.selectedCard")
+    mtg-editor-view(series="cardCreator.series" card="cardCreator.card")
 
   .animate-v(ng-show="cardCreator.mode=='browse'")
-    -ngRepeat="card in cardCreator.selectedSeries.data"
+    -ngRepeat="card in cardCreator.series.data"
     span.animate-v(style="cursor:pointer;margin:.5% .25%;display:inline-block" ng-repeat=ngRepeat)
-      char-card(model="card" series="cardCreator.selectedSeries" ng-click="cardCreator.preview=true;cardCreator.previewCard=card")
+      char-card(model="card" series="cardCreator.series" ng-click="cardCreator.previewCard=card")
 
+  |{{cardCreator.previewCard.name}}
   .animate-v.text-center(ng-show="cardCreator.mode=='roster'")
-    div(id="rosterArea" as-sortable="{containment:'#rosterArea'}" ng-model="cardCreator.selectedSeries.data")
-      mtg-roster-view(card-array="cardCreator.selectedSeries.data" card-click="cardCreator.preview=true;cardCreator.previewCard=card" on-add="cardCreator.addCard()")
+    mtg-roster-view(card-array="cardCreator.series.data" card-click="cardCreator.previewCard=card" on-add="cardCreator.addCard()")
 
 div(style="text-align:center;margin:1% 0;")
-  .animate-v(ng-show="cardCreator.export" style="margin:2% 0;")
-    a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
-      i.fa.fa-eye
-      |&nbsp;View {{cardCreator.export.name}}
-    |&nbsp;
-    a.btn.btn-default(download="{{cardCreator.export.name}}.json" ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
-      i.fa.fa-download
-      |&nbsp;Download {{cardCreator.export.name}}
+  div(style="display:inline-block;")
+    .text-left
+      .animate-v(ng-show="cardCreator.optionView=='export'" style="margin:2% 0;")
+        h5 #[i.fa.fa-download] Exporting
+        .animate-v(ng-show="cardCreator.export" style="margin:2% 0;")
+          a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
+            i.fa.fa-eye
+            |&nbsp;View {{cardCreator.export.name}}
+          |&nbsp;
+          a.btn.btn-default(download="{{cardCreator.export.name}}.json" ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
+            i.fa.fa-download
+            |&nbsp;Download {{cardCreator.export.name}}
+        a.btn.btn-default(ng-click="cardCreator.exportAll()" target="blank" style="margin:1% 0;width:125px")
+          i.fa.fa-folder-open-o
+          |&nbsp;export all
+        |&nbsp;
+        a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.series,name:cardCreator.series.name}" target="blank" style="margin:1% 0;width:125px")
+          i.fa.fa-files-o
+          |&nbsp;export series
+        |&nbsp;
+        a.animate-h.btn.btn-default(ng-show="cardCreator.card" ng-click="cardCreator.export={data:cardCreator.card, name:cardCreator.card.name}" target="blank" style="margin:1% 0;width:125px")
+          i.fa.fa-file-o
+          |&nbsp;export card
 
-  a.btn.btn-danger(onclick="alert('not done')" target="blank" style="margin:1% 0;width:125px")
-    i.fa.fa-upload
-    |&nbsp;import series
-  |&nbsp;
-  a.btn.btn-default(ng-click="cardCreator.exportAll()" target="blank" style="margin:1% 0;width:125px")
-    i.fa.fa-folder-open-o
-    |&nbsp;export all
-  |&nbsp;
-  a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.selectedSeries,name:cardCreator.selectedSeries.name}" target="blank" style="margin:1% 0;width:125px")
-    i.fa.fa-files-o
-    |&nbsp;export series
-  |&nbsp;
-  a.animate-h.btn.btn-default(ng-show="cardCreator.selectedCard" ng-click="cardCreator.export={data:cardCreator.selectedCard, name:cardCreator.selectedCard.name}" target="blank" style="margin:1% 0;width:125px")
-    i.fa.fa-file-o
-    |&nbsp;export card
+      .animate-v(ng-show="cardCreator.optionView=='import'" style="margin:2% 0;")
+        h5 #[i.fa.fa-download] Importing
+        .alert.alert-warning coming soon
+
+    a.btn.btn-default(style="margin:1% 0;width:125px" ng-click="cardCreator.optionView='import'")
+      i.fa.fa-upload
+      |&nbsp;import options
+    |&nbsp;
+    a.btn.btn-success(style="margin:1% 0;width:125px" ng-click="cardCreator.addCard()")
+      |+&nbsp;add card
+    |&nbsp;
+    a.btn.btn-default(style="margin:1% 0;width:125px" ng-click="cardCreator.optionView='export'")
+      i.fa.fa-download
+      |&nbsp;export options
+    |&nbsp;

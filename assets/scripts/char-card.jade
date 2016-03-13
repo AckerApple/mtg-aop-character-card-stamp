@@ -1,4 +1,4 @@
-.char-card(style="text-align:left;" class="char-card-{{charCard.model.colors.length>1?'m':charCard.model.colors[0]}}" ng-class="{'char-card-print-hires':charCard.size=='hires'}")
+.char-card(style="text-align:left;" class="char-card-{{charCard.model.colors.length>1?'m':charCard.model.colors[0]}}" ng-class="charCard.size?'char-card-print-'+charCard.size:null")
   .char-card-stage
     .starting-height
     div(style="position:relative;height:4.75%")

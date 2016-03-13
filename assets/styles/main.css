@@ -25,16 +25,12 @@ mtg-aotp-card-creator a{
   background-color:#feff9f;
 }
 
-.char-card-editor{
-  width:223px;
-  height:626px;overflow:auto;
-  padding:1em .8em;background-color:black;border-radius:1.1em;color:white;
-}
-
 
 char-card * {
   box-sizing: border-box;
 }
+
+/* 72 dpi */
 .char-card{
   font-size:12px;
   line-height: 1.42857143;
@@ -51,6 +47,7 @@ char-card * {
   margin-left:4.7%;margin-right:4.791%;
 }
 
+/* 200 dpi */
 .char-card.char-card-print-hires{
   font-size:26px;
   line-height: 1.4;
@@ -433,13 +430,54 @@ char-card .card-ability-body{
 
 
 mtg-aotp-card-creator #rosterArea .roster-pick,
+mtg-aotp-card-creator #rosterArea .circle-option,
 mtg-aotp-card-creator #rosterArea .as-sortable-placeholder{
-  float:none;
-  display:inline-block !important;/*a must for inline drag/drop */
-  cursor:pointer;
-  width:190px;height:260px;
+  display:inline-block !important;
+  padding:1.5%;
   text-overflow:ellipsis;
+  vertical-align:top;
   white-space:nowrap;overflow:hidden;
+}
+
+mtg-aotp-card-creator #rosterArea .circle-option .color-circle{
+  background-color:#CCC;
+}
+
+mtg-aotp-card-creator #rosterArea .color-circle{
+  border-radius:50%;
+}
+
+mtg-aotp-card-creator #rosterArea .circle-option.active .color-circle{
+  background-color:#66d9e3;
+}
+
+mtg-aotp-card-creator #rosterArea [as-sortable-item-handle],
+mtg-aotp-card-creator #rosterArea .roster-pick,
+mtg-aotp-card-creator #rosterArea .circle-option{
+  cursor:pointer;
+}
+
+mtg-aotp-card-creator #rosterArea .drag-enabled .roster-pick,
+mtg-aotp-card-creator #rosterArea .drag-enabled [as-sortable-item-handle]{
+  cursor:move;
+}
+
+mtg-aotp-card-creator #rosterArea .image-holder{
+  height:175px;
+}
+
+mtg-aotp-card-creator #rosterArea .drag-enabled .image-holder{
+  height:100px;
+}
+
+
+mtg-aotp-card-creator #rosterArea .roster-pick .color-circle{
+  width:175px;height:175px
+}
+
+mtg-aotp-card-creator #rosterArea .circle-option .color-circle,
+mtg-aotp-card-creator #rosterArea .drag-enabled .roster-pick .color-circle{
+  width:100px;height:100px;
 }
 
 mtg-aotp-card-creator .member-count-wrap{
@@ -449,6 +487,15 @@ mtg-aotp-card-creator .member-count-wrap{
 
 
 
+char-card-editor{
+  font-size:14px;
+}
+
+.char-card-editor{
+  width:223px;padding:1em .5em;
+  height:626px;overflow:auto;
+  background-color:black;border-radius:1.1em;color:white;
+}
 
 char-card-editor .color-picker .as-sortable-dragging{
   top:-90px;
