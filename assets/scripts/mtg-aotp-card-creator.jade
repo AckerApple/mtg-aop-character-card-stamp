@@ -148,6 +148,20 @@ div(style="text-align:center;margin:1% 0;")
         h5 #[i.fa.fa-download] Importing
         .alert.alert-warning coming soon
 
+        -attrs={}
+        //-attrs['ngf-drop']="cardCreator.importSeries($file,editor.model)"
+        //-attrs['ngf-drag-over-class']="'drop-over'"
+        //-attrs['ngf-fix-orientation']="true"
+        -attrs['ng-model']="file"
+        -attrs['ngf-pattern']="'application/json'"
+        -attrs['ngf-accept']="'application/json'"
+        -attrs['ngf-max-size']="8MB"
+        -attrs['ngf-select']="cardCreator.uploadSeries($file,file)"
+        a.btn.btn-default(style="margin:1% 0;width:125px")&attributes(attrs)
+          i.fa.fa-files-o
+          |&nbsp;import series
+
+
     a.btn.btn-default(style="margin:1% 0;width:125px" ng-click="cardCreator.optionView='import'")
       i.fa.fa-upload
       |&nbsp;import options

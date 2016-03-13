@@ -318,11 +318,49 @@ function symbolize(string){
 
 
 
-function seriesNav(AotpSeries, AotpDemoCharCard, $q){
+function seriesNav(AotpSeries, AotpDemoCharCard, $q, Upload){
+  this.$q = $q
   this.AotpDemoCharCard = AotpDemoCharCard
   this.AotpSeries=AotpSeries
   this.seriesIndex=0
   this.selectedIndex = -1
+  this.Upload = Upload
+}
+
+seriesNav.prototype.uploadSeries = function(series){
+  if(!series)return;
+  this.$q.resolve()
+  .then(function(){
+    return this.Upload.base64DataUrl(series)
+  }.bind(this))
+  .then(function(res){
+    var string = res.split(',')[1]
+    return atob(string)
+  })
+  .then(JSON.parse)
+  .then(this.importSeries.bind(this))
+  .catch(function(e){
+    alert('import failed. '+e.message)
+  })
+}
+
+seriesNav.prototype.importSeries = function(series){
+  var index = this.getSeriesIndex(series)
+
+  if(index>=0){
+    for(var x in this.cardSeries[index])delete this.cardSeries[index][x];
+    for(var x in series)this.cardSeries[index][x] = series[x]
+  }else{
+    this.cardSeries.push(series)
+  }
+}
+
+seriesNav.prototype.getSeriesIndex = function(series){
+  for(var x=this.cardSeries.length-1; x >= 0; --x){
+    if(this.cardSeries[x].name==series.name){
+      return x
+    }
+  }
 }
 
 seriesNav.prototype.paramSeries = function(series){
@@ -437,7 +475,7 @@ seriesNav.prototype.setSeriesFetchRes = function(series, res){
 }
 
 seriesNav.prototype.fetchAll = function(){
-  var all = [], promise=$q.resolve()
+  var all = [], promise=this.$q.resolve()
 
   for(var x=0; x < this.cardSeries.length; ++x){
     if(this.cardSeries[x].data)continue;
@@ -470,8 +508,8 @@ seriesNav.prototype.fetchSeriesListing = function(){
 
 
 
-function mtgAotpCardCreator(AotpSeries, AotpDemoCharCard, $q){
-  seriesNav.call(this, AotpSeries, AotpDemoCharCard, $q)
+function mtgAotpCardCreator(AotpSeries, AotpDemoCharCard, $q, Upload){
+  seriesNav.apply(this,arguments)
   this.fetchSeriesListing()
 }
 mtgAotpCardCreator.prototype = Object.create(seriesNav.prototype)
