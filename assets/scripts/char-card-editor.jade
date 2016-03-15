@@ -5,21 +5,26 @@ input.form-control.input-xs(type="text" ng-model="editor.model.name" placeholder
 -attrs['ng-mouseover']="editor.mouseOverImage=true"
 -attrs['ng-mouseout']="editor.mouseOverImage=false"
 div&attributes(attrs)
-  -ngStyle="{'background-image':editor.model.avatar && !editor.mouseOverImageurl ? 'url('+editor.model.avatar.dataUrl+')':null}"
+  -ngStyle="{'background-image':editor.series.images[editor.model.id].avatar && !editor.mouseOverImage ? 'url('+editor.series.images[editor.model.id].avatar.dataUrl+')':null}"
   div(style="height:100%;background-size:cover;background-position:center center;" ng-style=ngStyle)
     -attrs={}
-    -attrs['ngf-drop']="editor.uploadAvatarTo($file,editor.model)"
+    -attrs['ngf-drop']="editor.uploadAvatarTo($file,editor.series.images[editor.model.id].avatar)"
     -attrs['ng-model']="file"
     -attrs['ngf-pattern']="'image/*'"
     -attrs['ngf-accept']="'image/*'"
     -attrs['ngf-max-size']="8MB"
     -attrs['ngf-fix-orientation']="true"
     -attrs['ngf-drag-over-class']="'drop-over'"
-    -attrs['ngf-select']="editor.uploadAvatarTo($file,editor.model)"
+    -attrs['ngf-select']="editor.uploadAvatarTo($file,editor.series.images[editor.model.id].avatar)"
     div(style="height:100%;")&attributes(attrs)
-      //-ng-hide="editor.model.avatar && !editor.mouseOverImage"
       div(style="position:relative;text-align:center;")
         div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%") DROP IMAGE HERE
+
+.input-group(style="")
+  .input-group-btn
+    .btn.btn-xs.btn-default(style="height:25px") img-src
+  input.input-xs.form-control(ng-model="editor.series.images[editor.model.id].avatar.dataUrl" style="height:25px" ng-change="editor.series|scanSeries")
+
 
 .text-center.text-xs(style="margin-bottom:2%;")
   input(type="radio" ng-model="editor.model.cardType" id="editor.model.cardType-planeswalker" value="planeswalker")
@@ -91,15 +96,15 @@ div(style="margin:2% 0;" ng-init="editor.view='dets'")
       tr
         td(style="width:45%;padding-right:1%;" valign="top")
           -attrs={}
-          -attrs['ngf-select']="editor.uploadFigureTo($file,editor.model)"
-          -attrs['ngf-drop']="editor.uploadFigureTo($file,editor.model)"
+          -attrs['ngf-select']="editor.uploadFigureTo($file,editor.series.images[editor.model.id].figure)"
+          -attrs['ngf-drop']="editor.uploadFigureTo($file,editor.series.images[editor.model.id].figure)"
           -attrs['ng-model']="file"
           -attrs['ngf-drag-over-class']="'drop-over'"
           -attrs['ngf-pattern']="'image/*'"
           -attrs['ngf-accept']="'image/*'"
           -attrs['ngf-max-size']="8MB"
           -attrs['ngf-fix-orientation']="true"
-          div(style="cursor:pointer;border:1px dashed white;height:100px;background-size:cover;background-position:center center;" ng-style="{'background-image':'url('+editor.model.figure.dataUrl+')'}")
+          div(style="cursor:pointer;border:1px dashed white;height:100px;background-size:cover;background-position:center center;" ng-style="{'background-image':'url('+editor.series.images[editor.model.id].figure.dataUrl+')'}")
             div(style="height:100%")&attributes(attrs)
               div(style="position:relative;text-align:center;")
                 div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%;font-size:70%;") DROP IMAGE HERE

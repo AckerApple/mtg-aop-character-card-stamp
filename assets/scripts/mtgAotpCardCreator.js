@@ -1,11 +1,9 @@
 "use strict";
-/*
-if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function() {
-        FastClick.attach(document.body);
-    }, false);
+
+function uuid(){
+  return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8);return v.toString(16)})
 }
-*/
+
 angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgAotpCards','ngFileUpload','as.sortable'])
 .config( [
     '$compileProvider',
@@ -22,80 +20,7 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
     ,template:require('./char-card-editor.jade')
     ,bindToController:true
     ,controllerAs:'editor'
-    ,controller:function(Upload){
-      this.selectedColors=[]
-      this.colors=[
-        {label:'black',value:'b'},
-        {label:'blue',value:'u'},
-        {label:'green',value:'g'},
-        {label:'red',value:'r'},
-        {label:'white',value:'w'}
-      ]
-
-      this.dropColorByIndex = function(i){
-        this.model.colors.splice(i,1)
-      }
-
-      this.addAbByType = function(type){
-        var singular = this.model.name.replace(/s$/i,'')
-
-        var ab = {}
-        switch(type){
-          case 'trample':
-            ab.title='Trample';
-            ab.body='While attacking, if a '+singular+' would assign enough damage to destroy a defending figure, you may have it assign the rest of its damage to a figure adjacent to the defending figure.';
-            break;
-          case 'flying':
-            ab.title='Flying';
-            ab.body='When counting movement spaces for '+this.model.name+', ignore elevations. '+this.model.name+' may fly over water without stopping, pass over figures without becoming engaged, and fly over obstacles such as ruins. When a '+singular+' starts to fly, it will take any leaving-engagement attacks.';
-            break;
-          case 'lifelink':
-            ab.title='Lifelink';
-            ab.body='While attacking with a '+singular+', for each damage it deals to the defending figure, remove a damage marker from the '+singular+'.';
-            break;
-/*
-          case 'first strike':
-            ab.title='First Strike';
-            ab.body='';
-            break;
-*/
-          case 'haste':
-            ab.title='Haste';
-            ab.body='When you summon the '+this.model.name+' squad, you may immediately attack with a '+singular+'.';
-            break;
-        }
-        this.model.abilityArray.push(ab)
-      }
-
-      this.uploadAvatarTo = function($file,model){
-        Upload.base64DataUrl($file)
-        .then(function(res){
-          model.avatar = {dataUrl:res}
-        })
-      }
-
-      this.uploadFigureTo = function($file,model){
-        Upload.base64DataUrl($file)
-        .then(function(res){
-          model.figure = {dataUrl:res}
-        })
-      }
-
-      this.addAbility = function(){
-        this.model.abilityArray = this.model.abilityArray || []
-        this.model.abilityArray.push({})
-      }
-
-      this.cycleSymbolClass = function(){
-        var newClass = 'aotp aotp-squad'
-        switch(this.model.symbolClass){
-          case 'aotp aotp-squad':
-            newClass = ''
-            break;
-        }
-        this.model.symbolClass = newClass
-      }
-    }
+    ,controller:CharCardEditor
   }
 })
 .service('AotpDemoCharCard',function(){
@@ -236,8 +161,7 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
   return {
     restrict:'E'
     ,scope:{
-      card:'=',
-      series:'='
+      card:'=',series:'='
     }
     ,bindToController:true
     ,controllerAs:'iEditor'
@@ -263,7 +187,7 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
   return {
     restrict:'E'
     ,scope:{
-      cardArray:'=',
+      series:'=',
       cardClick:'&',
       onAdd:'&', sortDisabled:'=?'
     }
@@ -277,6 +201,9 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
 })
 .filter('symbolize',function(){
   return symbolize
+})
+.filter('scanSeries',function(){
+  return scanSeries
 })
 .filter('trustAsHtml', function($sce){
   return function(text) {
@@ -327,6 +254,7 @@ function seriesNav(AotpSeries, AotpDemoCharCard, $q, Upload){
   this.Upload = Upload
 }
 
+/** fetches one series at time */
 seriesNav.prototype.uploadSeries = function(series){
   if(!series)return;
   this.$q.resolve()
@@ -346,6 +274,7 @@ seriesNav.prototype.uploadSeries = function(series){
 
 seriesNav.prototype.importSeries = function(series){
   var index = this.getSeriesIndex(series)
+  this.updateSeries(series);
 
   if(index>=0){
     for(var x in this.cardSeries[index])delete this.cardSeries[index][x];
@@ -353,6 +282,39 @@ seriesNav.prototype.importSeries = function(series){
   }else{
     this.cardSeries.push(series)
   }
+}
+
+seriesNav.prototype.updateSeries = function(series){
+  if(!series.json){//v1
+    if(!series.id)series.id=uuid()
+    if(!series.images)series.images={}
+    series.json = {version:[1,0,0]}
+  }
+
+  //card loop
+  for(var x=series.data.length-1; x >= 0; --x){
+    var card = series.data[x];
+    this.updateCardBySeries(card, series)
+  }
+}
+
+seriesNav.prototype.updateCardBySeries = function(card,series){
+  if(!card.id)card.id = uuid()
+  series.images[card.id] = series.images[card.id] || {avatar:{}, figure:{}}
+  if(card.avatar){
+    series.images[card.id].avatar = card.avatar
+  }
+  if(card.figure){
+    series.images[card.id].figure = card.figure
+  }
+
+  delete card.copyRight
+  delete card.avatar
+  delete card.figure
+}
+
+seriesNav.prototype.createSeriesExport = function(){
+  this.export = {name:this.series.name, data:this.series}
 }
 
 seriesNav.prototype.getSeriesIndex = function(series){
@@ -365,17 +327,16 @@ seriesNav.prototype.getSeriesIndex = function(series){
 
 seriesNav.prototype.paramSeries = function(series){
   if(series && series.data){//already loaded?
-    this.series = series
-    return this.selectFirstCard()
+    return this.$q.resolve(series)
   }
 
-  this.series = series
-  return this.fetchSeries(series)
+  return this.fetchSeries(series).then(this.updateSeries.bind(this))
   //.then( this.selectFirstCard.bind(this) )
 }
 
 seriesNav.prototype.selectSeriesByIndex = function(index){
-  this.paramSeries(this.cardSeries[index])
+  this.series = this.cardSeries[index]
+  return this.paramSeries(this.series)
 }
 
 seriesNav.prototype.cycleSeriesSymbol = function(){
@@ -418,7 +379,9 @@ seriesNav.prototype.nextCard = function(){
 seriesNav.prototype.deleteCard = function(card){
   var index = card ? this.getCardIndex(card) : this.selectedIndex;
   this.series.data.splice(index,1)
+  delete this.series.images[card.id]
 
+  //select next card
   var sLen = this.series.data.length
   this.selectedIndex = this.selectedIndex >= sLen ? sLen-1 : this.selectedIndex
   this.card = this.series.data[ this.series.data[this.selectedIndex] ]
@@ -432,11 +395,17 @@ seriesNav.prototype.selectFirstCard = function(){
     return;
   }
   return this.selectSeriesByIndex(this.seriesIndex)
+  .then(function(){
+    this.card=this.series.data[0]
+  }.bind(this))
 }
 
 seriesNav.prototype.addSeries = function(){
   this.series = {
-    name:'Hot New Card Series',data:[]
+    name:'Hot New Card Series',
+    id:uuid(),
+    data:[],
+    images:{}//by uuid
   }
   this.cardSeries.push(this.series)
   this.addCard()
@@ -461,17 +430,9 @@ seriesNav.prototype.getCardIndex = function(card){
 }
 
 seriesNav.prototype.setSeriesFetchRes = function(series, res){
-  /* card upgrade loop */
-    if(res.data.data && res.data.data.constructor!=Array){
-      var newArray = []
-      for(var x in res.data.data){
-        newArray.push(res.data.data[x])
-      }
-      res.data.data = newArray
-    }
-  /* end */
   for(var x in series)delete series[x];
   for(x in res.data)series[x] = res.data[x];
+  return series
 }
 
 seriesNav.prototype.fetchAll = function(){
@@ -500,8 +461,9 @@ seriesNav.prototype.setFetchResult = function(res){
 }
 
 seriesNav.prototype.fetchSeriesListing = function(){
-  this.AotpSeries.list().then(this.setFetchResult.bind(this))
+  return this.AotpSeries.list().then(this.setFetchResult.bind(this))
 }
+
 
 
 
@@ -509,7 +471,112 @@ seriesNav.prototype.fetchSeriesListing = function(){
 
 
 function mtgAotpCardCreator(AotpSeries, AotpDemoCharCard, $q, Upload){
+  this.mode='roster'
   seriesNav.apply(this,arguments)
-  this.fetchSeriesListing()
+  this.fetchSeriesListing().then(this.selectFirstCard.bind(this))
 }
 mtgAotpCardCreator.prototype = Object.create(seriesNav.prototype)
+
+
+
+
+
+
+
+
+
+
+function CharCardEditor(Upload){
+  this.selectedColors=[]
+  this.colors=[
+    {label:'black',value:'b'},
+    {label:'blue',value:'u'},
+    {label:'green',value:'g'},
+    {label:'red',value:'r'},
+    {label:'white',value:'w'}
+  ]
+
+  this.dropColorByIndex = function(i){
+    this.model.colors.splice(i,1)
+  }
+
+  this.addAbByType = function(type){
+    var singular = this.model.name.replace(/s$/i,'')
+
+    var ab = {}
+    switch(type){
+      case 'trample':
+        ab.title='Trample';
+        ab.body='While attacking, if a '+singular+' would assign enough damage to destroy a defending figure, you may have it assign the rest of its damage to a figure adjacent to the defending figure.';
+        break;
+      case 'flying':
+        ab.title='Flying';
+        ab.body='When counting movement spaces for '+this.model.name+', ignore elevations. '+this.model.name+' may fly over water without stopping, pass over figures without becoming engaged, and fly over obstacles such as ruins. When a '+singular+' starts to fly, it will take any leaving-engagement attacks.';
+        break;
+      case 'lifelink':
+        ab.title='Lifelink';
+        ab.body='While attacking with a '+singular+', for each damage it deals to the defending figure, remove a damage marker from the '+singular+'.';
+        break;
+/*
+      case 'first strike':
+        ab.title='First Strike';
+        ab.body='';
+        break;
+*/
+      case 'haste':
+        ab.title='Haste';
+        ab.body='When you summon the '+this.model.name+' squad, you may immediately attack with a '+singular+'.';
+        break;
+    }
+    this.model.abilityArray.push(ab)
+  }
+
+  this.uploadAvatarTo = function($file,model){
+    Upload.base64DataUrl($file)
+    .then(function(res){
+      model.dataUrl = res
+      return this.series
+    }.bind(this))
+    .then(scanSeries)
+  }
+
+  this.uploadFigureTo = function($file,model){
+    Upload.base64DataUrl($file)
+    .then(function(res){
+      model.dataUrl=res
+      return this.series
+    }.bind(this))
+    .then(scanSeries)
+  }
+
+  this.addAbility = function(){
+    this.model.abilityArray = this.model.abilityArray || []
+    this.model.abilityArray.push({})
+  }
+
+  this.cycleSymbolClass = function(){
+    var newClass = 'aotp aotp-squad'
+    switch(this.model.symbolClass){
+      case 'aotp aotp-squad':
+        newClass = ''
+        break;
+    }
+    this.model.symbolClass = newClass
+  }
+}
+
+
+
+ function scanSeries(series){
+  var hasRefs = false
+  for(var x in series.images){//loop series images
+    if(series.images[x]){
+      hasRefs = true
+      break;
+    }
+  }
+
+  series.hasRefs = hasRefs
+
+  return series
+}

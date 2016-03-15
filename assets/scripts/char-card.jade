@@ -6,8 +6,7 @@
         .card-title-top-pad
         .card-title-text {{charCard.model.name}}
     .card-image
-      div(ng-show="charCard.model.avatar" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.avatar.dataUrl}});")
-      //-div(ng-hide="charCard.model.avatar" style="color:#999;margin-top:35%;text-align:center;") DROP IMAGE HERE
+      .card-image-bg(style="background-image:url({{charCard.series.images[charCard.model.id].avatar.dataUrl}});")
     .card-body
       div(style="height:.67%")
       .card-type-wrapper(style="text-align:left;")
@@ -33,7 +32,7 @@
           i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
       .figure-wrap(style="position:relative;")
         i(ng-show="charCard.model.putSymbolOnFigure" ng-class="charCard.model.symbolClass" class="symbolClass")
-        div(ng-show="charCard.model.figure" style="height:100%;width:100%;background-size:cover;background-position:center center;background-image:url({{charCard.model.figure.dataUrl}});")
+        .figure-image(style="background-image:url({{charCard.series.images[charCard.model.id].figure.dataUrl}});")
         //-div(ng-hide="charCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;") DROP IMAGE HERE
       .stat-box.life-box(ng-class="{'life-box-sm':charCard.model.attack>9}")
         .stat-label(style="line-height:0;") LIFE

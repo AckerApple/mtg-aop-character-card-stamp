@@ -9,8 +9,8 @@ mixin circle(options)
       .text-xs.text-muted &nbsp;
 
 div(id="rosterArea")
-  div(id="rosterWrap" as-sortable="{containment:'#rosterWrap'}" is-disabled="iRoster.sortDisabled" ng-model="iRoster.cardArray" ng-class="{'drag-enabled':!iRoster.sortDisabled}")
-    -ngRepeat="card in iRoster.cardArray"
+  div(id="rosterWrap" as-sortable="{containment:'#rosterWrap'}" is-disabled="iRoster.sortDisabled" ng-model="iRoster.series.data" ng-class="{'drag-enabled':!iRoster.sortDisabled}")
+    -ngRepeat="card in iRoster.series.data track by card.id"
     .roster-pick(ng-click="iRoster.cardClick({card:card})" as-sortable-item ng-repeat=ngRepeat)
       div(as-sortable-item-handle)
         .member-count-wrap(ng-show="iRoster.sortDisabled")
@@ -25,7 +25,7 @@ div(id="rosterArea")
               div(style="font-size:90%;height:14px;margin-top:2%;color:white;")
                 span(ng-repeat="color in card.colors")
                   i.mi(ng-class="'mi-'+color" style="margin:0 .2em;text-shadow:1px 1px 0 #000;")
-            -bg = "url({{card.avatar.dataUrl||card.figure.dataUrl}}) center center no-repeat;background-size:cover;"
+            -bg = "url({{iRoster.series.images[card.id].avatar.dataUrl||iRoster.series.images[card.id].figure.dataUrl}}) center center no-repeat;background-size:cover;"
 
             .animate-v.image-holder(style="border-radius:50%;background:"+bg)
         .text-xs(ng-show="iRoster.sortDisabled")

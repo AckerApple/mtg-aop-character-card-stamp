@@ -7,10 +7,10 @@
   div(style="display:inline-block;vertical-align:top;margin:1px;")
     h6.text-muted Card Editor
     .char-card-editor
-      char-card-editor(model="iEditor.card" series="iEditor.selectedSeries")
+      char-card-editor(model="iEditor.card" series="iEditor.series")
   div(style="display:inline-block;vertical-align:top;margin:1px;")
     h6.text-muted Card Preview
-    char-card(model="iEditor.card" series="iEditor.selectedSeries")
+    char-card(model="iEditor.card" series="iEditor.series")
 
 .animate-v(ng-show="iEditor.editorOps=='rendering'" style="margin:1%;")
   a.btn-sm.btn.btn-default(ng-click="iEditor.triggerEzPrint=false;iEditor.triggerEzPrint=true") render ez-print

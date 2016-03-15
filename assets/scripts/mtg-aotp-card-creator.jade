@@ -4,6 +4,25 @@
 -attrs['on-edit']="cardCreator.mode='editor';cardCreator.card=cardCreator.previewCard;cardCreator.previewCard=null"
 aotp-card-white-out-modal&attributes(attrs)
 
+|{{cardCreator.showRefWarning}}
+white-out-modal(show="cardCreator.showRefWarning")
+  div(style="max-width:600px;background-color:white;border-radius:15px;border:1px solid #999999;padding:2%;")
+    h2
+      i.fa.fa-link
+      |&nbsp;Series has External References
+    .text-xs
+      p.text-muted The series you are viewing, has externally referenced items, links.
+      br
+      i.fa.fa-exclamation-triangle
+      |&nbsp;Please note:
+      li Linked items, such as images, may fail over time #[i.fa.fa-unlink]
+      li The linked items may have already lost their reference #[i.fa.fa-unlink]
+      li The linked items may have possibly been replaced by something else other than what was orginally referenced when link was created.
+      li(style="font-weight:bold;") #[i.fa.fa-check.text-success] Everything might appear as intended and this warning is only causing confusion
+      br
+      br
+      .text-muted ... and now you know, hopefully :)
+
 
 .text-center
   h1.text-sm Mtg Aotp Card Manager
@@ -13,17 +32,23 @@ aotp-card-white-out-modal&attributes(attrs)
 
   div.text-muted(style="font-size:80%;")
     span(style="font-size:80%;")
-      |This was all confirmed, pixel perfect, in Google Chrome&nbsp;
+      |This was all built & tested using Google Chrome&nbsp;
     .fa.fa-chrome
     br
     a.text-xs(href="https://github.com/AckerApple/mtg-aotp-card-manager" target="_blank" style="font-size:80%;") read the docs
 
   hr
 
+  div(ng-show="cardCreator.series.hasRefs" style="position:absolute;right:1%")
+    .btn.btn-xs.btn-warning(ng-click="cardCreator.showRefWarning=true")
+      .fa.fa-exclamation-triangle
+      |&nbsp;
+      .fa.fa-unlink
+
   .text-center(style="padding-top:1em;")
-    div(style="max-width:675px;margin-left:auto;margin-right:auto;")
+    div(style="max-width:900px;margin-left:auto;margin-right:auto;")
       .row(style="margin:0 0 1em 0;")
-        .animate-all.col-xs-12.col-sm-6(style="vertical-align:middle;padding:0;margin:0;")
+        .animate-v.col-xs-12.col-sm-6(style="vertical-align:middle;padding:0;margin:0;")
           .text-center.text-xs
             .text-center(style="display:inline-block;margin:1%;")
               //-edit series display & labels
@@ -62,11 +87,11 @@ aotp-card-white-out-modal&attributes(attrs)
 
               //-Series display & labels
               div(ng-hide="cardCreator.editSeriesInfo" ng-click="cardCreator.editSeriesInfo=true" style="cursor:pointer;")
-                h3(style="margin:0;" title=title id="seriesTitle")
+                h2(style="margin:0;" title=title id="seriesTitle")
                   i(ng-class="cardCreator.series.symbolClass||'mi mi-planeswalk'")
                   |&nbsp;
                   span(style="vertical-align:top;display:inline-block;")
-                    span(ng-hide="editSeriesName") {{cardCreator.series.name}}
+                    |{{cardCreator.series.name}}
                 div
                   .text-muted(style="font-size:0.9em;line-height:2;margin-bottom:.2em;")
                     div(style="display:inline-block;") {{cardCreator.series.description||'Get ready to describe your awesomeness'}}
@@ -75,7 +100,7 @@ aotp-card-white-out-modal&attributes(attrs)
                     div(style="display:inline-block;" ng-hide="editSeriesCopyRight" ng-click="editSeriesCopyRight=editSeriesCopyRight?false:true" ng-bind-html="cardCreator.series.copyRight||'&copy; copyrights are holding us back 2016'|trustAsHtml")
 
         .col-xs-12.col-sm-6(style="vertical-align:middle;padding:0;margin:0;")
-          .text-center(ng-init="cardCreator.mode='roster'")
+          .text-center
             .text-center(style="display:inline-block;")
               //-Series & card editors
               div(style="margin-bottom:4%;")
@@ -111,13 +136,12 @@ aotp-card-white-out-modal&attributes(attrs)
     mtg-editor-view(series="cardCreator.series" card="cardCreator.card")
 
   .animate-v(ng-show="cardCreator.mode=='browse'")
-    -ngRepeat="card in cardCreator.series.data"
-    span.animate-v(style="cursor:pointer;margin:.5% .25%;display:inline-block" ng-repeat=ngRepeat)
+    .animate-v.animate-fade(ng-repeat="card in cardCreator.series.data track by card.id" style="display:inline-block;cursor:pointer;margin:.5% .25%;")
       char-card(model="card" series="cardCreator.series" ng-click="cardCreator.previewCard=card")
 
   |{{cardCreator.previewCard.name}}
   .animate-v.text-center(ng-show="cardCreator.mode=='roster'")
-    mtg-roster-view(card-array="cardCreator.series.data" card-click="cardCreator.previewCard=card" on-add="cardCreator.addCard()")
+    mtg-roster-view(series="cardCreator.series" card-click="cardCreator.previewCard=card" on-add="cardCreator.addCard()")
 
 div(style="text-align:center;margin:1% 0;")
   div(style="display:inline-block;")
@@ -136,13 +160,14 @@ div(style="text-align:center;margin:1% 0;")
           i.fa.fa-folder-open-o
           |&nbsp;export all
         |&nbsp;
-        a.btn.btn-default(ng-click="cardCreator.export={data:cardCreator.series,name:cardCreator.series.name}" target="blank" style="margin:1% 0;width:125px")
+        a.btn.btn-default(ng-click="cardCreator.createSeriesExport()" target="blank" style="margin:1% 0;width:125px")
           i.fa.fa-files-o
           |&nbsp;export series
-        |&nbsp;
-        a.animate-h.btn.btn-default(ng-show="cardCreator.card" ng-click="cardCreator.export={data:cardCreator.card, name:cardCreator.card.name}" target="blank" style="margin:1% 0;width:125px")
-          i.fa.fa-file-o
-          |&nbsp;export card
+        //-
+          |&nbsp;
+          a.animate-h.btn.btn-default(ng-show="cardCreator.card" ng-click="cardCreator.export={data:cardCreator.card, name:cardCreator.card.name}" target="blank" style="margin:1% 0;width:125px")
+            i.fa.fa-file-o
+            |&nbsp;export card
 
       .animate-v(ng-show="cardCreator.optionView=='import'" style="margin:2% 0;")
         h5 #[i.fa.fa-download] Importing
