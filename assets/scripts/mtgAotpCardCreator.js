@@ -274,7 +274,7 @@ seriesNav.prototype.uploadSeries = function(series){
 
 seriesNav.prototype.importSeries = function(series){
   var index = this.getSeriesIndex(series)
-  this.updateSeries(series);
+  updateSeries(series);
 
   if(index>=0){
     for(var x in this.cardSeries[index])delete this.cardSeries[index][x];
@@ -282,35 +282,6 @@ seriesNav.prototype.importSeries = function(series){
   }else{
     this.cardSeries.push(series)
   }
-}
-
-seriesNav.prototype.updateSeries = function(series){
-  if(!series.json){//v1
-    if(!series.id)series.id=uuid()
-    if(!series.images)series.images={}
-    series.json = {version:[1,0,0]}
-  }
-
-  //card loop
-  for(var x=series.data.length-1; x >= 0; --x){
-    var card = series.data[x];
-    this.updateCardBySeries(card, series)
-  }
-}
-
-seriesNav.prototype.updateCardBySeries = function(card,series){
-  if(!card.id)card.id = uuid()
-  series.images[card.id] = series.images[card.id] || {avatar:{}, figure:{}}
-  if(card.avatar){
-    series.images[card.id].avatar = card.avatar
-  }
-  if(card.figure){
-    series.images[card.id].figure = card.figure
-  }
-
-  delete card.copyRight
-  delete card.avatar
-  delete card.figure
 }
 
 seriesNav.prototype.createSeriesExport = function(){
@@ -330,7 +301,7 @@ seriesNav.prototype.paramSeries = function(series){
     return this.$q.resolve(series)
   }
 
-  return this.fetchSeries(series).then(this.updateSeries.bind(this))
+  return this.fetchSeries(series).then(updateSeries)
   //.then( this.selectFirstCard.bind(this) )
 }
 
@@ -377,14 +348,14 @@ seriesNav.prototype.nextCard = function(){
 }
 
 seriesNav.prototype.deleteCard = function(card){
-  var index = card ? this.getCardIndex(card) : this.selectedIndex;
+  card = card || this.card
+  var index = this.getCardIndex(card);
   this.series.data.splice(index,1)
   delete this.series.images[card.id]
 
   //select next card
-  var sLen = this.series.data.length
-  this.selectedIndex = this.selectedIndex >= sLen ? sLen-1 : this.selectedIndex
-  this.card = this.series.data[ this.series.data[this.selectedIndex] ]
+  this.selectedIndex = index >= this.series.data.length ? sLen-1 : index
+  this.card = this.series.data[ this.selectedIndex ]
 }
 
 seriesNav.prototype.selectFirstCard = function(){
@@ -418,12 +389,14 @@ seriesNav.prototype.addCard = function(){
 }
 
 seriesNav.prototype.fetchSeries = function(series){
-  return this.AotpSeries.get(series.name).then(this.setSeriesFetchRes.bind(this, series))
+  return this.AotpSeries.get(series.name)
+  .then(this.setSeriesFetchRes.bind(this, series))
+  .then(scanSeries)
 }
 
 seriesNav.prototype.getCardIndex = function(card){
   for(var x=this.series.data.length-1; x >= 0; --x){
-    if(this.series.data[x].name==card.name){
+    if(this.series.data[x].id==card.id){
       return x
     }
   }
@@ -461,7 +434,8 @@ seriesNav.prototype.setFetchResult = function(res){
 }
 
 seriesNav.prototype.fetchSeriesListing = function(){
-  return this.AotpSeries.list().then(this.setFetchResult.bind(this))
+  return this.AotpSeries.list()
+  .then(this.setFetchResult.bind(this))
 }
 
 
@@ -570,7 +544,10 @@ function CharCardEditor(Upload){
  function scanSeries(series){
   var hasRefs = false
   for(var x in series.images){//loop series images
-    if(series.images[x]){
+    if(
+        isExternalRef(series.images[x].avatar.dataUrl)
+    ||  isExternalRef(series.images[x].figure.dataUrl)
+    ){
       hasRefs = true
       break;
     }
@@ -579,4 +556,38 @@ function CharCardEditor(Upload){
   series.hasRefs = hasRefs
 
   return series
+}
+
+function updateSeries(series){
+  if(!series.json){//v1
+    if(!series.id)series.id=uuid()
+    if(!series.images)series.images={}
+    series.json = {version:[1,0,0]}
+  }
+
+  //card loop
+  for(var x=series.data.length-1; x >= 0; --x){
+    var card = series.data[x];
+    updateCardBySeries(card, series)
+  }
+}
+
+function updateCardBySeries(card,series){
+  if(!card.id)card.id = uuid()
+  series.images[card.id] = series.images[card.id] || {avatar:{}, figure:{}}
+  if(card.avatar){
+    series.images[card.id].avatar = card.avatar
+  }
+  if(card.figure){
+    series.images[card.id].figure = card.figure
+  }
+
+  delete card.copyRight
+  delete card.avatar
+  delete card.figure
+}
+
+function isExternalRef(ref){
+  if(!ref || !ref.search)return false
+  return ref.search(/^data:/) < 0
 }

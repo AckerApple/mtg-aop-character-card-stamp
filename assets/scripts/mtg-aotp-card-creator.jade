@@ -147,7 +147,7 @@ div(style="text-align:center;margin:1% 0;")
   div(style="display:inline-block;")
     .text-left
       .animate-v(ng-show="cardCreator.optionView=='export'" style="margin:2% 0;")
-        h5 #[i.fa.fa-download] Exporting
+        h5(style="margin-top:0;") #[i.fa.fa-download] Exporting
         .animate-v(ng-show="cardCreator.export" style="margin:2% 0;")
           a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
             i.fa.fa-eye
