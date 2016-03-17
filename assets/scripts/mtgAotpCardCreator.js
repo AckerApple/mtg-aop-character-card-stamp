@@ -199,6 +199,19 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
     }
   }
 })
+.directive('aotpRenderedCard',function(){
+  return {
+    restrict:'E'
+    ,scope:{
+      name:'=', ezPrintExport:'=', hiPrintExport:'='
+    }
+    ,template:require('./aotp-rendered-card.jade')
+    ,bindToController:true
+    ,controllerAs:'rendering'
+    ,controller:function(){}
+  }
+})
+
 .filter('symbolize',function(){
   return symbolize
 })
@@ -218,9 +231,9 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
 .filter('jsonExportUrl',function(){
   return function(ob){
     try{
-      return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ob))
+      return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(ob))
     }catch(e){
-      return "data:text/json;charset=utf-8,invalid JSON"
+      return 'data:text/json;charset=utf-8,invalid JSON'
     }
   }
 })
@@ -235,6 +248,11 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
     return val.replace(/\r|\n/gi,'<br />')
   }
 })
+
+
+
+
+
 
 function symbolize(string){
   if(!string||!string.replace)return string;
@@ -338,18 +356,18 @@ seriesNav.prototype.deleteSeries = function(){
 }
 
 seriesNav.prototype.priorCard = function(){
-  this.selectedIndex=this.selectedIndex<=0?this.series.data.length-1:this.selectedIndex-1
-  this.card = this.series.data[this.selectedIndex]
+  this.card = getPriorCardBySeries(this.card,this.series)
+  this.selectedIndex = getCardIndexBySeries(this.card, this.series)
 }
 
 seriesNav.prototype.nextCard = function(){
-  this.selectedIndex=this.selectedIndex==this.series.data.length-1?0:this.selectedIndex+1
-  this.card = this.series.data[this.selectedIndex]
+  this.card = getNextCardBySeries(this.card,this.series)
+  this.selectedIndex = getCardIndexBySeries(this.card, this.series)
 }
 
 seriesNav.prototype.deleteCard = function(card){
   card = card || this.card
-  var index = this.getCardIndex(card);
+  var index = getCardIndexBySeries(card, this.series);
   this.series.data.splice(index,1)
   delete this.series.images[card.id]
 
@@ -392,14 +410,6 @@ seriesNav.prototype.fetchSeries = function(series){
   return this.AotpSeries.get(series.name)
   .then(this.setSeriesFetchRes.bind(this, series))
   .then(scanSeries)
-}
-
-seriesNav.prototype.getCardIndex = function(card){
-  for(var x=this.series.data.length-1; x >= 0; --x){
-    if(this.series.data[x].id==card.id){
-      return x
-    }
-  }
 }
 
 seriesNav.prototype.setSeriesFetchRes = function(series, res){
@@ -541,7 +551,31 @@ function CharCardEditor(Upload){
 
 
 
- function scanSeries(series){
+
+
+
+function getPriorCardBySeries(card,series){
+  var index = getCardIndexBySeries(card, series)
+  index = index==0? series.data.length-1 : index-1;
+  return series.data[index]
+}
+
+
+function getNextCardBySeries(card, series){
+  var index = getCardIndexBySeries(card, series)
+  index = index+1 == series.data.length ? 0 : index+1;
+  return series.data[index]
+}
+
+function getCardIndexBySeries(card, series){
+  for(var x=series.data.length-1; x >= 0; --x){
+    if(series.data[x].id==card.id){
+      return x
+    }
+  }
+}
+
+function scanSeries(series){
   var hasRefs = false
   for(var x in series.images){//loop series images
     if(

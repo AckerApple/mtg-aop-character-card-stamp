@@ -13,13 +13,10 @@
     char-card(model="iEditor.card" series="iEditor.series")
 
 .animate-v(ng-show="iEditor.editorOps=='rendering'" style="margin:1%;")
+  aotp-rendered-card(name="iEditor.card.name" ez-print-export="iEditor.ezPrintResult" hi-print-export="iEditor.hiResPrintResult")
   a.btn-sm.btn.btn-default(ng-click="iEditor.triggerEzPrint=false;iEditor.triggerEzPrint=true") render ez-print
   |&nbsp;
   a.btn-sm.btn.btn-default(ng-click="iEditor.triggerHiResPrint=false;iEditor.triggerHiResPrint=true") render hi-res
-  |&nbsp;
-  a.animate-fade.btn-sm.btn.btn-default(ng-show="iEditor.ezPrintResult" href="{{iEditor.ezPrintResult.url}}" target="_blank") open ez-print
-  |&nbsp;
-  a.animate-fade.btn-sm.btn.btn-default(ng-show="iEditor.hiResPrintResult" href="{{iEditor.hiResPrintResult.url}}" target="_blank") open hi-res
 
 
 div

@@ -154,7 +154,7 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
 .animate-v(ng-show="editor.view=='abs'" style="margin:4% 0;")
   .form-group(ng-repeat="ability in editor.model.abilityArray")
     input.input-xs.form-control(type="text" ng-model="ability.title" placeholder="Ability Title")
-    textarea.input-xs.form-control(ng-model="ability.body" style="font-size:70%;height:65px" placeholder="Ability Body Description")
+    textarea.input-xs.form-control(ng-model="ability.body" style="font-size:80%;height:65px" placeholder="Ability Body Description")
     .text-center
       a.text-xs.text-danger(ng-click="editor.model.abilityArray.splice($index,1)") - drop ability
   .text-center(style="margin-bottom:3%;")

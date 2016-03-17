@@ -221,7 +221,13 @@ char-card .card-abilities{
   clear:both;
 
   font-size:91%;
-  margin:5.25% 7.2% 0.75% 5%;
+  margin:6.25% 7.2% 0.75% 5%;
+}
+
+.char-card.char-card-print-hires .card-abilities{
+  margin: 6.25% 11.5% 0.75% 5%;
+  font-size: 89%;
+  word-spacing: -.01em;
 }
 
 char-card .card-abilities.card-abilities-sm{

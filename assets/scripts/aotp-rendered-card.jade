@@ -1,0 +1,27 @@
+a.animate-fade.btn.btn-default(ng-show="rendering.ezPrintExport" href="{{rendering.ezPrintExport.url}}" target="_blank")
+  |open ez-print
+.animate-v(ng-show="rendering.hiPrintExport")
+  .animate-v.text-left(style="max-width:700px;display:inline-block;" ng-show="showPrintDetails")
+    h4 Hi-Res Print Instructions
+    p.text-xs Hello to and from the year 2016, let us rewind for a second. If you have got to this point, it's a major thanks in-part to the standardizations made in web browsers over only the last few years. More specifically our thanks goes to the advancement of and into HTML5.
+    p.text-xs Now, a web browser can do a lot more than it ever could in the past BUT at this time, it does not allow me to set the dpi of a rendered image. However, HTML5 does allow me to oversize an image which will allow you to increase the dpi in an external photo application.
+
+    h4 Follow These Instructions to Print @ 200 dpi
+    ul.text-xs
+      li Save the rendered file on a device that has a photo application.
+      li Open saved file in desired photo application and find your image sizing options.
+      li Find the option, that in Adobe Photoshop is called "Resample Image", and be sure it is NOT ENGAGED (unchecked).
+      li Now, find the option for resolution aka dpi. It should currently be 72. Change it to 200 pixels per inch. Indication that you're doing it right, is when you've changed the dpi of the image you should also see that the document width/height will change to be 2.48"x6.945" BUT the pixel width remains 496x1389.
+      li Save, Print, Enjoy Extra Responsibly.
+    .text-center
+      a.text-xs(ng-click="showPrintDetails=false") close instructions
+    br
+  div
+    a.btn.btn-warning(ng-click="showPrintDetails=!showPrintDetails")
+      ! print instructions
+    |&nbsp;
+    a.btn.btn-default(href="{{rendering.hiPrintExport.url}}" target="_blank")
+      |open hi-res
+    |&nbsp;
+    a.btn.btn-default(href="{{rendering.hiPrintExport.url}}" download="{{rendering.name}}.png")
+      |download hi-res

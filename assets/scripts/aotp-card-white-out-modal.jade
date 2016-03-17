@@ -1,28 +1,7 @@
 white-out-modal(show="iCardModal.card")
   .text-center(style="margin:8% 0;")
     .animate-v(style="margin:8% 0;" ng-show="iCardModal.editorOps=='rendering'")
-      a.animate-fade.btn.btn-default(ng-show="iCardModal.ezPrintResult" href="{{iCardModal.ezPrintResult.url}}" target="_blank")
-        |open ez-print
-      .animate-v(ng-show="iCardModal.hiResPrint2Result")
-        .text-left(style="max-width:700px;display:inline-block;")
-          h4 Hi-Res Print Instructions
-          p.text-xs Hey 2016, let us rewind for a second. If you have got to this point, it's a major thanks to the standardizations made in web browsers, over only the last few years. More specifically our thanks goes to the advancement into HTML5.
-          p.text-xs Now, a web browser can do a lot more than it ever could in the past BUT at this time, it does not allow me to set the dpi of a rendered image. However, HTML5 does allow me to oversize an image which will allow you to increase the dpi in an external photo application.
-
-          h4 Follow These Instructions to Print @ 200 dpi
-          ul.text-xs
-            li Save the rendered file on a device that has a photo application.
-            li Open saved file in desired photo application and find your image sizing options.
-            li Find the option, that in Adobe Photoshop is called "Resample Image", and be sure it is NOT ENGAGED (unchecked).
-            li Now, find the option for resolution aka dpi. It should currently be 72. Change it to 200 pixels per inch. Indication you're doing it right, is that when you change the dpi the image's width/height in pixels will remain the same but the document size will decrease to 2.48"x6.945"
-            li Save, Print.
-
-        div
-          a.btn.btn-default(href="{{iCardModal.hiResPrint2Result.url}}" target="_blank")
-            |open hi-res
-          |&nbsp;
-          a.btn.btn-default(href="{{iCardModal.hiResPrint2Result.url}}" download="{{iCardModel.export.name}}")
-            |download hi-res
+      aotp-rendered-card(name="iCardModal.card.name" ez-print-export="iCardModal.ezPrintResult" hi-print-export="iCardModal.hiResPrintResult")
       .text-center
         h6 rendering options
         a.btn.btn-default(ng-click="iCardModal.triggerEzPrint=false;iCardModal.triggerEzPrint=true")
@@ -30,6 +9,11 @@ white-out-modal(show="iCardModal.card")
         |&nbsp;
         a.btn.btn-default(ng-click="iCardModal.triggerHiResPrint=false;iCardModal.triggerHiResPrint=true")
           |render hi-res
+
+
+    .btn.btn-default(ng-click="iCardModal.priorCard()")
+      |&lt;
+    |&nbsp;
     .btn.btn-default(ng-click="iCardModal.onEdit()" style="width:100px")
       i.fa.fa-diamond
       |&nbsp;edit
@@ -37,6 +21,9 @@ white-out-modal(show="iCardModal.card")
     .btn.btn-info(ng-click="iCardModal.editorOps='rendering'" style="width:100px")
       i.fa.fa-print
       |&nbsp;render
+    |&nbsp;
+    .btn.btn-default(ng-click="iCardModal.nextCard()")
+      |&gt;
 
   .visible-xs
     char-card(model="iCardModal.card" series="iCardModal.series")
@@ -60,6 +47,6 @@ div(style="position:absolute;")
   //-hi-res rending stage
   div(ng-show="iCardModal.hiResPrint2")
     //- html2canvas must absolute have the print area on screen, so lets flash it on then off
-    print-canvas(before-print="iCardModal.hiResPrint2=true" after-print="iCardModal.hiResPrint2=false;iCardModal.triggerHiResPrint=false" print-trigger="iCardModal.triggerHiResPrint" print-model="iCardModal.hiResPrint2Result" style="vertical-align:top;")
+    print-canvas(before-print="iCardModal.hiResPrint2=true" after-print="iCardModal.hiResPrint2=false;iCardModal.triggerHiResPrint=false" print-trigger="iCardModal.triggerHiResPrint" print-model="iCardModal.hiResPrintResult" style="vertical-align:top;")
       div(style="display:inline-block;")
         char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
