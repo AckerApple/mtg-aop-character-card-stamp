@@ -1,5 +1,5 @@
 .char-card(style="text-align:left;" class="char-card-{{charCard.model.colors.length>1?'m':charCard.model.colors[0]}}" ng-class="charCard.size?'char-card-print-'+charCard.size:null")
-  .char-card-stage
+  .char-card-stage(ng-class="charCard.series.seriesClass")
     .starting-height
     div(style="position:relative;height:4.75%")
       .card-title
@@ -56,14 +56,14 @@
           i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
             span(class="seriesIcon")
               i(ng-class="charCard.series.symbolClass||'mi mi-planeswalk'")
-      .card-abilities(ng-class="[charCard.series.abilitiesClass,{'card-abilities-sm':charCard.getAbilitiesLength()>700}]")
+      .card-abilities(ng-class="{'card-abilities-sm':charCard.getAbilitiesLength()>700}")
         .card-ability(ng-repeat="ability in charCard.model.abilityArray")
           strong.card-ability-title {{ability.title|uppercase}}
           .card-ability-body(mtg-symbolize="ability.body|lineReturnAsBr")
       .card-attributes
         div(style="float:right")
           |COST&nbsp;&nbsp;{{charCard.model.cost.value}}
-          span(ng-show="charCard.model.cost.per" style="font-size:.77em;") &nbsp;{{charCard.model.cost.per}}
+          span(ng-show="charCard.model.cost.per" style="font-size:.77em;line-height:0;") &nbsp;{{charCard.model.cost.per}}
         div {{charCard.model.height.name|uppercase}} {{charCard.model.height.value}}
       .card-footer
         div(style="float:right;margin-right:2.5%;margin-top:1.5%;" ng-bind-html="charCard.series.copyRight|trustAsHtml")

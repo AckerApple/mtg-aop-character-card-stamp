@@ -31,9 +31,15 @@ white-out-modal(show="iCardModal.card")
     char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
 
   .text-center(style="margin:8% 0;")
+    .btn.btn-default(ng-click="iCardModal.priorCard()")
+      |&lt;
+    |&nbsp;
     a.btn.btn-danger(ng-click="iCardModal.deleteCard(iCardModal.card);iCardModal.card=null" style="margin:1% 0;width:125px")
       .fa.fa-fire
       |&nbsp;delete card
+    |&nbsp;
+    .btn.btn-default(ng-click="iCardModal.nextCard()")
+      |&gt;
 
 
 div(style="position:absolute;")

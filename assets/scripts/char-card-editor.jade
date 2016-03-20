@@ -40,18 +40,6 @@ div&attributes(attrs)
   i.fa.fa-exclamation-triangle
   |&nbsp;Editing spell cards, is not completed. Coming soon!
 
-.text-left.animate-fade(ng-show="['planeswalker','squad'].indexOf(editor.model.cardType)>=0")
-
-  div(style="width:70%;display:inline-block;padding-right:3px;")
-    .form-group
-      .text-left.text-xs Member Count
-      input.form-control.input-xs(type="text" ng-model="editor.model.members" placeholder="Squad Count or Multi-Planeswalker")
-
-  div(style="width:30%;display:inline-block;")
-    .form-group
-      .text-left.text-xs Cost Per
-      input.form-control.input-xs(type="text" ng-model="editor.model.cost.per" placeholder="each")
-
 
 .text-left.color-picker(id="sortable-container" style="padding:0;")
   -style="color:white;text-shadow:1px 1px 0 #000;"
@@ -136,15 +124,14 @@ div(style="margin:2% 0;" ng-init="editor.view='dets'")
                   div(style="position:relative")
                     i.aotp.aotp-defense(style="position:absolute;margin-top:8%;left:6%;color:black;")
                   input.form-control.input-sm(type="text" ng-model="editor.model.defense" placeholder="Defense" maxLength=2 style="padding-left:1.75em;padding-right:0;")
-    .animate-v(ng-show="editor.model.cardType=='squad'")
+    .form-group
+      .text-xs
+        input(type="checkbox" ng-model="editor.model.putSymbolOnFigure" id="editor.model.putSymbolOnFigure")
+        label(for="editor.model.putSymbolOnFigure" style="font-weight:normal;") &nbsp;Figure Squad Symbol
       .input-group
         .input-group-addon(style="line-height:0;padding-top:1%;padding-bottom:1%;" ng-click="editor.cycleSymbolClass()")
           i(ng-class="editor.model.symbolClass||'mi mi-planeswalk'" style="font-size:1.2em;")
         input.input-xs.form-control(type="text" ng-model="editor.model.symbolClass" placeholder="Symbol Class" style="font-size:65%;")
-      .animate-v.text-xs(ng-show="editor.model.symbolClass")
-        input(type="checkbox" ng-model="editor.model.putSymbolOnFigure" id="editor.model.putSymbolOnFigure")
-        label(for="editor.model.putSymbolOnFigure") &nbsp;place symbol on figure
-
 
 //-abs
 div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")
@@ -170,6 +157,19 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
   div(ng-click="editor.view=editor.view=='attrs'?false:'attrs'")
     a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Attributes
 .animate-v(ng-show="editor.view=='attrs'" style="margin:4% 0;")
+
+  .text-left.animate-fade(ng-show="['planeswalker','squad'].indexOf(editor.model.cardType)>=0")
+
+    div(style="width:70%;display:inline-block;padding-right:3px;")
+      .form-group
+        .text-left.text-xs Member Count
+        input.form-control.input-xs(type="text" ng-model="editor.model.members" placeholder="Squad Count or Multi-Planeswalker")
+
+    div(style="width:30%;display:inline-block;")
+      .form-group
+        .text-left.text-xs Cost Per
+        input.form-control.input-xs(type="text" ng-model="editor.model.cost.per" placeholder="each")
+
   table(cellPadding=0 cellSpacing=0 border=0 style="color:white;")
     tr
       td(style="width:33%;padding-right:3px;")

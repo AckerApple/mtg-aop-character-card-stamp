@@ -1,5 +1,10 @@
-a.animate-fade.btn.btn-default(ng-show="rendering.ezPrintExport" href="{{rendering.ezPrintExport.url}}" target="_blank")
-  |open ez-print
+div(ng-show="rendering.ezPrintExport")
+  a.animate-fade.btn.btn-default(href="{{rendering.ezPrintExport.url}}" target="_blank")
+    |open ez-print
+  |&nbsp;
+  a.btn.btn-default(ng-click="rendering.downloadEzprint()")
+    |download ez-print
+
 .animate-v(ng-show="rendering.hiPrintExport")
   .animate-v.text-left(style="max-width:700px;display:inline-block;" ng-show="showPrintDetails")
     h4 Hi-Res Print Instructions
@@ -23,5 +28,5 @@ a.animate-fade.btn.btn-default(ng-show="rendering.ezPrintExport" href="{{renderi
     a.btn.btn-default(href="{{rendering.hiPrintExport.url}}" target="_blank")
       |open hi-res
     |&nbsp;
-    a.btn.btn-default(href="{{rendering.hiPrintExport.url}}" download="{{rendering.name}}.png")
+    a.btn.btn-default(ng-click="rendering.downloadHires()")
       |download hi-res

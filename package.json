@@ -18,7 +18,10 @@
     "url": "https://github.com/AckerApple/mtg-aotp-character-card-creator/issues"
   },
   "homepage": "https://github.com/AckerApple/mtg-aotp-character-card-creator",
-  "dependencies": {},
+  "dependencies": {
+    "angular-file-saver": "^1.1.0",
+    "canvas-to-blob": "0.0.0"
+  },
   "devDependencies": {
     "ack-angular": "https://github.com/AckerApple/ack-angular",
     "angular": "^1.5.0",
@@ -34,7 +37,6 @@
     "mtg-aotp-syms": "https://github.com/AckerApple/mtg-aotp-syms",
     "ng-file-upload": "^12.0.1",
     "ng-sortable": "https://github.com/a5hik/ng-sortable.git",
-    "css-loader": "^0.23.1",
     "jade-loader": "^0.8.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7"

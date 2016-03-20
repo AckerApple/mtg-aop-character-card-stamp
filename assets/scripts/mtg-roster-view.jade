@@ -29,7 +29,7 @@ div(id="rosterArea")
 
             .animate-v.image-holder(style="border-radius:50%;background:"+bg)
         .text-xs(ng-show="iRoster.sortDisabled")
-          div(style="font-size:88%") {{card.name}}
+          .roster-pick-name {{card.name}}
           .text-xs.text-muted
             div(style="font-size:95%") {{card.category}}
             i.aotp.aotp-attack

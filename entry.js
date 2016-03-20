@@ -3,8 +3,11 @@ require('angular-animate');
 //require('angular-touch');
 //FastClick = require('fastclick');
 require('angular-sanitize');
-
 require('ng-file-upload');
+require('angular-file-saver');
+
+toBlob = require('canvas-to-blob');
+toBlob.init();
 
 require('ng-sortable');
 require('ng-sortable/dist/ng-sortable.min.css')

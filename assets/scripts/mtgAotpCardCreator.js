@@ -4,7 +4,15 @@ function uuid(){
   return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8);return v.toString(16)})
 }
 
-angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgAotpCards','ngFileUpload','as.sortable'])
+angular.module('mtgAotpCardCreator',[
+  'ngAnimate',
+  'ackAngular',
+  'ngSanitize',
+  'mtgAotpCards',
+  'ngFileUpload',
+  'as.sortable',
+  'ngFileSaver'
+])
 .config( [
     '$compileProvider',
     function( $compileProvider ){
@@ -208,7 +216,19 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
     ,template:require('./aotp-rendered-card.jade')
     ,bindToController:true
     ,controllerAs:'rendering'
-    ,controller:function(){}
+    ,controller:function(FileSaver, Blob){
+      this.downloadHires = function(){
+        var i = this.hiPrintExport.canvas.toBlob( this.downloadBlob.bind(this) )
+      }
+
+      this.downloadEzprint = function(){
+        var i = this.ezPrintExport.canvas.toBlob( this.downloadBlob.bind(this) )
+      }
+
+      this.downloadBlob = function(blob){
+        FileSaver.saveAs(blob, this.name+'.png');
+      }
+    }
   }
 })
 
@@ -229,13 +249,7 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
   }
 })
 .filter('jsonExportUrl',function(){
-  return function(ob){
-    try{
-      return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(ob))
-    }catch(e){
-      return 'data:text/json;charset=utf-8,invalid JSON'
-    }
-  }
+  return jsonExportUrl
 })
 .filter('copy',function(){
   return function(val){
@@ -252,6 +266,23 @@ angular.module('mtgAotpCardCreator',['ngAnimate','ackAngular','ngSanitize','mtgA
 
 
 
+function jsonExportUrl(ob,options){
+  options = options || {}
+
+  options.toDataUri = options.toDataUri==null?true:options.toDataUri;
+  options.encode = options.encode==null?true:options.encode;
+
+  var rtn = options.toDataUri ? 'data:text/json;charset=utf-8,' : ''
+
+  try{
+    var exported = JSON.stringify(ob);
+  }catch(e){
+    var exported = 'invalid JSON';
+  }
+
+  if(options.encode)exported=encodeURIComponent(exported);
+  return rtn+exported
+}
 
 
 function symbolize(string){
@@ -263,13 +294,16 @@ function symbolize(string){
 
 
 
-function seriesNav(AotpSeries, AotpDemoCharCard, $q, Upload){
+function seriesNav(AotpSeries, AotpDemoCharCard, $q, Upload, Blob, FileSaver){
   this.$q = $q
   this.AotpDemoCharCard = AotpDemoCharCard
   this.AotpSeries=AotpSeries
   this.seriesIndex=0
   this.selectedIndex = -1
   this.Upload = Upload
+
+  this.Blob = Blob
+  this.FileSaver = FileSaver
 }
 
 /** fetches one series at time */
@@ -302,8 +336,18 @@ seriesNav.prototype.importSeries = function(series){
   }
 }
 
+seriesNav.prototype.downloadExport = function(){
+  var Blob = this.Blob
+  var data = jsonExportUrl(this.export.data,{encode:false,toDataUri:false})
+  data = new Blob([data], {type:'text/json;charset=utf-8'});
+  this.FileSaver.saveAs(data, this.export.name+'.json');
+}
+
 seriesNav.prototype.createSeriesExport = function(){
-  this.export = {name:this.series.name, data:this.series}
+  var dup = angular.copy(this.series)
+  this.export = {
+    name:this.series.name, data:dup
+  }
 }
 
 seriesNav.prototype.getSeriesIndex = function(series){
@@ -402,6 +446,8 @@ seriesNav.prototype.addSeries = function(){
 
 seriesNav.prototype.addCard = function(){
   this.card = this.AotpDemoCharCard.get()
+  this.card.id = uuid()
+  this.series.images[this.card.id] = {avatar:{},figure:{}};
   this.series.data.push(this.card)
   this.mode='editor'
 }
@@ -431,7 +477,10 @@ seriesNav.prototype.fetchAll = function(){
 
 seriesNav.prototype.exportAll = function(){
   var setter = function(){
-    this.export={name:'mtg-aotp-cards', data:this.cardSeries}
+    var dup = angular.copy(this.cardSeries)
+    this.export={
+      name:'mtg-aotp-cards', data:dup
+    }
   }
 
   return this.fetchAll().then(setter.bind(this))
@@ -454,7 +503,7 @@ seriesNav.prototype.fetchSeriesListing = function(){
 
 
 
-function mtgAotpCardCreator(AotpSeries, AotpDemoCharCard, $q, Upload){
+function mtgAotpCardCreator(AotpSeries, AotpDemoCharCard, $q, Upload, Blob, FileSaver){
   this.mode='roster'
   seriesNav.apply(this,arguments)
   this.fetchSeriesListing().then(this.selectFirstCard.bind(this))

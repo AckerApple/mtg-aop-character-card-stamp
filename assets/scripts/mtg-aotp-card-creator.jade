@@ -25,7 +25,9 @@ white-out-modal(show="cardCreator.showRefWarning")
 
 
 .text-center
-  h1.text-sm Mtg Aotp Card Manager
+  div(style="display:inline-block;")
+    .text-left.text-muted(style="font-size:0.6em;line-height:0.2em;font-family:Times New Roman;") Acker Apple's
+    h1.text-sm(style="margin-top:0;font-family:Beleren;") Mtg Aotp Card Manager
   p.text-muted
     |&nbsp;&nbsp;&nbsp;
     |Who's down with MTG? Aotp!
@@ -81,9 +83,8 @@ white-out-modal(show="cardCreator.showRefWarning")
                   label
                     |Abilities Class&nbsp;
                     i.fa.fa-info-circle(onclick="alert('The original AOTP abilities font sizing, varies from Battle of Zendakar and later series. This is a control for that font variance.')")
-                  -ngModel="cardCreator.series.abilitiesClass"
+                  -ngModel="cardCreator.series.seriesClass"
                   input.text-xs.input-xs.form-control(type="text" ng-model=ngModel placeholder="none or aotp-original")
-
 
               //-Series display & labels
               div(ng-hide="cardCreator.editSeriesInfo" ng-click="cardCreator.editSeriesInfo=true" style="cursor:pointer;")
@@ -149,11 +150,11 @@ div(style="text-align:center;margin:1% 0;")
       .animate-v(ng-show="cardCreator.optionView=='export'" style="margin:2% 0;")
         h5(style="margin-top:0;") #[i.fa.fa-download] Exporting
         .animate-v(ng-show="cardCreator.export" style="margin:2% 0;")
-          a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
+          a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="_blank")
             i.fa.fa-eye
             |&nbsp;View {{cardCreator.export.name}}
           |&nbsp;
-          a.btn.btn-default(download="{{cardCreator.export.name}}.json" ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="blank")
+          a.btn.btn-default(ng-click="cardCreator.downloadExport()")
             i.fa.fa-download
             |&nbsp;Download {{cardCreator.export.name}}
         a.btn.btn-default(ng-click="cardCreator.exportAll()" target="blank" style="margin:1% 0;width:125px")
