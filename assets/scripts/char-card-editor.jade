@@ -156,20 +156,8 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
 div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")
   div(ng-click="editor.view=editor.view=='attrs'?false:'attrs'")
     a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Attributes
+
 .animate-v(ng-show="editor.view=='attrs'" style="margin:4% 0;")
-
-  .text-left.animate-fade(ng-show="['planeswalker','squad'].indexOf(editor.model.cardType)>=0")
-
-    div(style="width:70%;display:inline-block;padding-right:3px;")
-      .form-group
-        .text-left.text-xs Member Count
-        input.form-control.input-xs(type="text" ng-model="editor.model.members" placeholder="Squad Count or Multi-Planeswalker")
-
-    div(style="width:30%;display:inline-block;")
-      .form-group
-        .text-left.text-xs Cost Per
-        input.form-control.input-xs(type="text" ng-model="editor.model.cost.per" placeholder="each")
-
   table(cellPadding=0 cellSpacing=0 border=0 style="color:white;")
     tr
       td(style="width:33%;padding-right:3px;")
@@ -184,6 +172,17 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
         .form-group
           .text-left.text-xs Cost
           input.form-control.input-xs(type="text" ng-model="editor.model.cost.value" placeholder="value")
+
+  .text-left.animate-fade(ng-show="['planeswalker','squad'].indexOf(editor.model.cardType)>=0")
+    div(style="width:70%;display:inline-block;padding-right:3px;")
+      .form-group
+        .text-left.text-xs Squad/Member Count
+        select.form-control.input-xs(ng-options="each for each in ['1','2','3','4','5','6']" ng-model="editor.model.members")
+
+    div(style="width:30%;display:inline-block;")
+      .form-group
+        .text-left.text-xs Cost Per
+        input.form-control.input-xs(type="text" ng-model="editor.model.cost.per" placeholder="each")
 
   .form-group.text-left
     .text-xs

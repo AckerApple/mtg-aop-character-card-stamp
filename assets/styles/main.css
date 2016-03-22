@@ -6,7 +6,7 @@ html,body[ng-app=mtgAotpCardCreator]{
 }
 
 body[ng-app=mtgAotpCardCreator]{
-  margin-top:0.6em;
+  margin-top:0.9em;
 }
 
 print-canvas{
@@ -459,7 +459,7 @@ char-card .card-ability-body{
 
 
 mtg-aotp-card-creator #rosterArea .roster-pick{
-  width:187px;
+  max-width:187px;
 }
 mtg-aotp-card-creator #rosterArea .roster-pick .roster-pick-name{
   line-height:2em;

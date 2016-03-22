@@ -25,10 +25,11 @@ white-out-modal(show="iCardModal.card")
     .btn.btn-default(ng-click="iCardModal.nextCard()")
       |&gt;
 
-  .visible-xs
-    char-card(model="iCardModal.card" series="iCardModal.series")
-  .hidden-xs
-    char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
+  .text-center
+    .visible-xs
+      char-card(model="iCardModal.card" series="iCardModal.series")
+    .hidden-xs
+      char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
 
   .text-center(style="margin:8% 0;")
     .btn.btn-default(ng-click="iCardModal.priorCard()")

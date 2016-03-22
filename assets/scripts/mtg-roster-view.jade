@@ -13,6 +13,10 @@ div(id="rosterArea")
     -ngRepeat="card in iRoster.series.data track by card.id"
     .roster-pick(ng-click="iRoster.cardClick({card:card})" as-sortable-item ng-repeat=ngRepeat)
       div(as-sortable-item-handle)
+        div(style="position:relative" ng-show="iRoster.sortDisabled")
+          .text-right(style="top:1em;position:absolute;width:100%;font-size:0.5em;color:#999999;")
+            |{{card.cost.value}}
+            sup &nbsp;{{card.cost.per||'&nbsp;'}}
         .member-count-wrap(ng-show="iRoster.sortDisabled")
           div(ng-show="card.members && card.members>1")
             .fa.fa-circle-o(ng-repeat="item in [0,1,2,3,4,5,6,7,8,9].splice(0,card.members)" style="margin:0 .3em;")
