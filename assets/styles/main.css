@@ -459,10 +459,15 @@ char-card .card-ability-body{
 
 
 mtg-aotp-card-creator #rosterArea .roster-pick{
-  max-width:187px;
+  width:187px;margin-bottom:2em;
 }
+
+mtg-aotp-card-creator #rosterArea .circle-option{
+  margin:1%;
+}
+
 mtg-aotp-card-creator #rosterArea .roster-pick .roster-pick-name{
-  line-height:2em;
+
   font-size:88%;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;
 }
 
@@ -470,10 +475,13 @@ mtg-aotp-card-creator #rosterArea .roster-pick,
 mtg-aotp-card-creator #rosterArea .circle-option,
 mtg-aotp-card-creator #rosterArea .as-sortable-placeholder{
   display:inline-block !important;
-  padding:1.5%;
   text-overflow:ellipsis;
   vertical-align:top;
   white-space:nowrap;overflow:hidden;
+}
+
+mtg-aotp-card-creator #rosterArea .roster-pick .roster-pick-wrap{
+  padding:1.5%;
 }
 
 mtg-aotp-card-creator #rosterArea .circle-option .color-circle{
@@ -499,17 +507,13 @@ mtg-aotp-card-creator #rosterArea .drag-enabled [as-sortable-item-handle]{
   cursor:move;
 }
 
-mtg-aotp-card-creator #rosterArea .image-holder{
-  height:175px;
+mtg-aotp-card-creator #rosterArea .image-holder,
+mtg-aotp-card-creator #rosterArea .roster-pick .color-circle{
+  height:185px;width:165px;display:inline-block;
 }
 
 mtg-aotp-card-creator #rosterArea .drag-enabled .image-holder{
   height:100px;
-}
-
-
-mtg-aotp-card-creator #rosterArea .roster-pick .color-circle{
-  width:170px;height:170px
 }
 
 mtg-aotp-card-creator #rosterArea .circle-option .color-circle,

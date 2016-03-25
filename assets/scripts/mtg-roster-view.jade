@@ -13,43 +13,46 @@ div(id="rosterArea")
     -ngRepeat="card in iRoster.series.data track by card.id"
     .roster-pick(ng-click="iRoster.cardClick({card:card})" as-sortable-item ng-repeat=ngRepeat)
       div(as-sortable-item-handle)
-        div(style="position:relative" ng-show="iRoster.sortDisabled")
-          .text-right(style="top:1em;position:absolute;width:100%;font-size:0.5em;color:#999999;")
+        //-COST
+        div(style="position:relative;width:100%;" ng-show="iRoster.sortDisabled")
+          .text-right(style="top:0.9em;right:2em;position:absolute;width:100%;font-size:0.5em;color:#999999;")
             |{{card.cost.value}}
-            sup &nbsp;{{card.cost.per||'&nbsp;'}}
+            sup &nbsp;{{card.cost.per||'&nbsp;&nbsp;&nbsp;&nbsp;'}}
         .member-count-wrap(ng-show="iRoster.sortDisabled")
           div(ng-show="card.members && card.members>1")
             .fa.fa-circle-o(ng-repeat="item in [0,1,2,3,4,5,6,7,8,9].splice(0,card.members)" style="margin:0 .3em;")
-        .animate-all.color-circle(ng-class="[{'bg-c':!card.colors.length},'bg-'+(card.colors.length==1?card.colors[0]:'m')]")
-          div(style="position:relative;height:100%")
-            .text-center(style="position:absolute;top:85%;left:85%;" ng-show="iRoster.sortDisabled&&card.cardType=='squad'")
-              i(ng-class="card.symbolClass||'aotp aotp-squad'" style="color:#AAA;")
+        div(style="position:relative;height:100%")
+          div(style="position:absolute;top:7.75em;right:1em;" ng-show="iRoster.sortDisabled&&card.cardType=='squad'")
+            i(ng-class="card.symbolClass||'aotp aotp-squad'" style="color:#AAA;")
 
-            .text-center(style="position:absolute;top:83%;width:100%;")
-              div(style="font-size:90%;height:14px;margin-top:2%;color:white;")
-                span(ng-repeat="color in card.colors")
-                  i.mi(ng-class="'mi-'+color" style="margin:0 .2em;text-shadow:1px 1px 0 #000;")
+          .text-center(style="position:absolute;top:7.75em;width:100%;")
+            div(style="font-size:90%;height:14px;color:white;")
+              span(ng-repeat="color in card.colors")
+                i.mi(ng-class="'mi-'+color" style="margin:0 .2em;text-shadow:1px 1px 0 #000;")
+
+        .text-center.roster-pick-wrap
+          .animate-all.color-circle(ng-class="[{'bg-c':!card.colors.length},'bg-'+(card.colors.length==1?card.colors[0]:'m')]")
             -bg = "url({{iRoster.series.images[card.id].avatar.dataUrl||iRoster.series.images[card.id].figure.dataUrl}}) center center no-repeat;background-size:cover;"
 
             .animate-v.image-holder(style="border-radius:50%;background:"+bg)
-        .text-xs(ng-show="iRoster.sortDisabled")
-          .roster-pick-name {{card.name}}
-          .text-xs.text-muted
-            div(style="font-size:95%") {{card.category}}
-            i.aotp.aotp-attack
-            |&nbsp;{{card.attack}}
-            |&nbsp;&nbsp;
-            i.aotp.aotp-defense
-            |&nbsp;{{card.defense}}
-            |&nbsp;&nbsp;
-            i.fa.fa-heart
-            |&nbsp;{{card.life}}
-            |&nbsp;&nbsp;
-            i.fa.fa-arrows
-            |&nbsp;{{card.move}}
-            |&nbsp;&nbsp;
-            i.fa.fa-rss
-            |&nbsp;{{card.range}}
+          .text-xs(ng-show="iRoster.sortDisabled")
+            .roster-pick-name {{card.name}}
+            .text-xs.text-muted
+              div(style="font-size:95%") {{card.category}}
+              i.aotp.aotp-attack
+              |&nbsp;{{card.attack}}
+              |&nbsp;
+              i.aotp.aotp-defense
+              |&nbsp;{{card.defense}}
+              |&nbsp;
+              i.fa.fa-heart
+              |&nbsp;{{card.life}}
+              |&nbsp;
+              i.fa.fa-arrows
+              |&nbsp;{{card.move}}
+              |&nbsp;
+              i.fa.fa-rss
+              |&nbsp;{{card.range}}
 
   div(style="clear:both")
     .text-xs.text-muted.text-center(ng-hide="iRoster.sortDisabled")

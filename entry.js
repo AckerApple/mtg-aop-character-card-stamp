@@ -1,7 +1,6 @@
 require('angular');
 require('angular-animate');
-//require('angular-touch');
-//FastClick = require('fastclick');
+
 require('angular-sanitize');
 require('ng-file-upload');
 require('angular-file-saver');
@@ -25,6 +24,6 @@ require('./assets/styles/Beleren-Bold/fonts.css')
 require('./assets/styles/beleren-small-caps/fonts.css')
 
 require('./assets/styles/main.css')
-require('./assets/scripts/mtgAotpCards.js')
+require('./assets/scripts/aotp-card-service.js')
 require('./assets/scripts/mtgAotpCardCreator.js')
 

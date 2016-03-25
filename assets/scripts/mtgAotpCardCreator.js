@@ -1,14 +1,10 @@
 "use strict";
 
-function uuid(){
-  return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8);return v.toString(16)})
-}
-
 angular.module('mtgAotpCardCreator',[
   'ngAnimate',
   'ackAngular',
   'ngSanitize',
-  'mtgAotpCards',
+  'aotpCardService',
   'ngFileUpload',
   'as.sortable',
   'ngFileSaver'
@@ -29,37 +25,6 @@ angular.module('mtgAotpCardCreator',[
     ,bindToController:true
     ,controllerAs:'editor'
     ,controller:CharCardEditor
-  }
-})
-.service('AotpDemoCharCard',function(){
-  return {
-    get:function(){
-      return {
-        colors:['w','b','u','r','g'],
-        "name":"Acker Apple, Software Engineer",
-        "category":"Planeswalker",
-        "type":"Acker",
-        "life":10,
-        "move":10,
-        "range":10,
-        "attack":10,
-        "defense":10,
-        "abilityArray":[
-          {
-            "title":"Zombie Toughness",
-            "body":"#{aotp aotp-artist-pawn} #{aotp aotp-attack} #{aotp aotp-defense} #{aotp aotp-hexagon} #{aotp aotp-squad} #{aotp aotp-zendikar} #{mi mi-w} #{mi mi-u} #{mi mi-b} #{mi mi-r} #{mi mi-g} #{mi mi-c} #{mi mi-p} #{mi mi-s} #{mi mi-chaos} #{mi mi-tap} #{mi mi-creature} #{mi mi-planeswalker} #{mi mi-enchantment} #{mi mi-instant} #{mi mi-sorcery} #{mi mi-land} #{mi mi-artifact} #{mi mi-multiple} #{mi mi-planeswalk} #{mi mi-untap}  #{mi mi-mana mi-w} #{mi mi-mana mi-u} #{mi mi-mana mi-b} #{mi mi-mana mi-r} #{mi mi-mana mi-g} #{mi mi-mana mi-c} #{mi mi-mana mi-s} #{mi mi-w mi-mana mi-shadow} #{mi mi-u mi-mana mi-shadow} #{mi mi-b mi-mana mi-shadow} #{mi mi-r mi-mana mi-shadow} #{mi mi-g mi-mana mi-shadow} #{mi mi-c mi-mana mi-shadow} #{mi mi-s mi-mana mi-shadow} #{mi mi-p mi-mana-w} #{mi mi-p mi-mana-u} #{mi mi-p mi-mana-b} #{mi mi-p mi-mana-r} #{mi mi-p mi-mana-g} #{mi mi-p mi-mana-w mi-shadow} #{mi mi-p mi-mana-u mi-shadow} #{mi mi-p mi-mana-b mi-shadow} #{mi mi-p mi-mana-r mi-shadow} #{mi mi-p mi-mana-g mi-shadow} #{mi mi-mana mi-1} #{mi mi-mana mi-2} #{mi mi-mana mi-x} #{mi mi-mana mi-y} #{mi mi-mana mi-z} #{mi mi-mana mi-shadow mi-1} #{mi mi-mana mi-shadow mi-2} #{mi mi-mana mi-shadow mi-x} #{mi mi-mana mi-shadow mi-y} #{mi mi-mana mi-shadow mi-z} #{mi mi-tap mi-mana}"
-          }
-        ],
-        "symbolClass":"aotp aotp-squad",
-        "putSymbolOnFigure":true,
-        "height":{
-          "name":"Medium",
-          "value":4
-        },
-        "cost":{value:325},
-        "artist":{"iconClass":"aotp aotp-artist-pawn", "title":"Karla Ortiz"}
-      }
-    }
   }
 })
 .directive('mtgAotpCardCreator',function(){
@@ -294,7 +259,7 @@ function symbolize(string){
 
 
 
-function seriesNav(AotpSeries, AotpDemoCharCard, $q, Upload, Blob, FileSaver){
+function seriesNav(AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q, Upload, Blob, FileSaver){
   this.$q = $q
   this.AotpDemoCharCard = AotpDemoCharCard
   this.AotpSeries=AotpSeries
@@ -367,6 +332,19 @@ seriesNav.prototype.paramSeries = function(series){
   //.then( this.selectFirstCard.bind(this) )
 }
 
+seriesNav.prototype.addSeries = function(){
+  this.series = this.AotpDemoSeries.get()
+  this.cardSeries.push(this.series)
+  this.addCard()
+}
+
+seriesNav.prototype.addCard = function(){
+  this.card = this.AotpDemoCharCard.get()
+  this.series.images[this.card.id] = {avatar:{},figure:{}};
+  this.series.data.push(this.card)
+  this.mode='editor'
+}
+
 seriesNav.prototype.selectSeriesByIndex = function(index){
   this.series = this.cardSeries[index]
   return this.paramSeries(this.series)
@@ -431,25 +409,6 @@ seriesNav.prototype.selectFirstCard = function(){
   .then(function(){
     this.card=this.series.data[0]
   }.bind(this))
-}
-
-seriesNav.prototype.addSeries = function(){
-  this.series = {
-    name:'Hot New Card Series',
-    id:uuid(),
-    data:[],
-    images:{}//by uuid
-  }
-  this.cardSeries.push(this.series)
-  this.addCard()
-}
-
-seriesNav.prototype.addCard = function(){
-  this.card = this.AotpDemoCharCard.get()
-  this.card.id = uuid()
-  this.series.images[this.card.id] = {avatar:{},figure:{}};
-  this.series.data.push(this.card)
-  this.mode='editor'
 }
 
 seriesNav.prototype.fetchSeries = function(series){
@@ -643,7 +602,6 @@ function scanSeries(series){
 
 function updateSeries(series){
   if(!series.json){//v1
-    if(!series.id)series.id=uuid()
     if(!series.images)series.images={}
     series.json = {version:[1,0,0]}
   }
@@ -656,7 +614,6 @@ function updateSeries(series){
 }
 
 function updateCardBySeries(card,series){
-  if(!card.id)card.id = uuid()
   series.images[card.id] = series.images[card.id] || {avatar:{}, figure:{}}
   if(card.avatar){
     series.images[card.id].avatar = card.avatar
