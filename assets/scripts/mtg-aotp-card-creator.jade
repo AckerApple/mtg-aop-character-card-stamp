@@ -28,9 +28,9 @@ white-out-modal(show="cardCreator.showRefWarning")
   div(style="display:inline-block;")
     .text-left.text-muted(style="font-size:0.6em;line-height:0.2em;font-family:Times New Roman;") Acker Apple's
     h1.text-sm(style="margin-top:0;font-family:Beleren;") Mtg Aotp Card Manager
-  p.text-muted
+  p.text-muted(style="font-family:Mplantin;")
     |&nbsp;&nbsp;&nbsp;
-    |Who's down with MTG? Aotp!
+    |A card manager for the Arena of the Planeswalkers board game
 
   div.text-muted(style="font-size:80%;")
     span(style="font-size:80%;")
@@ -125,7 +125,7 @@ white-out-modal(show="cardCreator.showRefWarning")
                   a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.priorCard()") &lt;
                   span(style="font-size:.8em;")
                     |&nbsp;&nbsp;
-                    |{{cardCreator.selectedIndex+1}} of {{(cardCreator.series.data|keys).length}}
+                    |{{cardCreator.selectedIndex+1}} of {{(cardCreator.series.chars|keys).length}}
                     |&nbsp;&nbsp;
                   a.btn.btn-default.btn-sm(style="width:35px" ng-click="cardCreator.nextCard()") &gt;
                   .text-muted.text-center(style="font-weight:normal;font-size:55%;padding-bottom:4px;")
@@ -134,15 +134,15 @@ white-out-modal(show="cardCreator.showRefWarning")
                 a.btn.btn-default(style="vertical-align:top;width:60px;margin-left:.5em;" ng-click="cardCreator.nextSeries()") &gt;&gt;
 
   .animate-v(ng-show="cardCreator.mode=='editor'")
-    mtg-editor-view(series="cardCreator.series" card="cardCreator.card")
+    aotp-editor-view(series="cardCreator.series" card="cardCreator.card")
 
   .animate-v(ng-show="cardCreator.mode=='browse'")
-    .animate-v.animate-fade(ng-repeat="card in cardCreator.series.data track by card.id" style="display:inline-block;cursor:pointer;margin:.5% .25%;")
-      char-card(model="card" series="cardCreator.series" ng-click="cardCreator.previewCard=card")
+    .animate-v.animate-fade(ng-repeat="card in cardCreator.series.chars track by card.id" style="display:inline-block;cursor:pointer;margin:.5% .25%;")
+      aotp-char-card(model="card" series="cardCreator.series" ng-click="cardCreator.previewCard=card")
 
   |{{cardCreator.previewCard.name}}
   .animate-v.text-center(ng-show="cardCreator.mode=='roster'")
-    mtg-roster-view(series="cardCreator.series" card-click="cardCreator.previewCard=card" on-add="cardCreator.addCard()")
+    aotp-roster-view(series="cardCreator.series" card-click="cardCreator.previewCard=card" on-add="cardCreator.addCard()")
 
 div(style="text-align:center;margin:1% 0;")
   div(style="display:inline-block;")
@@ -164,11 +164,6 @@ div(style="text-align:center;margin:1% 0;")
         a.btn.btn-default(ng-click="cardCreator.createSeriesExport()" target="blank" style="margin:1% 0;width:125px")
           i.fa.fa-files-o
           |&nbsp;export series
-        //-
-          |&nbsp;
-          a.animate-h.btn.btn-default(ng-show="cardCreator.card" ng-click="cardCreator.export={data:cardCreator.card, name:cardCreator.card.name}" target="blank" style="margin:1% 0;width:125px")
-            i.fa.fa-file-o
-            |&nbsp;export card
 
       .animate-v(ng-show="cardCreator.optionView=='import'" style="margin:2% 0;")
         h5 #[i.fa.fa-download] Importing

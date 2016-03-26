@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "webpack",
     "start": "webpack-dev-server --content-base www/",
-    "watch": "webpack --watch --progress"
+    "watch": "webpack --watch --progress",
+    "pack": "webpack --progress"
   },
   "repository": {
     "type": "git",
@@ -25,9 +26,9 @@
   },
   "devDependencies": {
     "ack-angular": "https://github.com/AckerApple/ack-angular",
-    "angular": "^1.5.0",
-    "angular-animate": "^1.5.0",
-    "angular-sanitize": "^1.5.0",
+    "angular": "^1.5.3",
+    "angular-animate": "^1.5.3",
+    "angular-sanitize": "^1.5.3",
     "bootstrap": "^3.3.6",
     "css-loader": "^0.23.1",
     "font-awesome": "^4.5.0",

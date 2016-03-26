@@ -27,9 +27,9 @@ white-out-modal(show="iCardModal.card")
 
   .text-center
     .visible-xs
-      char-card(model="iCardModal.card" series="iCardModal.series")
+      aotp-char-card(model="iCardModal.card" series="iCardModal.series")
     .hidden-xs
-      char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
+      aotp-char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
 
   .text-center(style="margin:8% 0;")
     .btn.btn-default(ng-click="iCardModal.priorCard()")
@@ -49,11 +49,11 @@ div(style="position:absolute;")
     //-html2canvas must absolute have the print area on screen, so lets flash it on then off
     print-canvas(before-print="iCardModal.ezPrint=true" after-print="iCardModal.ezPrint=false;iCardModal.triggerEzPrint=false" print-trigger="iCardModal.triggerEzPrint" print-model="iCardModal.ezPrintResult" style="vertical-align:top;")
       div(style="display:inline-block;")
-        char-card(model="iCardModal.card" series="iCardModal.series")
+        aotp-char-card(model="iCardModal.card" series="iCardModal.series")
 
   //-hi-res rending stage
   div(ng-show="iCardModal.hiResPrint2")
     //- html2canvas must absolute have the print area on screen, so lets flash it on then off
     print-canvas(before-print="iCardModal.hiResPrint2=true" after-print="iCardModal.hiResPrint2=false;iCardModal.triggerHiResPrint=false" print-trigger="iCardModal.triggerHiResPrint" print-model="iCardModal.hiResPrintResult" style="vertical-align:top;")
       div(style="display:inline-block;")
-        char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")
+        aotp-char-card(size="'hires'" model="iCardModal.card" series="iCardModal.series")

@@ -1,0 +1,56 @@
+.animate-h.animate-fade(ng-hide="iEditor.card")
+  .alert.alert-warning(style="display:inline-block;")
+    i.fa.fa-exclamation-triangle
+    |&nbsp;Please select a card using the above series and card selectors
+
+.animate-h(ng-show="iEditor.card")
+  div(style="display:inline-block;vertical-align:top;margin:1px;")
+    h6.text-muted Card Editor
+    .aotp-char-card-editor
+      aotp-char-card-editor(model="iEditor.card" series="iEditor.series")
+  div(style="display:inline-block;vertical-align:top;margin:1px;")
+    h6.text-muted Card Preview
+    aotp-char-card(model="iEditor.card" series="iEditor.series")
+
+.animate-v(ng-show="iEditor.editorOps=='rendering'" style="margin:1%;")
+  aotp-rendered-card(name="iEditor.card.name" ez-print-export="iEditor.ezPrintResult" hi-print-export="iEditor.hiResPrintResult")
+  a.btn-sm.btn.btn-default(ng-click="iEditor.triggerEzPrint=false;iEditor.triggerEzPrint=true") render ez-print
+  |&nbsp;
+  a.btn-sm.btn.btn-default(ng-click="iEditor.triggerHiResPrint=false;iEditor.triggerHiResPrint=true") render hi-res
+
+
+div
+  a.btn.btn-success(href="#seriesTitle" ng-click="iEditor.addSeries()" style="margin:1% 0;width:125px;")
+    |++ new series
+  |&nbsp;
+  a.btn.btn-success(ng-click="iEditor.addCard()" style="margin:1% 0;width:125px;")
+    |+ new card
+  span.animate-h(ng-show="iEditor.card")
+    |&nbsp;
+    a.btn.btn-info(ng-click="iEditor.editorOps='rendering'" style="margin:1% 0;width:125px")
+      .fa.fa-print
+      |&nbsp;rendering
+    |&nbsp;
+    a.btn.btn-danger(ng-click="iEditor.deleteCard()" style="margin:1% 0;width:125px")
+      .fa.fa-fire
+      |&nbsp;delete card
+  |&nbsp;
+  a.btn.btn-danger(ng-click="iEditor.deleteSeries()" style="margin:1% 0;width:125px")
+    .fa.fa-fire
+    .fa.fa-fire
+    |&nbsp;delete series
+
+
+//- easy rending stage
+div(ng-show="iEditor.ezPrint" style="position:absolute")
+  //-html2canvas must absolute have the print area on screen, so lets flash it on then off
+  print-canvas(before-print="iEditor.ezPrint=true" after-print="iEditor.ezPrint=false;iEditor.triggerEzPrint=false" print-trigger="iEditor.triggerEzPrint" print-model="iEditor.ezPrintResult" style="vertical-align:top;")
+    div(style="display:inline-block;")
+      aotp-char-card(model="iEditor.card" series="iEditor.series")
+
+//-hi-res rending stage
+div(ng-show="iEditor.hiResPrint" style="position:absolute")
+  //- html2canvas must absolute have the print area on screen, so lets flash it on then off
+  print-canvas(before-print="iEditor.hiResPrint=true" after-print="iEditor.hiResPrint=false;iEditor.triggerHiResPrint=false" print-trigger="iEditor.triggerHiResPrint" print-model="iEditor.hiResPrintResult" style="vertical-align:top;")
+    div(style="display:inline-block;")
+      aotp-char-card(size="'hires'" model="iEditor.card" series="iEditor.series")

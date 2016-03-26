@@ -25,5 +25,5 @@ require('./assets/styles/beleren-small-caps/fonts.css')
 
 require('./assets/styles/main.css')
 require('./assets/scripts/aotp-card-service.js')
-require('./assets/scripts/mtgAotpCardCreator.js')
+require('./assets/scripts/aotp-card-creator.js')
 

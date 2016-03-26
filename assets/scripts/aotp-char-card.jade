@@ -1,0 +1,74 @@
+.aotp-char-card(style="text-align:left;" class="aotp-char-card-{{aotpCharCard.model.colors.length>1?'m':aotpCharCard.model.colors[0]}}" ng-class="aotpCharCard.size?'aotp-char-card-print-'+aotpCharCard.size:null")
+
+  .aotp-char-card-stage(ng-class="aotpCharCard.series.seriesClass")
+    .starting-height
+    div(style="position:relative;height:4.75%")
+      .card-title
+        .card-title-top-pad
+        .card-title-text {{aotpCharCard.model.name}}
+    .card-image
+      .card-image-bg(style="background-image:url({{aotpCharCard.series.images[aotpCharCard.model.id].avatar.dataUrl}});")
+    .card-body
+      div(style="height:.67%")
+      .card-type-wrapper(style="text-align:left;")
+        //-color symbols
+        span(ng-repeat="color in aotpCharCard.model.colors" style="display:inline-block;")
+          div(style="position:relative;font-size:70%;text-align:center;line-height:0;")
+            span(style="position:absolute;width:100%;color:black;left:1.5%;z-index:10;")
+              i.mi(class="mi-{{color}}")
+          i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
+        .card-type-title(style="display:inline-block;white-space:nowrap;")
+          span(ng-hide="aotpCharCard.model.colors.length") &nbsp;&nbsp;
+          |{{aotpCharCard.model.category}}
+          |&nbsp;
+          span(style="display:inline-block;padding-top:0;vertical-align:middle;width:6%;text-align:center")
+            div(class="cardTypeSep") -
+          |&nbsp;
+          |{{aotpCharCard.model.type}}
+        //-colorless space keeper
+        span(ng-hide="aotpCharCard.model.colors.length" style="display:inline-block;visibility:hidden")
+          div(style="position:relative;font-size:70%;text-align:center;line-height:0;")
+            span(style="position:absolute;width:100%;color:black;left:1.5%;z-index:10;")
+              i.mi(class="mi-b")
+          i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
+      .figure-wrap(style="position:relative;")
+        i(ng-show="aotpCharCard.model.putSymbolOnFigure" ng-class="aotpCharCard.model.symbolClass" class="symbolClass")
+        .figure-image(style="background-image:url({{aotpCharCard.series.images[aotpCharCard.model.id].figure.dataUrl}});")
+        //-div(ng-hide="aotpCharCard.model.figure" style="color:#999;margin-top:40%;text-align:center;font-size:80%;") DROP IMAGE HERE
+      .stat-box.life-box(ng-class="{'life-box-sm':aotpCharCard.model.attack>9}")
+        .stat-label(style="line-height:0;") LIFE
+        .life-box-value {{aotpCharCard.model.life||'?'}}
+      .stat-box.move-box(style="display:inline-block;left:7.5%;")
+        .stat-label.move-box-text MOVE
+        .move-box-value {{aotpCharCard.model.move||'?'}}
+      .stat-box.range-box(style="display:inline-block;left:7.5%;")
+        .stat-label.range-box-text RANGE
+        .range-box-value {{aotpCharCard.model.range||'?'}}
+      .stat-box.attack-box
+        span(style="position:relative;vertical-align:top")
+          span.attack-box-text(ng-class="{'attack-box-text-sm':aotpCharCard.model.attack>9}") {{aotpCharCard.model.attack||'?'}}
+        i.aotp.aotp-attack
+      .stat-box.defense-box
+        span(style="position:relative;vertical-align:top")
+          span.defense-box-text(ng-class="{'defense-box-text-sm':aotpCharCard.model.defense>9}") {{aotpCharCard.model.defense||'?'}}
+        i.aotp.aotp-defense
+      div(style="position:relative;height:0;")
+        div(style="position:absolute;margin-top:120.5%;width:97.15%;text-align:right;")
+          i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
+            span(class="seriesIcon")
+              i(ng-class="aotpCharCard.series.symbolClass||'mi mi-planeswalk'")
+      .card-abilities(ng-class="{'card-abilities-sm':aotpCharCard.getAbilitiesLength()>700}")
+        .card-ability(ng-repeat="ability in aotpCharCard.model.abilityArray")
+          strong.card-ability-title {{ability.title|uppercase}}
+          .card-ability-body(mtg-symbolize="ability.body|lineReturnAsBr")
+      .card-attributes
+        div(style="float:right")
+          |COST&nbsp;&nbsp;{{aotpCharCard.model.cost.value}}
+          span(ng-show="aotpCharCard.model.cost.per" style="font-size:.77em;line-height:0;") &nbsp;{{aotpCharCard.model.cost.per}}
+        div {{aotpCharCard.model.height.name|uppercase}} {{aotpCharCard.model.height.value}}
+      .card-footer
+        div(style="float:right;margin-right:2.5%;margin-top:1.5%;" ng-bind-html="aotpCharCard.series.copyRight|trustAsHtml")
+        div(style="margin-left:2.5%;")
+          i(ng-class="aotpCharCard.model.artist.iconClass" style="font-size:220%;vertical-align:-17%")
+          |&nbsp;&nbsp;&nbsp;&nbsp;
+          |{{aotpCharCard.model.artist.title}}
