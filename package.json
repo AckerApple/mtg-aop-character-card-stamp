@@ -20,11 +20,9 @@
     "url": "https://github.com/AckerApple/mtg-aotp-character-card-creator/issues"
   },
   "homepage": "https://github.com/AckerApple/mtg-aotp-character-card-creator",
-  "dependencies": {
-    "angular-file-saver": "^1.1.0",
-    "canvas-to-blob": "0.0.0"
-  },
   "devDependencies": {
+    "angular-file-saver": "^1.1.0",
+    "canvas-to-blob": "0.0.0",
     "ack-angular": "https://github.com/AckerApple/ack-angular",
     "angular": "^1.5.3",
     "angular-animate": "^1.5.3",

@@ -1,6 +1,8 @@
 {
   "name":"Hot New Card Series",
   "id":"",
-  "data":[],
+  "chars":[],
+  "spells":[],
+  "json":{"version":[1,0,0]},
   "images":{}
 }

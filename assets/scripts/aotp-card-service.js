@@ -4,7 +4,7 @@ angular.module('aotpCardService',[])
 .service('AotpDemoSeries',function(){
   return {
     get:function(){
-      var data = require('./aotp-demo-series.json')
+      var data = require('../data/aotp-demo-series.json')
       data.id = uuid()
       return data
     }
@@ -14,7 +14,7 @@ angular.module('aotpCardService',[])
 .service('AotpDemoCharCard',function(){
   return {
     get:function(){
-      var data = require('./aotp-demo-char-card.json')
+      var data = require('../data/aotp-demo-char-card.json')
       data.id = uuid()
       return data
     }
@@ -26,7 +26,8 @@ angular.module('aotpCardService',[])
       return $http.get('cards/'+id+'.json')
     },
     list:function(){
-      return $http.get('cards/index.json')
+      var data = require('../data/aotp-series-index.json')
+      return $q.resolve({data:data})//$http.get('cards/index.json')
 		}
 	}
 })

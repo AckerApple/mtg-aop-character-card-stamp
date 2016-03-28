@@ -21,7 +21,7 @@ angular.module('mtgAotpCardCreator',[
     ,scope:{
       model:'=', series:'='
     }
-    ,template:require('./aotp-char-card-editor.jade')
+    ,template:require('../views/aotp-char-card-editor.jade')
     ,bindToController:true
     ,controllerAs:'editor'
     ,controller:AotpCharCardEditor
@@ -33,7 +33,7 @@ angular.module('mtgAotpCardCreator',[
     ,scope:{}
     ,bindToController:true
     ,controllerAs:'cardCreator'
-    ,template:require('./mtg-aotp-card-creator.jade')
+    ,template:require('../views/mtg-aotp-card-creator.jade')
     ,controller:mtgAotpCardCreator
   }
 })
@@ -43,7 +43,7 @@ angular.module('mtgAotpCardCreator',[
     ,scope:{
       model:'=', size:'=', series:'='
     }
-    ,template:require('./aotp-char-card.jade')
+    ,template:require('../views/aotp-char-card.jade')
     ,controller:function(){
       this.getAbilitiesLength=function(){
         if(!this.model || !this.model.abilityArray)return 0;
@@ -130,7 +130,7 @@ angular.module('mtgAotpCardCreator',[
   }
 })
 .controller('SeriesNav',seriesNav)
-.directive('aotpEditorView',function(){//mtg-editor-view.jade
+.directive('aotpEditorView',function(){
   return {
     restrict:'E'
     ,scope:{
@@ -139,7 +139,7 @@ angular.module('mtgAotpCardCreator',[
     ,bindToController:true
     ,controllerAs:'iEditor'
     ,controller:'SeriesNav'
-    ,template:require('./aotp-editor-view.jade')
+    ,template:require('../views/aotp-editor-view.jade')
   }
 })
 
@@ -149,7 +149,7 @@ angular.module('mtgAotpCardCreator',[
     ,scope:{
       card:'=', series:'=', onEdit:'&'
     }
-    ,template:require('./aotp-card-white-out-modal.jade')
+    ,template:require('../views/aotp-card-white-out-modal.jade')
     ,controllerAs:'iCardModal'
     ,bindToController:true
     ,controller:'SeriesNav'
@@ -164,7 +164,7 @@ angular.module('mtgAotpCardCreator',[
       cardClick:'&',
       onAdd:'&', sortDisabled:'=?'
     }
-    ,template:require('./aotp-roster-view.jade')
+    ,template:require('../views/aotp-roster-view.jade')
     ,bindToController:true
     ,controllerAs:'iRoster'
     ,controller:function($scope){
@@ -178,10 +178,10 @@ angular.module('mtgAotpCardCreator',[
     ,scope:{
       name:'=', ezPrintExport:'=', hiPrintExport:'='
     }
-    ,template:require('./aotp-rendered-card.jade')
+    ,template:require('../views/aotp-rendered-card.jade')
     ,bindToController:true
     ,controllerAs:'rendering'
-    ,controller:function(FileSaver, Blob){
+    ,controller:function(FileSaver){
       this.downloadHires = function(){
         var i = this.hiPrintExport.canvas.toBlob( this.downloadBlob.bind(this) )
       }
@@ -265,7 +265,6 @@ function seriesNav(AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q, Upload, Blo
   this.seriesIndex=0
   this.selectedIndex = -1
   this.Upload = Upload
-
   this.Blob = Blob
   this.FileSaver = FileSaver
   return this
@@ -446,7 +445,7 @@ seriesNav.prototype.exportAll = function(){
 }
 
 seriesNav.prototype.setFetchResult = function(res){
-  this.cardSeries = res.data
+  this.cardSeries = res.data.series
   this.paramSeries( this.cardSeries[0] )
   //this.selectFirstCard()
 }
@@ -462,7 +461,7 @@ seriesNav.prototype.fetchSeriesListing = function(){
 
 
 
-function mtgAotpCardCreator(AotpSeries, AotpDemoCharCard, $q, Upload, Blob, FileSaver){
+function mtgAotpCardCreator(AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q, Upload, Blob, FileSaver){
   this.mode='roster'
   seriesNav.apply(this,arguments)
   this.fetchSeriesListing().then(this.selectFirstCard.bind(this))
@@ -586,12 +585,14 @@ function getCardIndexBySeries(card, series){
 function scanSeries(series){
   var hasRefs = false
   for(var x in series.images){//loop series images
-    if(
-        isExternalRef(series.images[x].avatar.dataUrl)
-    ||  isExternalRef(series.images[x].figure.dataUrl)
-    ){
-      hasRefs = true
-      break;
+    var url = series.images[x].avatar.dataUrl
+    if(isExternalRef(url)){
+      hasRefs = true;
+    }
+
+    var url = series.images[x].figure.dataUrl
+    if(isExternalRef(url)){
+      hasRefs = true;
     }
   }
 

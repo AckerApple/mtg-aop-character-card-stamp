@@ -20,7 +20,8 @@ div&attributes(attrs)
       div(style="position:relative;text-align:center;")
         div(style="position:absolute;color:#DDD;text-shadow:1px 1px 0 #000;margin-top:35%;width:100%") DROP IMAGE HERE
 
-.input-group(style="")
+//-no img src editing because outside refs cannot be printed
+//-.input-group(style="")
   .input-group-btn
     .btn.btn-xs.btn-default(style="height:25px") img-src
   input.input-xs.form-control(ng-model="editor.series.images[editor.model.id].avatar.dataUrl" style="height:25px" ng-change="editor.series|scanSeries")
