@@ -1,6 +1,6 @@
 white-out-modal(show="iCardModal.card")
   .text-center(style="margin:8% 0;")
-    .animate-v(style="margin:8% 0;" ng-show="iCardModal.editorOps=='rendering'")
+    .fx-fade-up(style="margin:8% 0;" ng-show="iCardModal.editorOps=='rendering'")
       aotp-rendered-card(name="iCardModal.card.name" ez-print-export="iCardModal.ezPrintResult" hi-print-export="iCardModal.hiResPrintResult")
       .text-center
         h6 rendering options

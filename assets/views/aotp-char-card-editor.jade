@@ -37,7 +37,7 @@ div&attributes(attrs)
   input(type="radio" ng-model="editor.model.cardType" id="editor.model.cardType-spell" value="spell")
   label(for="editor.model.cardType-spell" style="font-weight:normal;") &nbsp;Spell
 
-.animate-fade.alert.alert-warning(ng-show="editor.model.cardType=='spell'")
+.fx-fade-up.alert.alert-warning(ng-show="editor.model.cardType=='spell'")
   i.fa.fa-exclamation-triangle
   |&nbsp;Editing spell cards, is not completed. Coming soon!
 
@@ -61,14 +61,14 @@ div&attributes(attrs)
     .text-muted(style="display:inline-block;" ng-repeat=ngRepeat ng-hide=ngHide ng-click=ngClick)
       .color-item(style="background-color:white;opacity:.8;")
         i.mi(style="font-size:1.5em;" ng-class="'mi-'+item.value")
-    .animate-v(ng-show="editor.resortColors" style="padding:2% 0;color:#CCC;font-size:0.7em;") (drag/drop to sort)
+    .fx-fade-up(ng-show="editor.resortColors" style="padding:2% 0;color:#CCC;font-size:0.7em;") (drag/drop to sort)
 
 
 div(style="margin:2% 0;" ng-init="editor.view='dets'")
   div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")
     div(ng-click="editor.view=editor.view=='dets'?false:'dets'")
       a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Details
-  .text-left.animate-v(ng-show="editor.view=='dets'" style="margin:4% 0;")
+  .text-left.fx-fade-up(ng-show="editor.view=='dets'" style="margin:4% 0;")
     table
       tr
         td(style="width:60%;padding-right:3px;")
@@ -139,26 +139,29 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
   div(ng-click="editor.view=editor.view=='abs'?false:'abs'")
     a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Abilities
     sup(style="font-size:60%;") &nbsp;{{editor.model.abilityArray.length}}
-.animate-v(ng-show="editor.view=='abs'" style="margin:4% 0;")
+.fx-fade-up(ng-show="editor.view=='abs'" style="margin:4% 0;")
   .form-group(ng-repeat="ability in editor.model.abilityArray")
     input.input-xs.form-control(type="text" ng-model="ability.title" placeholder="Ability Title")
     textarea.input-xs.form-control(ng-model="ability.body" style="font-size:80%;height:65px" placeholder="Ability Body Description")
     .text-center
       a.text-xs.text-danger(ng-click="editor.model.abilityArray.splice($index,1)") - drop ability
   .text-center(style="margin-bottom:3%;")
-    .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbility()") + add ability
+    .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbility()")
+      i.fa.fa-plus-circle
+      |&nbsp; add ability
     div
       .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('trample')") + trample
       .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('flying')") + flying
       .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('lifelink')") + lifelink
       .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('haste')") + haste
+      .btn.btn-success.btn-xs(style="width:90px;margin:1%;" ng-click="editor.addAbByType('firststrike')") + first strike
 
 //-attrs
 div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;border-radius:.5em;margin-top:4%;")
   div(ng-click="editor.view=editor.view=='attrs'?false:'attrs'")
     a.text-xs(style="width:100%;color:white;text-decoration:underline;") Card Attributes
 
-.animate-v(ng-show="editor.view=='attrs'" style="margin:4% 0;")
+.fx-fade-up(ng-show="editor.view=='attrs'" style="margin:4% 0;")
   table(cellPadding=0 cellSpacing=0 border=0 style="color:white;")
     tr
       td(style="width:33%;padding-right:3px;")
@@ -174,7 +177,7 @@ div(style="background-color:#444;border:1px dotted #666666;padding:0 1% 1% 1%;bo
           .text-left.text-xs Cost
           input.form-control.input-xs(type="text" ng-model="editor.model.cost.value" placeholder="value")
 
-  .text-left.animate-fade(ng-show="['planeswalker','squad'].indexOf(editor.model.cardType)>=0")
+  .text-left.fx-fade-up(ng-show="['planeswalker','squad'].indexOf(editor.model.cardType)>=0")
     div(style="width:70%;display:inline-block;padding-right:3px;")
       .form-group
         .text-left.text-xs Squad/Member Count

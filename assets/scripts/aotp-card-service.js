@@ -20,7 +20,7 @@ angular.module('aotpCardService',[])
     }
   }
 })
-.service('AotpSeries',function($q,$http){
+.service('AotpSeries',['$q','$http',function($q,$http){
 	return {
     get:function(id){
       return $http.get('cards/'+id+'.json')
@@ -30,7 +30,7 @@ angular.module('aotpCardService',[])
       return $q.resolve({data:data})//$http.get('cards/index.json')
 		}
 	}
-})
+}])
 
 function uuid(){
   return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8);return v.toString(16)})

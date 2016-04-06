@@ -1,21 +1,23 @@
 require('angular');
 require('angular-animate');
-
-require('angular-sanitize');
-require('ng-file-upload');
-require('angular-file-saver');
-
-toBlob = require('canvas-to-blob');
+require('ng-fx');
+require('angular-sanitize');//cleanse variables for html output
+require('ng-file-upload');//used to add images and import files
+require('angular-file-saver');//html5 file saving/exporting
+toBlob = require('canvas-to-blob');//teamed with angular-file-saver, creates html5 "files"
 toBlob.init();
 
-require('ng-sortable');
+require('ng-sortable');//drag-n-drop
 require('ng-sortable/dist/ng-sortable.min.css')
+
+require('ack-angular');//white-out-modal
+require('ack-angular/ack-angular.css');//animation classes (need to replace with ngAnimate)
+
+JSZip = require('jszip');//create zip file in browser
 
 require('font-awesome/css/font-awesome.min.css')
 require('bootstrap/dist/css/bootstrap.min.css')
 
-require('ack-angular');
-require('ack-angular/ack-angular.css');
 require('mtg-aotp-syms/css/mtg-aotp-syms.css')
 
 require('./assets/styles/mtg-font/css/magic-font.css')

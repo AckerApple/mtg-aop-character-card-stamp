@@ -39,6 +39,8 @@
     "ng-sortable": "https://github.com/a5hik/ng-sortable.git",
     "jade-loader": "^0.8.0",
     "style-loader": "^0.13.0",
-    "url-loader": "^0.5.7"
+    "url-loader": "^0.5.7",
+    "jszip": "^2.6.0",
+    "webpack": "^1.12.14"
   }
 }
