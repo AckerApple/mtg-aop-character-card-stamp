@@ -3,8 +3,53 @@
 -attrs.series="cardCreator.series"
 -attrs['on-edit']="cardCreator.mode='editor';cardCreator.card=cardCreator.previewCard;cardCreator.previewCard=null"
 aotp-card-white-out-modal&attributes(attrs)
+//-cardCreator.showDocumentation
+white-out-modal(show="true")
+  div(style="padding:10px;")
+    div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
+      div(style="padding:20px;")
+        h1(style="font-family:Beleren;")
+          sup(style="font-size:0.5em;") the
+          |Documentation
+        .text-muted(style="font-size:0.6em;")
+          |Hopefully something here will make since to you
+        hr
 
-|{{cardCreator.showRefWarning}}
+        img(src="assets/acker-apple/IMG0.jpg" style="max-width:200px;")
+        img(src="assets/acker-apple/IMG1.jpg" style="max-width:200px;")
+        img(src="assets/acker-apple/IMG2.jpg" style="max-width:200px;")
+        img(src="assets/acker-apple/IMG3.jpg" style="max-width:200px;")
+        img(src="assets/acker-apple/IMG4.jpg" style="max-width:200px;")
+
+        h3 #[i.fa.fa-github-square] Packaged by Open Source
+        p.text-muted(style="font-size:0.8em;") This project runs on a slue of hard-work that is available to everyone!
+
+        ul(style="font-size:0.8em;")
+          li #[a(href="https://www.npmjs.com/package/angular" target="_blank") angular]
+          li #[a(href="https://www.npmjs.com/package/angular-file-saver" target="_blank") angular-file-saver]
+          li #[a(href="https://github.com/AckerApple/ack-angular" target="_blank") ack-angular]
+          li #[a(href="https://www.npmjs.com/package/jade" target="_blank") jade]
+          li #[a(href="https://github.com/AlexandreArpin/mtg-font" target="_blank") mtg-font]
+          li #[a(href="https://www.npmjs.com/package/font-awesome" target="_blank") font-awesome]
+          li #[a(href="https://github.com/AckerApple/mtg-aotp-syms" target="_blank") mtg-aotp-syms]
+          li #[a(href="https://www.npmjs.com/package/bootstrap" target="_blank") bootstrap]
+          li #[a(href="https://www.npmjs.com/package/ng-file-upload" target="_blank") ng-file-upload]
+          li #[a(href="https://www.npmjs.com/package/ng-sortable" target="_blank") ng-sortable]
+          li #[a(href="https://www.npmjs.com/package/jszip" target="_blank") jszip]
+          li #[a(href="https://www.npmjs.com/package/webpack" target="_blank") webpack]
+
+
+        h3(style="font-family:Beleren;") Useful Links
+        .text-center(style="font-size:0.8em;")
+          a(href="https://github.com/AckerApple/mtg-aotp-card-manager" target="_blank")
+            i.fa.fa-github
+            |&nbsp;repository
+          |&nbsp;&nbsp;&nbsp;
+          a(href="https://github.com/AckerApple/mtg-aotp-card-manager/issues" target="_blank")
+            i.fa.fa-bug
+            |&nbsp;report issue
+
+//-modal window with info about external refs
 white-out-modal(show="cardCreator.showRefWarning")
   div(style="max-width:600px;background-color:white;border-radius:15px;border:1px solid #999999;padding:2%;")
     h2
@@ -25,21 +70,48 @@ white-out-modal(show="cardCreator.showRefWarning")
 
 
 .text-center
-  div(style="display:inline-block;")
-    .text-left.text-muted(style="font-size:0.6em;line-height:0.2em;font-family:Times New Roman;") Acker Apple's
-    h1.text-sm(style="margin-top:0;font-family:Beleren;") Mtg Aotp Card Manager
-  p.text-muted(style="font-family:Mplantin;")
-    |&nbsp;&nbsp;&nbsp;
-    |A card manager for the Arena of the Planeswalkers board game
+  .fx-fade-up(style="cursor:pointer" ng-click="cardCreator.hideTitling=!cardCreator.hideTitling" ng-hide="cardCreator.hideTitling")
+    div(style="display:inline-block;margin-right:.3em;")
+      .text-left.text-muted(style="font-size:0.6em;line-height:0.5em;font-family:Times New Roman;")
+        |Acker Apple's
+        span(style="font-size:0.8em;") &nbsp;fan made
+      h1.text-sm(style="margin-top:0;font-family:Beleren;font-size:1.65em;margin-bottom:0;")
+        i.mi.mi-planeswalk(style="font-size:65%;vertical-align:8%;color:#666;")
+        |&nbsp;MTG&nbsp;
+        i.aotp.aotp-attack(style="font-size:50%;vertical-align:25%;color:#666;")
+        |&nbsp;AOTP&nbsp;
+        i.aotp.aotp-defense(style="font-size:50%;vertical-align:25%;color:#666;")
+    h1.text-sm(style="vertical-align:middle;margin-top:0;font-family:Beleren small caps;font-size:2.25em;display:inline-block;") Card Manager
+    .text-muted(style="font-family:Mplantin;font-size:80%;")
+      |&nbsp;&nbsp;&nbsp;
+      |A fun-to-use, extra serious, digital card manager
 
-  div.text-muted(style="font-size:80%;")
-    span(style="font-size:80%;")
-      |This was all built & tested using Google Chrome&nbsp;
-    .fa.fa-chrome
+    .text-muted(style="font-size:80%;")
+      span(style="font-size:80%;")
+        |Made specifically for Google Chrome&nbsp;
+      i.fa.fa-chrome
+
     br
-    a.text-xs(href="https://github.com/AckerApple/mtg-aotp-card-manager" target="_blank" style="font-size:80%;") read the docs
 
-  hr
+  div(ng-click="cardCreator.hideTitling=!cardCreator.hideTitling" style="cursor:pointer")
+    i.aotp.aotp-attack(style="vertical-align:7%")
+    |&nbsp;&nbsp;
+    i.mi.mi-b.mi-mana.mi-shadow
+    |&nbsp;&nbsp;
+    i.mi.mi-u.mi-mana.mi-shadow
+    |&nbsp;&nbsp;
+    i.mi.mi-g.mi-mana.mi-shadow
+    |&nbsp;&nbsp;
+    i.mi.mi-w.mi-mana.mi-shadow
+    |&nbsp;&nbsp;
+    i.mi.mi-r.mi-mana.mi-shadow
+    |&nbsp;&nbsp;
+    i.aotp.aotp-defense(style="vertical-align:7%")
+
+  .text-muted(style="font-size:80%;")
+    a.text-xs(style="font-size:80%;" ng-click="cardCreator.showDocumentation=!cardCreator.showDocumentation")
+      i.fa.fa-book
+      |&nbsp;read the docs
 
   div(ng-show="cardCreator.series.hasRefs" style="position:absolute;right:1%")
     .btn.btn-xs.btn-warning(ng-click="cardCreator.showRefWarning=true")

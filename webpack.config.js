@@ -32,13 +32,13 @@ var dist = {
 var debug = {
   entry: "./entry.js",
   output: {
-    path: path.join(__dirname,'www','bundle'),
+    path: path.join(__dirname,'www','dist'),
     filename: "bundle.js"
-    ,publicPath:"bundle/"
+    ,publicPath:"dist/"
   },
   module: {
     loaders: loaders
   }
 }
 
-module.exports = [dist,debug];
+module.exports = [debug];
