@@ -23,6 +23,7 @@ angular.module('mtgAotpCardCreator',[
 .service('AotpExport',['jsZip', 'Blob', '$q',function(jsZip, Blob, $q){
   return {
     getSeriesArrayExport:function(seriesArray){
+      var zip = this.getZipBySeriesArray(seriesArray)
       var json = JSON.stringify(seriesArray)
       return {
         name:'mtg-aotp-cards',
@@ -32,11 +33,12 @@ angular.module('mtgAotpCardCreator',[
         },
         zip:{
           name:'mtg-aotp-cards.zip',
-          blob:this.getZipBlobBySeriesArray(seriesArray)
+          blob:zip.generate({type:"blob"})
+          //,uri:"data:application/zip;content-disposition:attachment;filename=test.zip,base64," + zip.generate({type:"base64"})
         }
       }
     },
-    getZipBlobBySeriesArray:function(seriesArray){
+    getZipBySeriesArray:function(seriesArray){
       var allSeries = angular.copy(seriesArray)
       var zip = new jsZip()
 
@@ -47,12 +49,13 @@ angular.module('mtgAotpCardCreator',[
       }
 
       zip.file("series.json", JSON.stringify(allSeries));
-      return zip.generate({type:"blob"})
-    },
+      return zip//.generate({type:"blob"})
+    },/*
     getZipBlobBySeries:function(series){
       return this.getZipBlobBySeriesArray([series])
-    },
+    },*/
     getSeriesExports:function(series){
+      var zip = this.getZipBySeriesArray([series])
       var json = JSON.stringify([series])
       return {
         name:series.name,
@@ -62,7 +65,8 @@ angular.module('mtgAotpCardCreator',[
         },
         zip:{
           name:series.name+'.zip',
-          blob:this.getZipBlobBySeries(series)
+          blob:zip.generate({type:"blob"})
+          //,uri:"data:application/zip;base64," + zip.generate({type:"base64"})
         }
       }
     },

@@ -3,51 +3,19 @@
 -attrs.series="cardCreator.series"
 -attrs['on-edit']="cardCreator.mode='editor';cardCreator.card=cardCreator.previewCard;cardCreator.previewCard=null"
 aotp-card-white-out-modal&attributes(attrs)
-//-cardCreator.showDocumentation
-white-out-modal(show="true")
+
+white-out-modal(show="cardCreator.moreExportInfo")
   div(style="padding:10px;")
     div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
       div(style="padding:20px;")
-        h1(style="font-family:Beleren;")
-          sup(style="font-size:0.5em;") the
-          |Documentation
-        .text-muted(style="font-size:0.6em;")
-          |Hopefully something here will make since to you
-        hr
-
-        img(src="assets/acker-apple/IMG0.jpg" style="max-width:200px;")
-        img(src="assets/acker-apple/IMG1.jpg" style="max-width:200px;")
-        img(src="assets/acker-apple/IMG2.jpg" style="max-width:200px;")
-        img(src="assets/acker-apple/IMG3.jpg" style="max-width:200px;")
-        img(src="assets/acker-apple/IMG4.jpg" style="max-width:200px;")
-
-        h3 #[i.fa.fa-github-square] Packaged by Open Source
-        p.text-muted(style="font-size:0.8em;") This project runs on a slue of hard-work that is available to everyone!
-
-        ul(style="font-size:0.8em;")
-          li #[a(href="https://www.npmjs.com/package/angular" target="_blank") angular]
-          li #[a(href="https://www.npmjs.com/package/angular-file-saver" target="_blank") angular-file-saver]
-          li #[a(href="https://github.com/AckerApple/ack-angular" target="_blank") ack-angular]
-          li #[a(href="https://www.npmjs.com/package/jade" target="_blank") jade]
-          li #[a(href="https://github.com/AlexandreArpin/mtg-font" target="_blank") mtg-font]
-          li #[a(href="https://www.npmjs.com/package/font-awesome" target="_blank") font-awesome]
-          li #[a(href="https://github.com/AckerApple/mtg-aotp-syms" target="_blank") mtg-aotp-syms]
-          li #[a(href="https://www.npmjs.com/package/bootstrap" target="_blank") bootstrap]
-          li #[a(href="https://www.npmjs.com/package/ng-file-upload" target="_blank") ng-file-upload]
-          li #[a(href="https://www.npmjs.com/package/ng-sortable" target="_blank") ng-sortable]
-          li #[a(href="https://www.npmjs.com/package/jszip" target="_blank") jszip]
-          li #[a(href="https://www.npmjs.com/package/webpack" target="_blank") webpack]
+        include export-information
 
 
-        h3(style="font-family:Beleren;") Useful Links
-        .text-center(style="font-size:0.8em;")
-          a(href="https://github.com/AckerApple/mtg-aotp-card-manager" target="_blank")
-            i.fa.fa-github
-            |&nbsp;repository
-          |&nbsp;&nbsp;&nbsp;
-          a(href="https://github.com/AckerApple/mtg-aotp-card-manager/issues" target="_blank")
-            i.fa.fa-bug
-            |&nbsp;report issue
+white-out-modal(show="cardCreator.showDocumentation")
+  div(style="padding:10px;")
+  div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
+    div(style="padding:20px;")
+      include documentation
 
 //-modal window with info about external refs
 white-out-modal(show="cardCreator.showRefWarning")
@@ -109,7 +77,7 @@ white-out-modal(show="cardCreator.showRefWarning")
     i.aotp.aotp-defense(style="vertical-align:7%")
 
   .text-muted(style="font-size:80%;")
-    a.text-xs(style="font-size:80%;" ng-click="cardCreator.showDocumentation=!cardCreator.showDocumentation")
+    a.text-xs(style="font-size:80%;" ng-click="cardCreator.showDocumentation=true")
       i.fa.fa-book
       |&nbsp;read the docs
 
@@ -233,7 +201,16 @@ div(style="text-align:center;margin:1% 0;")
           a.btn.btn-default(ng-click="cardCreator.downloadJsonExport()")
             i.fa.fa-download
             |&nbsp;JSON Download Link
+          //-
+            |&nbsp;
+            a.btn.btn-default(href="{{cardCreator.export.zip.uri}}" download="test.zip")
+              i.fa.fa-download
+              |&nbsp;Download ARCHIVE
 
+        a.btn.btn-info(ng-click="cardCreator.moreExportInfo=true" style="margin:1% 0;width:125px")
+          i.fa.fa-info-circle
+          |&nbsp;more info
+        |&nbsp;
         a.btn.btn-default(ng-click="cardCreator.exportAll()" target="blank" style="margin:1% 0;width:125px")
           i.fa.fa-folder-open-o
           |&nbsp;export all
@@ -241,6 +218,11 @@ div(style="text-align:center;margin:1% 0;")
         a.btn.btn-default(ng-click="cardCreator.createSeriesExport()" target="blank" style="margin:1% 0;width:125px")
           i.fa.fa-files-o
           |&nbsp;export series
+
+        br
+        .text-center.text-muted(style="font-size:0.6em;")
+          |Exporting only works in super modern browsers. #[i.fa.fa-firefox] & #[i.fa.fa-chrome] not #[i.fa.fa-safari]
+        br
 
       .fx-fade-up(ng-show="cardCreator.optionView=='import'" style="margin:2% 0;")
         h5 #[i.fa.fa-download] Importing

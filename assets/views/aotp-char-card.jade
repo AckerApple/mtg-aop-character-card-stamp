@@ -10,11 +10,11 @@
       .card-image-bg(style="background-image:url({{aotpCharCard.series.images[aotpCharCard.model.id].avatar.dataUrl}});")
     .card-body
       div(style="height:.67%")
-      .card-type-wrapper(style="text-align:left;")
+      .card-type-wrapper
         //-color symbols
         span(ng-repeat="color in aotpCharCard.model.colors" style="display:inline-block;")
-          div(style="position:relative;font-size:70%;text-align:center;line-height:0;")
-            span(style="position:absolute;width:100%;color:black;left:1.5%;z-index:10;")
+          .card-type-color-wrap
+            span.card-type-color
               i.mi(class="mi-{{color}}")
           i.aotp.aotp-hexagon(class="aotp-hexagon-{{color}}")
         .card-type-title(style="display:inline-block;white-space:nowrap;")
@@ -44,16 +44,17 @@
       .stat-box.range-box(style="display:inline-block;left:7.5%;")
         .stat-label.range-box-text RANGE
         .range-box-value {{aotpCharCard.model.range||'?'}}
-      .stat-box.attack-box
-        span(style="position:relative;vertical-align:top")
-          span.attack-box-text(ng-class="{'attack-box-text-sm':aotpCharCard.model.attack>9}") {{aotpCharCard.model.attack||'?'}}
-        i.aotp.aotp-attack
-      .stat-box.defense-box
-        span(style="position:relative;vertical-align:top")
-          span.defense-box-text(ng-class="{'defense-box-text-sm':aotpCharCard.model.defense>9}") {{aotpCharCard.model.defense||'?'}}
-        i.aotp.aotp-defense
+      div
+        .stat-box.attack-box
+          span(style="position:relative;vertical-align:top")
+            span.attack-box-text(ng-class="{'attack-box-text-sm':aotpCharCard.model.attack>9}") {{aotpCharCard.model.attack||'?'}}
+          i.aotp.aotp-attack
+        .stat-box.defense-box
+          span(style="position:relative;vertical-align:top")
+            span.defense-box-text(ng-class="{'defense-box-text-sm':aotpCharCard.model.defense>9}") {{aotpCharCard.model.defense||'?'}}
+          i.aotp.aotp-defense
       div(style="position:relative;height:0;")
-        div(style="position:absolute;margin-top:120.5%;width:97.15%;text-align:right;")
+        .series-icon-pos
           i.aotp.aotp-hexagon(style="position:relative;color:#333;font-size:100%;text-align:center;")
             span(class="seriesIcon")
               i(ng-class="aotpCharCard.series.symbolClass||'mi mi-planeswalk'")
@@ -67,8 +68,7 @@
           span(ng-show="aotpCharCard.model.cost.per" style="font-size:.77em;line-height:0;") &nbsp;{{aotpCharCard.model.cost.per}}
         div {{aotpCharCard.model.height.name|uppercase}} {{aotpCharCard.model.height.value}}
       .card-footer
-        div(style="float:right;margin-right:2.5%;margin-top:1.5%;" ng-bind-html="aotpCharCard.series.copyRight|trustAsHtml")
+        .copy-right(ng-bind-html="aotpCharCard.series.copyRight|trustAsHtml")
         div(style="margin-left:2.5%;")
           i(ng-class="aotpCharCard.model.artist.iconClass" style="font-size:220%;vertical-align:-17%")
-          |&nbsp;&nbsp;&nbsp;&nbsp;
-          |{{aotpCharCard.model.artist.title}}
+          span.artist-title {{aotpCharCard.model.artist.title}}

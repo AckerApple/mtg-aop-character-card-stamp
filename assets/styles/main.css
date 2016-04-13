@@ -40,7 +40,7 @@ aotp-char-card * {
   line-height: 1.42857143;
   display:block;height:100%;
   vertical-align: top;
-  width:223px;height:626px;
+  width:225px;height:627px;
   display:inline-block;
   background-image:url(../images/canvasBackCharacter.png);
   background-size:100% 100%;
@@ -59,7 +59,7 @@ aotp-char-card * {
 .aotp-char-card.aotp-char-card-print-hires{
   font-size:26px;
   line-height: 1.4;
-  width:496px;height:1389px;
+  width:500px;height:1394px;
 }
 
 .aotp-char-card .starting-height{
@@ -68,6 +68,10 @@ aotp-char-card * {
 
 .card-title-top-pad{
   height:31%
+}
+
+.aotp-char-card .series-icon-pos{
+  position:absolute;margin-top:120%;width:97.15%;text-align:right;
 }
 
 .aotp-char-card .card-title{
@@ -103,8 +107,24 @@ aotp-char-card * {
   font-family:Beleren Bold;vertical-align:middle;
   padding-left:.5%;
   color:white;
-  margin-bottom:3.5%;
+  margin-bottom:2%;
   /*border-bottom:1px solid red;*/
+}
+
+
+.aotp-char-card .card-type-wrapper{
+  text-align:left;padding-left:0.12em;
+  margin:0 0 0.2em 0;
+}
+
+
+.aotp-char-card .card-type-wrapper .card-type-color-wrap{
+  margin-top:0.1em;
+  position:relative;font-size:70%;text-align:center;line-height:0;
+}
+
+.aotp-char-card .card-type-wrapper .card-type-color{
+  position:absolute;width:100%;color:black;left:1.5%;top:0.03em;z-index:10;
 }
 
 .aotp-char-card .card-type-wrapper [class*='aotp-hexagon']:before {
@@ -283,16 +303,24 @@ aotp-char-card .card-ability-body{
 }
 
 .card-footer{
-  color:white;
-  opacity: .7;
-  font-size:40%;
+  color:white;opacity: .7;
+  font-size:50%;clear:both;
   font-family:Times New Roman;
 }
 
+.card-footer .artist-title{
+  padding-left:0.5em;
+}
+
+.card-footer .copy-right{
+  float:right;margin-right:2.5%;margin-top:1.5%;
+  font-size:0.8em;word-spacing:0.2em;
+}
+
 .aotp-char-card .seriesIcon{
-  left:0;margin-top:.3em;position:absolute;
+  left:0;margin-top:.25em;position:absolute;
   width:100%;color:#CCC;font-size:75%;
-  line-height: 1.2em;
+  line-height:1.3em;
 }
 
 .aotp-char-card .seriesIcon .mi-planeswalk{
