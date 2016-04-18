@@ -43,9 +43,12 @@ angular.module('mtgAotpCardCreator',[
       var zip = new jsZip()
 
       for(var x=allSeries.length-1; x >= 0; --x){
-        var series = allSeries[x]
-        var images = extractSeriesImages(series)
-        zip.file("images-"+series.name+".json", JSON.stringify(images));
+        var series = allSeries[x];
+        var images = extractSeriesImages(series);
+
+        if(images){
+          zip.file("images-"+series.name+".json", JSON.stringify(images));
+        }
       }
 
       zip.file("series.json", JSON.stringify(allSeries));
@@ -80,22 +83,28 @@ angular.module('mtgAotpCardCreator',[
         var new_zip = new jsZip(e.target.result)
 
         if(!new_zip.files["series.json"])throw new Error('Zip file did not contain a series.json file')
-        if(!new_zip.files["images.json"])throw new Error('Zip file did not contain an images.json file')
 
         var newSeries = new_zip.file("series.json").asText()
-        var newImages = new_zip.file("images.json").asText()
-        return {
-          images:JSON.parse(newImages),
-          series:JSON.parse(newSeries)
+        newSeries = JSON.parse(newSeries)
+        newSeries.images = {}
+
+        for(var x=newSeries.length-1; x >= 0; --x){
+          var series = newSeries[x]
+          var newImages = new_zip.file("images-"+series.name+".json").asText()
+          newImages = JSON.parse(newImages)
+          series.images = newImages//data.images[series.id]
         }
+/*
+        if(!new_zip.files["images.json"])throw new Error('Zip file did not contain an images.json file')
+        images:JSON.parse(newImages),
+*/
+        return newSeries
       })
+/*
       .then(function(data){
-        for(var x=data.series.length-1; x >= 0; --x){
-          var series = data.series[x]
-          series.images = data.images[series.id]
-        }
         return data.series
       })
+*/
     }
   }
 }])
@@ -364,6 +373,7 @@ function seriesNav(AotpExport, AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q,
   this.Blob = Blob
   this.FileSaver = FileSaver
   this.jsZip = jsZip
+  this.exportImages = true
   return this
 }
 
@@ -402,14 +412,24 @@ seriesNav.prototype.importSeries = function(series){
 
 seriesNav.prototype.exportAll = function(){
   var setter = function(){
-    this.export = this.AotpExport.getSeriesArrayExport(this.cardSeries)
+    var exp = this.cardSeries
+    if(!this.exportImages){
+      exp = angular.copy(exp)
+      extractAllSeriesImages(exp)
+    }
+    this.export = this.AotpExport.getSeriesArrayExport(exp)
   }.bind(this)
 
   return this.fetchAll().then(setter)
 }
 
 seriesNav.prototype.createSeriesExport = function(){
-  this.export = this.AotpExport.getSeriesExports(this.series)
+  var exp = this.series
+  if(!this.exportImages){
+    exp = angular.copy(exp)
+    extractSeriesImages(exp)
+  }
+  this.export = this.AotpExport.getSeriesExports(exp)
 }
 
 seriesNav.prototype.downloadZipExport = function(){

@@ -4,18 +4,17 @@
 -attrs['on-edit']="cardCreator.mode='editor';cardCreator.card=cardCreator.previewCard;cardCreator.previewCard=null"
 aotp-card-white-out-modal&attributes(attrs)
 
-white-out-modal(show="cardCreator.moreExportInfo")
-  div(style="padding:10px;")
-    div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
-      div(style="padding:20px;")
-        include export-information
-
-
 white-out-modal(show="cardCreator.showDocumentation")
-  div(style="padding:10px;")
+  div(style="padding:10px;max-width:600px;")
   div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
     div(style="padding:20px;")
       include documentation
+
+white-out-modal(show="cardCreator.moreExportInfo")
+  div(style="padding:10px;max-width:600px;")
+    div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
+      div(style="padding:20px;")
+        include export-information
 
 //-modal window with info about external refs
 white-out-modal(show="cardCreator.showRefWarning")
@@ -186,9 +185,9 @@ white-out-modal(show="cardCreator.showRefWarning")
 
 div(style="text-align:center;margin:1% 0;")
   div(style="display:inline-block;")
-    .text-left
+    .text-center
       .fx-fade-up(ng-show="cardCreator.optionView=='export'" style="margin:2% 0;")
-        h5(style="margin-top:0;") #[i.fa.fa-download] Exporting {{cardCreator.export.name}}
+        h5.text-left(style="margin-top:0;") #[i.fa.fa-download] Exporting {{cardCreator.export.name}}
         .fx-fade-up(ng-show="cardCreator.export" style="margin:2% 0;")
           //-a.btn.btn-default(ng-href="{{cardCreator.export.data|jsonExportUrl}}" target="_blank")
             i.fa.fa-eye
@@ -207,6 +206,10 @@ div(style="text-align:center;margin:1% 0;")
               i.fa.fa-download
               |&nbsp;Download ARCHIVE
 
+        .text-center
+          input(type="checkbox" ng-model="cardCreator.exportImages" id="aotp-exportImages")
+          label(for="aotp-exportImages" style="font-size:0.75em;") &nbsp;Include Images
+
         a.btn.btn-info(ng-click="cardCreator.moreExportInfo=true" style="margin:1% 0;width:125px")
           i.fa.fa-info-circle
           |&nbsp;more info
@@ -216,12 +219,13 @@ div(style="text-align:center;margin:1% 0;")
           |&nbsp;export all
         |&nbsp;
         a.btn.btn-default(ng-click="cardCreator.createSeriesExport()" target="blank" style="margin:1% 0;width:125px")
-          i.fa.fa-files-o
+          i.fa.fa-file-o
           |&nbsp;export series
 
         br
         .text-center.text-muted(style="font-size:0.6em;")
-          |Exporting only works in super modern browsers. #[i.fa.fa-firefox] & #[i.fa.fa-chrome] not #[i.fa.fa-safari]
+          |Exporting only works in super modern web browsers.
+          //-#[i.fa.fa-firefox] & #[i.fa.fa-chrome] not #[i.fa.fa-safari]
         br
 
       .fx-fade-up(ng-show="cardCreator.optionView=='import'" style="margin:2% 0;")

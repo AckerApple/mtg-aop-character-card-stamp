@@ -4,3 +4,29 @@ h1(style="font-family:Beleren;")
 .text-muted(style="font-size:0.6em;")
   |Hopefully you're using a super modern browser
 hr
+
+p(style="font-size:0.8em;")
+  |This software is made, extra specifically, for desktop computers running&nbsp;
+  a(href="https://www.google.com/chrome/browser/")
+    |Google Chrome&nbsp;
+    i.fa.fa-chrome
+  |. If this application is running on any other platform or web browser, unexpected behavior or errors may occur.
+br
+p(style="font-size:0.8em;")
+  |Exporting, in this application, requires the web browser itself to construct a zip archive as an in-browser file download. The key is that both exporting and downloading, must be done without ever using another external source, such as a server. The functionality of zipping and downloading, has been implemented using HTML5 saveAs standards. Surprisingly, most web browsers can create zip files within themselves but downloading these self-constructed files does not work well in all web browsers. As of this writing, Apple's Safari can create zip files but cannot properly download the produced file.
+
+br
+p(style="font-size:0.8em;")
+  |The following link, indicates web browsers that support file saving:
+  a(href="https://github.com/eligrey/FileSaver.js/#supported-browsers" target="_blank" style="white-space:nowrap;")
+    |&nbsp;tap here
+
+br
+p(style="font-size:0.8em;")
+  |The following link, explains downloading support and that Apple Safari has complications:
+  a(href="https://stuk.github.io/jszip/documentation/howto/write_zip.html" target="_blank" style="white-space:nowrap;")
+    |&nbsp;tap here
+
+br
+p(style="font-size:0.7em;")
+  |Happy exporting! And extra special thank you's to projects like Google Chrome and Mozilla Firefox, for implementing HTML5 standards so well.
