@@ -1,39 +1,85 @@
-h1(style="font-family:Beleren;")
-  sup(style="font-size:0.5em;") the
-  |Documentation
-.text-muted(style="font-size:0.6em;")
-  |Hopefully something here will make since to you
-hr
+style.
+  .aotp-docs img{
+    width:300px;margin:5px;
+    cursor:pointer;
+  }
 
-img(src="assets/acker-apple/IMG0.jpg" style="max-width:200px;")
-img(src="assets/acker-apple/IMG1.jpg" style="max-width:200px;")
-img(src="assets/acker-apple/IMG2.jpg" style="max-width:200px;")
-img(src="assets/acker-apple/IMG3.jpg" style="max-width:200px;")
-img(src="assets/acker-apple/IMG4.jpg" style="max-width:200px;")
+  .aotp-docs img.lrgImg{
+    width:100%;
+  }
 
-h3 #[i.fa.fa-github-square] Packaged by Open Source
-p.text-muted(style="font-size:0.8em;") This project runs on a slue of hard-work that is available to everyone!
+.aotp-docs
+  h1(style="font-family:Beleren;")
+    sup(style="font-size:0.5em;") the
+    |Documentation
+  .text-muted(style="font-size:0.6em;")
+    |With any luck, hopefully something here will make sense to you :)
+  hr
 
-ul(style="font-size:0.8em;")
-  li #[a(href="https://www.npmjs.com/package/angular" target="_blank") angular]
-  li #[a(href="https://www.npmjs.com/package/angular-file-saver" target="_blank") angular-file-saver]
-  li #[a(href="https://github.com/AckerApple/ack-angular" target="_blank") ack-angular]
-  li #[a(href="https://www.npmjs.com/package/jade" target="_blank") jade]
-  li #[a(href="https://github.com/AlexandreArpin/mtg-font" target="_blank") mtg-font]
-  li #[a(href="https://www.npmjs.com/package/font-awesome" target="_blank") font-awesome]
-  li #[a(href="https://github.com/AckerApple/mtg-aotp-syms" target="_blank") mtg-aotp-syms]
-  li #[a(href="https://www.npmjs.com/package/bootstrap" target="_blank") bootstrap]
-  li #[a(href="https://www.npmjs.com/package/ng-file-upload" target="_blank") ng-file-upload]
-  li #[a(href="https://www.npmjs.com/package/ng-sortable" target="_blank") ng-sortable]
-  li #[a(href="https://www.npmjs.com/package/jszip" target="_blank") jszip]
-  li #[a(href="https://www.npmjs.com/package/webpack" target="_blank") webpack]
+  div(style="font-size:0.8em;")
+    |This project is a well refined hobby, a learning experience, a lesson in teaching, and a display of the capabilities of HTML5.
 
-h3(style="font-family:Beleren;") Useful Links
-.text-center(style="font-size:0.8em;")
-  a(href="https://github.com/AckerApple/mtg-aotp-card-manager" target="_blank")
-    i.fa.fa-github
-    |&nbsp;repository
-  |&nbsp;&nbsp;&nbsp;
-  a(href="https://github.com/AckerApple/mtg-aotp-card-manager/issues" target="_blank")
-    i.fa.fa-bug
-    |&nbsp;report issue
+    br
+    h3 Primary Features
+    ul
+      li
+        i.fa.fa-pencil
+        |&nbsp;Edit or Create existing & custom character cards
+      li
+        i.fa.fa-pencil
+        |&nbsp;Edit or Create existing & custom spell cards #[sup (coming soon)]
+      li
+        i.fa.fa-print
+        |&nbsp;Render and print medium or high quality cards
+      li
+        i.fa.fa-download
+        |&nbsp;Export archives of cards with & without images
+      li
+        i.fa.fa-upload
+        |&nbsp;Import your saved archives of cards
+      li
+        i.fa.fa-eye
+        |&nbsp;View cards in comparison views and then tap to pick apart the details of a single card
+    br
+
+  div(ng-click="isViewLove=!isViewLove" style="cursor:pointer;")
+    h4
+      a
+        i.fa(ng-class="isViewLove?'fa-chevron-circle-down':'fa-chevron-circle-right'")
+        |&nbsp;I Really #[i.fa.fa-heart(style="color:red;")] This Game
+    p.text-muted(style="font-size:0.6em;margin-left:1em;") Tap here, to see why AOTP is my game of choice
+  .fx-fade-down.text-center(ng-show="isViewLove")
+    img.animate-all(src="assets/acker-apple/IMG0.jpg" ng-class="{lrgImg:lrgImg==1}" ng-click="lrgImg=lrgImg==1?0:1")
+    img.animate-all(src="assets/acker-apple/IMG1.jpg" ng-class="{lrgImg:lrgImg==2}" ng-click="lrgImg=lrgImg==2?0:2")
+    img.animate-all(src="assets/acker-apple/IMG2.jpg" ng-class="{lrgImg:lrgImg==3}" ng-click="lrgImg=lrgImg==3?0:3")
+    img.animate-all(src="assets/acker-apple/IMG3.jpg" ng-class="{lrgImg:lrgImg==4}" ng-click="lrgImg=lrgImg==4?0:4")
+    img.animate-all(src="assets/acker-apple/IMG4.jpg" ng-class="{lrgImg:lrgImg==5}" ng-click="lrgImg=lrgImg==5?0:5")
+
+  br
+
+  h3 #[i.fa.fa-github-square] Packaged by Open Source
+  p.text-muted(style="font-size:0.8em;") This project runs on a slue of hard-work that is available to everyone!
+
+  ul(style="font-size:0.8em;")
+    li #[a(href="https://www.npmjs.com/package/angular" target="_blank") angular]
+    li #[a(href="https://www.npmjs.com/package/angular-file-saver" target="_blank") angular-file-saver]
+    li #[a(href="https://github.com/AckerApple/ack-angular" target="_blank") ack-angular]
+    li #[a(href="https://www.npmjs.com/package/jade" target="_blank") jade]
+    li #[a(href="https://github.com/AlexandreArpin/mtg-font" target="_blank") mtg-font]
+    li #[a(href="https://www.npmjs.com/package/font-awesome" target="_blank") font-awesome]
+    li #[a(href="https://github.com/AckerApple/mtg-aotp-syms" target="_blank") mtg-aotp-syms]
+    li #[a(href="https://www.npmjs.com/package/bootstrap" target="_blank") bootstrap]
+    li #[a(href="https://www.npmjs.com/package/ng-file-upload" target="_blank") ng-file-upload]
+    li #[a(href="https://www.npmjs.com/package/ng-sortable" target="_blank") ng-sortable]
+    li #[a(href="https://www.npmjs.com/package/jszip" target="_blank") jszip]
+    li #[a(href="https://www.npmjs.com/package/webpack" target="_blank") webpack]
+
+  h3(style="font-family:Beleren;") Useful Links
+  .text-center(style="font-size:0.8em;")
+    a(href="https://github.com/AckerApple/mtg-aotp-card-manager" target="_blank")
+      i.fa.fa-github
+      |&nbsp;repository
+    |&nbsp;&nbsp;&nbsp;
+    a(href="https://github.com/AckerApple/mtg-aotp-card-manager/issues" target="_blank")
+      i.fa.fa-bug
+      |&nbsp;report issue

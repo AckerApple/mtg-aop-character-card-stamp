@@ -5,16 +5,18 @@
 aotp-card-white-out-modal&attributes(attrs)
 
 white-out-modal(show="cardCreator.showDocumentation")
-  div(style="padding:10px;max-width:600px;")
-  div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
-    div(style="padding:20px;")
-      include documentation
-
-white-out-modal(show="cardCreator.moreExportInfo")
-  div(style="padding:10px;max-width:600px;")
+  div(style="max-width:700px;")
+    div(style="padding:10px;")
     div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
       div(style="padding:20px;")
-        include export-information
+        include documentation
+
+white-out-modal(show="cardCreator.moreExportInfo")
+  div(style="max-width:700px;")
+    div(style="padding:10px;")
+      div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
+        div(style="padding:20px;")
+          include export-information
 
 //-modal window with info about external refs
 white-out-modal(show="cardCreator.showRefWarning")
