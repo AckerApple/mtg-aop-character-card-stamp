@@ -48,12 +48,19 @@ style.
         i.fa(ng-class="isViewLove?'fa-chevron-circle-down':'fa-chevron-circle-right'")
         |&nbsp;I Really #[i.fa.fa-heart(style="color:red;")] This Game
     p.text-muted(style="font-size:0.6em;margin-left:1em;") Tap here, to see why AOTP is my game of choice
-  .fx-fade-down.text-center(ng-show="isViewLove")
-    img.animate-all(src="assets/acker-apple/IMG0.jpg" ng-class="{lrgImg:lrgImg==1}" ng-click="lrgImg=lrgImg==1?0:1")
-    img.animate-all(src="assets/acker-apple/IMG1.jpg" ng-class="{lrgImg:lrgImg==2}" ng-click="lrgImg=lrgImg==2?0:2")
-    img.animate-all(src="assets/acker-apple/IMG2.jpg" ng-class="{lrgImg:lrgImg==3}" ng-click="lrgImg=lrgImg==3?0:3")
-    img.animate-all(src="assets/acker-apple/IMG3.jpg" ng-class="{lrgImg:lrgImg==4}" ng-click="lrgImg=lrgImg==4?0:4")
-    img.animate-all(src="assets/acker-apple/IMG4.jpg" ng-class="{lrgImg:lrgImg==5}" ng-click="lrgImg=lrgImg==5?0:5")
+  .fx-fade-down(ng-show="isViewLove")
+    br
+    h4 I Had to Take This Game to Another Level
+    div(style="font-size:0.8em;")
+      p Hello from Acker Apple.
+      p I searched #[a(href="http://amazon.com" target="_blank") Amazon] for minature sized objects like ruins, gravestones, trees, and such. I bought a large pack of #[a(href="https://www.google.com/search?q=heroscape" target="_blank") Hero Scape] board hexagon tiles from #[a(href="http://ebay.com" target="_blank") EBay], which work perfectly with AOTP.
+    h4 Photos of My Hosted Epic Games
+    .text-center
+      span(ng-repeat="item in docs.ackData.images track by item.src")
+        img.animate-all(ng-src="{{item.src}}" ng-class="{lrgImg:docs.lrgImg==item}" ng-click="docs.lrgImg=docs.lrgImg==item?null:item" style="border:2px solid black;")
+        div.fx-fade-up(ng-show="docs.lrgImg==item")
+          p {{item.title}}
+          p.text-muted(style="font-size:0.8em;") {{item.detail}}
 
   br
 

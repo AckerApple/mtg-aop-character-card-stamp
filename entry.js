@@ -11,7 +11,6 @@ require('ng-sortable');//drag-n-drop
 require('ng-sortable/dist/ng-sortable.min.css')
 
 require('ack-angular');//white-out-modal
-require('ack-angular/ack-angular.css');//animation classes (need to replace with ngAnimate)
 
 JSZip = require('jszip');//create zip file in browser
 

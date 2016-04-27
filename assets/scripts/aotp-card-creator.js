@@ -6,7 +6,7 @@ angular.module('jsZip',[]).service('jsZip',function(){return JSZip})
 angular.module('mtgAotpCardCreator',[
   'ngAnimate',
   'ng-fx',
-  'ackAngular',
+  'ack-angular',
   'ngSanitize',
   'aotpCardService',
   'ngFileUpload',
@@ -20,6 +20,31 @@ angular.module('mtgAotpCardCreator',[
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|data|ftp|mailto|chrome-extension):/);
   }
 ])
+.directive('aotpDocumentation',function(){
+  return {
+    restrict:'E'
+    ,scope:{}
+    ,template:require('../views/aotp-documentation.jade')
+    ,bindToController:true
+    ,controllerAs:'docs'
+    ,controller:function(){
+      this.ackData={
+        images:[{
+          src:'assets/acker-apple/IMG0.jpg', title:'A river runs through', detail:'This board has causes ranged attackers to lead the game as it takes 2 turns for figures to cross the canal.'
+        },{
+          src:'assets/acker-apple/IMG1.jpg', title:'Minimal path to the top', detail:'The board is arranged with centralized elevations which causes a fight for highier ground.'
+        },{
+          src:'assets/acker-apple/IMG2.jpg', title:''
+        },{
+          src:'assets/acker-apple/IMG3.jpg', title:''
+        },{
+          src:'assets/acker-apple/IMG4.jpg', title:''
+        }]
+      }
+    }
+  }
+})
+
 .service('AotpExport',['jsZip', 'Blob', '$q',function(jsZip, Blob, $q){
   return {
     getSeriesArrayExport:function(seriesArray){
@@ -73,7 +98,7 @@ angular.module('mtgAotpCardCreator',[
         }
       }
     },
-    uploadSeriesFile:function(userInputFile){
+    uploadArchiveFile:function(userInputFile){
       return $q(function(res,rej){
         var FR = new FileReader()
         FR.onload = res
@@ -377,11 +402,9 @@ function seriesNav(AotpExport, AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q,
   return this
 }
 
-/** fetches one series at time */
-seriesNav.prototype.uploadSeries = function(series){
-  if(!series)return;
-
-  this.AotpExport.uploadSeriesFile(series)
+seriesNav.prototype.uploadArchive = function($file, model, $files){
+  if(!$file)return;
+  this.AotpExport.uploadArchiveFile($file)
   .then(this.importSeriesArray.bind(this))
   .catch(function(e){
     alert('import failed. '+e.message)

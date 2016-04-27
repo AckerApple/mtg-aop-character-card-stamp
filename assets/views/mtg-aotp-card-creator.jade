@@ -9,7 +9,7 @@ white-out-modal(show="cardCreator.showDocumentation")
     div(style="padding:10px;")
     div(style="background-color:white;border:1px solid #999999;border-radius:15px;")
       div(style="padding:20px;")
-        include documentation
+        aotp-documentation
 
 white-out-modal(show="cardCreator.moreExportInfo")
   div(style="max-width:700px;")
@@ -231,9 +231,6 @@ div(style="text-align:center;margin:1% 0;")
         br
 
       .fx-fade-up(ng-show="cardCreator.optionView=='import'" style="margin:2% 0;")
-        h5 #[i.fa.fa-download] Importing
-        .alert.alert-warning coming soon
-
         -attrs={}
         //-attrs['ngf-drop']="cardCreator.importSeries($file,editor.model)"
         //-attrs['ngf-drag-over-class']="'drop-over'"
@@ -241,11 +238,11 @@ div(style="text-align:center;margin:1% 0;")
         -attrs['ng-model']="file"
         //-attrs['ngf-pattern']="['application/x-zip-compressed']"
         //-attrs['ngf-accept']="['application/x-zip-compressed']"
-        -attrs['ngf-max-size']="8MB"
-        -attrs['ngf-select']="cardCreator.uploadSeries($file,file)"
+        -attrs['ngf-max-size']="80MB"
+        -attrs['ngf-select']="cardCreator.uploadArchive($file,file,$files)"
         a.btn.btn-default(style="margin:1% 0;width:125px")&attributes(attrs)
           i.fa.fa-files-o
-          |&nbsp;import series
+          |&nbsp;import archive
 
 
     a.btn.btn-default(style="margin:1% 0;width:135px" ng-click="cardCreator.optionView='import'")
