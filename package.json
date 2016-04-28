@@ -1,14 +1,14 @@
 {
   "name": "mtg-aotp-character-card-creator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "make and print with html5",
   "main": "start.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "webpack",
-    "start": "webpack-dev-server --content-base www/",
+    "start": "webpack-dev-server -d --content-base www/",
     "watch": "webpack --watch --progress",
-    "pack": "webpack --progress"
+    "build": "webpack --progress"
   },
   "repository": {
     "type": "git",

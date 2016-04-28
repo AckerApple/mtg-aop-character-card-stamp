@@ -14,6 +14,7 @@ var loaders = [
 
 var dist = {
   entry: "./entry.js",
+  devtool:"#source-map",
   output: {
     path: path.join(__dirname,'www','dist'),
     filename: "bundle.js"
@@ -31,6 +32,7 @@ var dist = {
 
 var debug = {
   entry: "./entry.js",
+  devtool:"#source-map",
   output: {
     path: path.join(__dirname,'www','dist'),
     filename: "bundle.js"

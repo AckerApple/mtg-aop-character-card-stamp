@@ -1,7 +1,8 @@
 "use strict";
 
-angular.module('jsZip',[]).service('jsZip',function(){return JSZip})
+const version = require("../../package.json").version
 
+angular.module('jsZip',[]).service('jsZip',function(){return JSZip})
 
 angular.module('mtgAotpCardCreator',[
   'ngAnimate',
@@ -237,6 +238,7 @@ angular.module('mtgAotpCardCreator',[
     }
   }
 }])
+/** hint: extends seriesNav */
 .controller('MtgAotpCardCreator',[
   'AotpExport', 'AotpSeries', 'AotpDemoSeries', 'AotpDemoCharCard',
   '$q', 'Upload', 'Blob', 'FileSaver', 'jsZip',
@@ -391,6 +393,7 @@ function seriesNav(AotpExport, AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q,
   this.$q = $q
   this.AotpExport = AotpExport
   this.AotpDemoCharCard = AotpDemoCharCard
+  this.AotpDemoSeries = AotpDemoSeries
   this.AotpSeries=AotpSeries
   this.seriesIndex=0
   this.selectedIndex = -1
@@ -402,7 +405,11 @@ function seriesNav(AotpExport, AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q,
   return this
 }
 
-seriesNav.prototype.uploadArchive = function($file, model, $files){
+seriesNav.prototype.uploadArchives = function($files){
+  $files.forEach( this.uploadArchive.bind(this) )
+}
+
+seriesNav.prototype.uploadArchive = function($file){
   if(!$file)return;
   this.AotpExport.uploadArchiveFile($file)
   .then(this.importSeriesArray.bind(this))
@@ -434,6 +441,7 @@ seriesNav.prototype.importSeries = function(series){
 }
 
 seriesNav.prototype.exportAll = function(){
+  delete this.export
   var setter = function(){
     var exp = this.cardSeries
     if(!this.exportImages){
@@ -447,6 +455,7 @@ seriesNav.prototype.exportAll = function(){
 }
 
 seriesNav.prototype.createSeriesExport = function(){
+  delete this.export
   var exp = this.series
   if(!this.exportImages){
     exp = angular.copy(exp)
@@ -605,8 +614,9 @@ seriesNav.prototype.fetchSeriesListing = function(){
 
 
 
-
+/** hint: extends seriesNav */
 function mtgAotpCardCreator(AotpExport, AotpSeries, AotpDemoSeries, AotpDemoCharCard, $q, Upload, Blob, FileSaver, jsZip){
+  this.version = version
   this.mode='roster'
   seriesNav.apply(this,arguments)
   this.fetchSeriesListing().then(this.selectFirstCard.bind(this))

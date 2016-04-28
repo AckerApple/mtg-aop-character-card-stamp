@@ -50,7 +50,8 @@ white-out-modal(show="cardCreator.showRefWarning")
         i.aotp.aotp-attack(style="font-size:50%;vertical-align:25%;color:#666;")
         |&nbsp;AOTP&nbsp;
         i.aotp.aotp-defense(style="font-size:50%;vertical-align:25%;color:#666;")
-    h1.text-sm(style="vertical-align:middle;margin-top:0;font-family:Beleren small caps;font-size:2.25em;display:inline-block;") Card Manager
+    h1.text-sm(style="vertical-align:middle;margin-top:0;font-family:Beleren small caps;font-size:2.25em;display:inline-block;")
+      |Card Manager
     .text-muted(style="font-family:Mplantin;font-size:80%;")
       |&nbsp;&nbsp;&nbsp;
       |A fun-to-use, extra serious, digital card manager
@@ -238,12 +239,11 @@ div(style="text-align:center;margin:1% 0;")
         -attrs['ng-model']="file"
         //-attrs['ngf-pattern']="['application/x-zip-compressed']"
         //-attrs['ngf-accept']="['application/x-zip-compressed']"
-        -attrs['ngf-max-size']="80MB"
-        -attrs['ngf-select']="cardCreator.uploadArchive($file,file,$files)"
+        -attrs['ngf-max-size']="1200MB"
+        -attrs['ngf-select']="cardCreator.uploadArchives($files)"
         a.btn.btn-default(style="margin:1% 0;width:125px")&attributes(attrs)
           i.fa.fa-files-o
-          |&nbsp;import archive
-
+          |&nbsp;choose files
 
     a.btn.btn-default(style="margin:1% 0;width:135px" ng-click="cardCreator.optionView='import'")
       i.fa.fa-upload
@@ -256,3 +256,13 @@ div(style="text-align:center;margin:1% 0;")
       i.fa.fa-download
       |&nbsp;export options
     |&nbsp;
+    a.btn.btn-success(href="#seriesTitle" ng-click="cardCreator.addSeries()" style="margin:1% 0;width:135px;")
+      |++ new series
+    |&nbsp;
+    a.btn.btn-danger(ng-click="cardCreator.deleteSeries()" style="margin:1% 0;width:135px")
+      .fa.fa-fire
+      .fa.fa-fire
+      |&nbsp;delete series
+
+br
+p(style="text-align:right;color:#999999;font-size:0.6em;") version {{::cardCreator.version||'?'}}&nbsp;

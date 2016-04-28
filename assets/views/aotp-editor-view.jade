@@ -20,9 +20,6 @@
 
 
 div
-  a.btn.btn-success(href="#seriesTitle" ng-click="iEditor.addSeries()" style="margin:1% 0;width:125px;")
-    |++ new series
-  |&nbsp;
   a.btn.btn-success(ng-click="iEditor.addCard()" style="margin:1% 0;width:125px;")
     |+ new card
   span.fx-fade-right(ng-show="iEditor.card")
@@ -34,11 +31,6 @@ div
     a.btn.btn-danger(ng-click="iEditor.deleteCard()" style="margin:1% 0;width:125px")
       .fa.fa-fire
       |&nbsp;delete card
-  |&nbsp;
-  a.btn.btn-danger(ng-click="iEditor.deleteSeries()" style="margin:1% 0;width:125px")
-    .fa.fa-fire
-    .fa.fa-fire
-    |&nbsp;delete series
 
 
 //- easy rending stage
